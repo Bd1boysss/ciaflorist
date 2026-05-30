@@ -267,9 +267,9 @@ body.om .price-edit{display:flex}
 .fp-sel.err{border-color:var(--rose)!important}
 .field-err{font-size:9px;color:var(--rose);letter-spacing:0.04em;display:none}
 .field-err.show{display:block}
-.method-toggle{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.method-toggle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
 .method-btn{padding:9px;border:0.5px solid var(--border2);background:var(--ink2);color:var(--td);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all 0.15s}
-.method-btn:first-child{border-right:none}
+.method-btn:not(:last-child){border-right:none}
 .method-btn.active{background:var(--mist);color:var(--gold);border-color:var(--gold)}
 .delivery-fields{display:none;flex-direction:column;gap:10px;padding:10px;background:rgba(201,169,110,0.04);border:0.5px solid var(--border2);animation:fdDown 0.2s ease}
 .delivery-fields.show{display:flex}
@@ -525,6 +525,53 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 #adm-trigger svg{width:13px;height:13px;fill:var(--gold)}
 
 /* Fade in scroll */
+
+/* ── UPLOAD MODAL (owner mode) ── */
+#upload-modal{position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,0.82);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:1rem}
+#upload-modal.show{display:flex}
+.upm-box{background:var(--ink2);border:0.5px solid var(--border);width:100%;max-width:500px;padding:2rem;position:relative;animation:mIn 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+.upm-box::before,.upm-box::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--gold);border-style:solid}
+.upm-box::before{top:10px;left:10px;border-width:1px 0 0 1px}
+.upm-box::after{bottom:10px;right:10px;border-width:0 1px 1px 0}
+.upm-title{font-family:'Cormorant Infant',serif;font-size:22px;font-style:italic;font-weight:300;color:var(--cream);margin-bottom:3px}
+.upm-sub{font-size:10px;color:var(--td);letter-spacing:0.06em;margin-bottom:1.25rem}
+.upm-drop{border:1px dashed var(--border);background:var(--mist);padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;margin-bottom:1rem}
+.upm-drop:hover,.upm-drop.drag{border-color:var(--gold);background:rgba(201,169,110,0.1)}
+.upm-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upm-drop-icon{font-size:26px;margin-bottom:8px;display:block;opacity:0.7}
+.upm-drop-txt{font-size:12px;font-weight:500;color:var(--cream);margin-bottom:3px}
+.upm-drop-sub{font-size:11px;color:var(--td);font-weight:300}
+.upm-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:1rem}
+.upm-thumb{aspect-ratio:1;position:relative;border:0.5px solid var(--border2)}
+.upm-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.upm-thumb-del{position:absolute;top:2px;right:2px;width:16px;height:16px;background:rgba(184,66,74,0.9);color:#fff;border:none;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center}
+.upm-lbl{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--td);font-weight:700;margin-bottom:5px;display:block}
+.upm-cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:1rem}
+.upm-cat-btn{padding:8px 5px;border:0.5px solid var(--border2);background:var(--ink);color:var(--td);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;text-align:center;transition:all 0.15s}
+.upm-cat-btn:hover{border-color:rgba(201,169,110,0.35);color:var(--tm)}
+.upm-cat-btn.active{background:var(--mist);border-color:var(--gold);color:var(--gold)}
+.upm-inp{width:100%;font-family:'Montserrat',sans-serif;font-size:12px;border:0.5px solid var(--border2);background:var(--ink);color:var(--cream);padding:9px 11px;margin-bottom:1rem;transition:border-color 0.15s}
+.upm-inp:focus{outline:none;border-color:var(--gold)}
+.upm-inp::placeholder{color:var(--td)}
+.upm-foot{display:flex;gap:8px;justify-content:flex-end}
+.upm-close{position:absolute;top:10px;right:10px;width:26px;height:26px;border:0.5px solid var(--border2);background:transparent;cursor:pointer;font-size:13px;color:var(--td);display:flex;align-items:center;justify-content:center;transition:all 0.12s;z-index:1}
+.upm-close:hover{border-color:var(--rose);color:var(--rose)}
+
+
+/* ── BUKET PICKER (simplified order) ── */
+.buket-pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.buket-pick{position:relative;aspect-ratio:1;border:1.5px solid var(--border2);background:var(--ink2);overflow:hidden;cursor:pointer;transition:border-color 0.18s}
+.buket-pick:hover{border-color:rgba(201,169,110,0.45)}
+.buket-pick.active{border-color:var(--gold)}
+.buket-pick img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s}
+.buket-pick:hover img{transform:scale(1.05)}
+.buket-pick.active::after{content:'✓';position:absolute;top:6px;right:6px;width:22px;height:22px;background:var(--gold);color:var(--ink);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:2}
+.buket-pick-name{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(13,10,8,0.85),transparent);color:var(--cream);font-size:9px;font-weight:600;letter-spacing:0.04em;padding:14px 6px 5px;text-align:center;line-height:1.2}
+.buket-pick-custom{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:var(--mist)}
+.buket-pick-custom .bpc-icon{font-size:24px;opacity:0.8}
+.prev-ph-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%}
+.prev-img-full{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -558,7 +605,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   <div class="wcorner bl"></div><div class="wcorner br"></div>
   <div id="w-petals"></div>
   <div class="wc-center">
-    <div class="wc-eyebrow" id="wc-eyebrow">Handmade · Buket Custom · Jakarta</div>
+    <div class="wc-eyebrow" id="wc-eyebrow">Handmade · Buket Custom · Wonogiri</div>
     <div class="wc-logo-wrap">
       <span class="wc-logo" id="wc-logo">ciaflorist</span>
     </div>
@@ -601,7 +648,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   <div class="vline" style="right:18%"></div>
   <div class="hero-inner">
     <div class="hero-left fi">
-      <div class="hero-tag" id="hero-tag">Handmade &nbsp;·&nbsp; Jakarta &nbsp;·&nbsp; Est. 2021</div>
+      <div class="hero-tag" id="hero-tag">Handmade &nbsp;·&nbsp; Wonogiri &nbsp;·&nbsp; Est. 2021</div>
       <h1 class="hero-title">
         <span class="t1">Buket</span>
         <span class="t2">custom</span>
@@ -629,17 +676,9 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   <div class="gallery-inner">
     <div class="gl-top fi">
       <div><div class="sec-tag">Koleksi</div><h2 class="sec-title">Karya <em>pilihan</em></h2></div>
-      <button class="o-btn" onclick="document.getElementById('add-file').click()">+ Tambah Foto</button>
-      <input type="file" id="add-file" accept="image/*" multiple style="display:none" onchange="handleAddPhoto(event)"/>
+      <button class="o-btn" onclick="openUploadModal()">+ Tambah Foto</button>
     </div>
-    <div class="cat-tabs fi">
-      <button class="cat-tab active" onclick="filterCat(this,'all')">Semua</button>
-      <button class="cat-tab" onclick="filterCat(this,'wisuda')">🎓 Wisuda</button>
-      <button class="cat-tab" onclick="filterCat(this,'anniversary')">💑 Anniversary</button>
-      <button class="cat-tab" onclick="filterCat(this,'ulang-tahun')">🎂 Ulang Tahun</button>
-      <button class="cat-tab" onclick="filterCat(this,'valentine')">💝 Valentine</button>
-      <button class="cat-tab" onclick="filterCat(this,'lainnya')">✨ Lainnya</button>
-    </div>
+    <div class="cat-tabs fi" id="cat-tabs"></div>
     <div class="gallery-grid fi d1" id="gallery-grid"></div>
   </div>
 </section>
@@ -652,89 +691,45 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <!-- ═══ ORDER ═══ -->
 <section id="pesan">
   <div class="order-inner">
-    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Buat buket <em>impianmu</em></h2></div>
+    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Pesan buket <em>pilihanmu</em></h2></div>
     <div class="order-layout fi d1">
 
       <div class="order-steps">
 
-        <!-- 01 JENIS -->
+        <!-- 01 PILIH BUKET -->
         <div class="step-card">
-          <div class="step-head"><div class="step-num">01</div><div class="step-name">Jenis Buket</div></div>
-          <div class="type-row">
-            <div class="type-card active" onclick="selType(this,'segar')"><span class="type-icon">🌸</span><div class="type-name">Bunga Segar</div><div class="type-price" id="tp-segar">mulai Rp 85.000</div></div>
-            <div class="type-card" onclick="selType(this,'artificial')"><span class="type-icon">🌺</span><div class="type-name">Artificial</div><div class="type-price" id="tp-art">mulai Rp 65.000</div></div>
-            <div class="type-card" onclick="selType(this,'snack')"><span class="type-icon">🍫</span><div class="type-name">Snack/Uang</div><div class="type-price" id="tp-snack">mulai Rp 95.000</div></div>
-          </div>
-          <div class="price-edit">
-            <label>Segar base</label><input type="number" id="pe-sb" value="85000" oninput="refreshPL()"/>
-            <label>per tangkai</label><input type="number" id="pe-sp" value="10000" oninput="refreshPL()"/>
-            <label>Artificial base</label><input type="number" id="pe-ab" value="65000" oninput="refreshPL()"/>
-            <label>Snack base</label><input type="number" id="pe-nb" value="95000" oninput="refreshPL()"/>
-          </div>
+          <div class="step-head"><div class="step-num">01</div><div class="step-name">Pilih Buket</div></div>
+          <p style="font-size:11px;color:var(--td);margin-bottom:12px;line-height:1.7;font-weight:300">Pilih buket dari koleksi kami, atau pilih "Custom" untuk request sesuai keinginanmu.</p>
+          <div class="buket-pick-grid" id="buket-pick-grid"></div>
         </div>
 
         <!-- 02 JUMLAH -->
         <div class="step-card">
-          <div class="step-head"><div class="step-num">02</div><div class="step-name">Jumlah Tangkai</div></div>
+          <div class="step-head"><div class="step-num">02</div><div class="step-name">Jumlah Pesanan</div></div>
           <div class="stem-ctrl">
-            <button class="stem-btn" onclick="chStem(-1)">−</button>
-            <span class="stem-num" id="stem-num">12</span>
-            <span class="stem-unit">tangkai</span>
-          </div>
-          <div class="presets">
-            <button class="preset active" onclick="setStem(this,12)">12</button>
-            <button class="preset" onclick="setStem(this,24)">24</button>
-            <button class="preset" onclick="setStem(this,36)">36</button>
-            <button class="preset" onclick="setStem(this,50)">50</button>
-            <button class="preset" onclick="setStem(this,99)">99</button>
+            <button class="stem-btn" onclick="chQty(-1)">−</button>
+            <span class="stem-num" id="qty-num">1</span>
+            <span class="stem-unit">buket</span>
           </div>
         </div>
 
-        <!-- 03 WARNA BUNGA -->
+        <!-- 03 KARTU UCAPAN -->
         <div class="step-card">
-          <div class="step-head"><div class="step-num">03</div><div class="step-name">Warna Bunga</div></div>
-          <div class="color-row" id="color-row"></div>
-          <div class="c-disp" id="c-disp">Dipilih: Pink Lembut</div>
-        </div>
-
-        <!-- 04 WARNA PITA -->
-        <div class="step-card">
-          <div class="step-head"><div class="step-num">04</div><div class="step-name">Warna Pita</div></div>
-          <div class="ribbon-row" id="ribbon-row"></div>
-          <div class="rib-disp" id="rib-disp">Dipilih: Emas</div>
-        </div>
-
-        <!-- 05 KEMASAN -->
-        <div class="step-card">
-          <div class="step-head"><div class="step-num">05</div><div class="step-name">Kemasan</div></div>
-          <div class="option-grid">
-            <div class="option-card active" onclick="selWrap(this,'kraft','Kraft Premium',0)"><span class="oc-icon">📜</span><div class="oc-name">Kraft Premium</div><div class="oc-price">Gratis</div></div>
-            <div class="option-card" onclick="selWrap(this,'box','Box Buket',15000)"><span class="oc-icon">📦</span><div class="oc-name">Box Buket</div><div class="oc-price">+Rp 15.000</div></div>
-            <div class="option-card" onclick="selWrap(this,'kain','Kain Satin',20000)"><span class="oc-icon">🎀</span><div class="oc-name">Kain Satin</div><div class="oc-price">+Rp 20.000</div></div>
-            <div class="option-card" onclick="selWrap(this,'jute','Goni/Jute',10000)"><span class="oc-icon">🌿</span><div class="oc-name">Goni/Jute</div><div class="oc-price">+Rp 10.000</div></div>
-            <div class="option-card" onclick="selWrap(this,'mika','Mika Bening',8000)"><span class="oc-icon">💎</span><div class="oc-name">Mika Bening</div><div class="oc-price">+Rp 8.000</div></div>
-            <div class="option-card" onclick="selWrap(this,'pbox','Premium Box',35000)"><span class="oc-icon">🎁</span><div class="oc-name">Premium Box</div><div class="oc-price">+Rp 35.000</div></div>
-          </div>
-        </div>
-
-        <!-- 06 KARTU UCAPAN -->
-        <div class="step-card">
-          <div class="step-head"><div class="step-num">06</div><div class="step-name">Kartu Ucapan</div></div>
+          <div class="step-head"><div class="step-num">03</div><div class="step-name">Kartu Ucapan</div></div>
           <textarea id="card-msg" placeholder="Tulis pesan untuk kartu ucapan... (opsional)" oninput="updateCard()" style="height:68px"></textarea>
           <div class="card-preview"><div class="card-txt ph" id="card-preview">Pesan ucapan akan muncul di sini...</div></div>
-          <div class="eta-badge"><span style="font-size:13px">⏱</span><span class="eta-text">Estimasi: <span class="eta-val" id="eta-val">1–2 hari kerja</span></span></div>
         </div>
 
-        <!-- 07 CATATAN -->
+        <!-- 04 CATATAN -->
         <div class="step-card">
-          <div class="step-head"><div class="step-num">07</div><div class="step-name">Catatan Tambahan</div></div>
-          <textarea id="notes" placeholder="Permintaan khusus, dll..."></textarea>
+          <div class="step-head"><div class="step-num">04</div><div class="step-name">Catatan / Request</div></div>
+          <textarea id="notes" placeholder="Warna, ukuran, budget, permintaan khusus, dll..."></textarea>
           <div class="wa-setting"><label>Nomor WA:</label><input type="text" id="wa-input" placeholder="6289505264053"/></div>
         </div>
 
-        <!-- 08 DATA PEMESAN -->
+        <!-- 05 DATA PEMESAN -->
         <div class="step-card">
-          <div class="step-head"><div class="step-num">08</div><div class="step-name">Data Pemesan</div></div>
+          <div class="step-head"><div class="step-num">05</div><div class="step-name">Data Pemesan</div></div>
           <div class="fp-grid">
             <div class="fp-g">
               <label class="fp-lbl">Nama Lengkap <span class="req">*</span></label>
@@ -754,16 +749,20 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
               <label class="fp-lbl">Metode <span class="req">*</span></label>
               <div class="method-toggle">
                 <button class="method-btn active" id="btn-delivery" onclick="setMethod('delivery')">🚗 Delivery</button>
+                <button class="method-btn" id="btn-cod" onclick="setMethod('cod')">💵 COD</button>
                 <button class="method-btn" id="btn-pickup" onclick="setMethod('pickup')">🏪 Pickup</button>
               </div>
             </div>
             <div class="fp-g full delivery-fields show" id="delivery-fields">
               <label class="fp-lbl">Alamat Lengkap <span class="req">*</span></label>
               <textarea class="fp-ta" id="fp-alamat" placeholder="Jalan, nomor, RT/RW, kelurahan, kota..." oninput="syncForm()"></textarea>
-              <span class="field-err" id="err-alamat">Wajib diisi untuk delivery</span>
+              <span class="field-err" id="err-alamat">Wajib diisi untuk delivery / COD</span>
             </div>
             <div class="fp-g full pickup-note" id="pickup-note">
               <div class="eta-badge"><span style="font-size:13px">📍</span><span class="eta-text">Alamat toko akan dikonfirmasi via WhatsApp</span></div>
+            </div>
+            <div class="fp-g full pickup-note" id="cod-note">
+              <div class="eta-badge"><span style="font-size:13px">💵</span><span class="eta-text">Bayar di tempat saat buket sampai (khusus area Wonogiri)</span></div>
             </div>
             <div class="fp-g">
               <label class="fp-lbl">Tanggal Diperlukan <span class="req">*</span></label>
@@ -781,27 +780,39 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
               </select>
               <span class="field-err" id="err-jam">Wajib dipilih</span>
             </div>
+            <div class="fp-g full">
+              <label class="fp-lbl">Metode Pembayaran <span class="req">*</span></label>
+              <div class="method-toggle" style="grid-template-columns:1fr 1fr">
+                <button class="method-btn active" id="pay-transfer" onclick="setPayment('transfer')">🏦 Transfer Bank</button>
+                <button class="method-btn" id="pay-cod" onclick="setPayment('cod')">💵 COD</button>
+              </div>
+              <div class="fp-g full pickup-note show" id="pay-transfer-note" style="margin-top:8px">
+                <div class="eta-badge"><span style="font-size:13px">🏦</span><span class="eta-text">Nomor rekening dikirim via WhatsApp setelah konfirmasi</span></div>
+              </div>
+              <div class="fp-g full pickup-note" id="pay-cod-note" style="margin-top:8px">
+                <div class="eta-badge"><span style="font-size:13px">💵</span><span class="eta-text">Bayar tunai langsung saat buket diterima</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
       </div><!-- end order-steps -->
 
-      <!-- PREVIEW CARD -->
+      <!-- RINGKASAN CARD -->
       <div class="preview-card">
-        <div class="prev-visual">
-          <svg id="bsvg" viewBox="0 0 200 230" width="200" height="230" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="prev-visual" id="prev-visual">
+          <div class="prev-ph-empty" id="prev-ph-empty">
+            <span style="font-size:30px;opacity:0.4">🌸</span>
+            <span style="font-size:10px;color:var(--td);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-top:8px">Pilih buket dulu</span>
+          </div>
         </div>
         <div class="prev-body">
-          <div class="prev-tag">Preview Buketmu</div>
-          <div class="prev-name" id="prev-name">Bunga Segar — Pink Lembut</div>
+          <div class="prev-tag">Pesananmu</div>
+          <div class="prev-name" id="prev-name">Belum dipilih</div>
           <div class="detail-list">
-            <div class="d-row"><span class="dk">Jenis</span><span class="dv" id="dv-type">Bunga Segar</span></div>
-            <div class="d-row"><span class="dk">Jumlah</span><span class="dv" id="dv-stems">12 tangkai</span></div>
-            <div class="d-row"><span class="dk">Warna</span><span class="dv" id="dv-color">Pink Lembut</span></div>
-            <div class="d-row"><span class="dk">Pita</span><span class="dv" id="dv-ribbon">Emas</span></div>
-            <div class="d-row"><span class="dk">Kemasan</span><span class="dv" id="dv-wrap">Kraft Premium</span></div>
+            <div class="d-row"><span class="dk">Buket</span><span class="dv" id="dv-buket">—</span></div>
+            <div class="d-row"><span class="dk">Jumlah</span><span class="dv" id="dv-qty">1 buket</span></div>
             <div class="d-row"><span class="dk">Kartu</span><span class="dv" id="dv-card">—</span></div>
-            <div class="d-row"><span class="dk">Estimasi</span><span class="dv" id="dv-eta">1–2 hari kerja</span></div>
           </div>
         </div>
         <div class="summary-block" id="summary-block">
@@ -813,12 +824,9 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
           <div class="sb-row" id="sb-alamat-row"><span>Alamat</span><span class="sb-val" id="sb-alamat">—</span></div>
           <div class="sb-row"><span>Tanggal</span><span class="sb-val" id="sb-tanggal">—</span></div>
           <div class="sb-row"><span>Jam</span><span class="sb-val" id="sb-jam">—</span></div>
+          <div class="sb-row"><span>Bayar</span><span class="sb-val" id="sb-payment">Transfer Bank</span></div>
         </div>
-        <div class="total-block">
-          <span class="total-lbl">Total Estimasi</span>
-          <span class="total-val" id="total-val">Rp 120.000</span>
-        </div>
-        <div class="cta-wrap">
+        <div class="cta-wrap" style="padding-top:1.25rem">
           <button class="cta-wa" onclick="orderWA()">
             <svg class="wa-ico" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
             Pesan via WhatsApp
@@ -855,7 +863,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <footer>
   <div class="f-orn"><div></div><span>✦ ✦ ✦</span><div></div></div>
   <div class="f-logo" id="f-logo">ciaflorist</div>
-  <div class="f-sub" id="f-sub">Handmade &nbsp;·&nbsp; Buket Custom &nbsp;·&nbsp; Jakarta</div>
+  <div class="f-sub" id="f-sub">Handmade &nbsp;·&nbsp; Buket Custom &nbsp;·&nbsp; Wonogiri</div>
 </footer>
 
 <!-- ═══ FLOATING WA ═══ -->
@@ -1048,12 +1056,12 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
         <div class="acard">
           <div class="acard-title">Live Preview</div>
           <div class="prev-live">
-            <div><div class="pl-logo" id="pl-logo">ciaflorist</div><div class="pl-tag" id="pl-tag">Handmade with love · Jakarta</div></div>
+            <div><div class="pl-logo" id="pl-logo">ciaflorist</div><div class="pl-tag" id="pl-tag">Handmade with love · Wonogiri</div></div>
           </div>
           <div class="af-grid">
             <div class="af-group"><label class="af-label">Nama Toko</label><input class="af-inp" type="text" id="cust-name" placeholder="ciaflorist" oninput="document.getElementById('pl-logo').textContent=this.value||'ciaflorist'"/></div>
-            <div class="af-group"><label class="af-label">Tagline</label><input class="af-inp" type="text" id="cust-tagline" placeholder="Handmade with love · Jakarta" oninput="document.getElementById('pl-tag').textContent=this.value"/></div>
-            <div class="af-group"><label class="af-label">Kota</label><input class="af-inp" type="text" id="cust-city" placeholder="Jakarta"/></div>
+            <div class="af-group"><label class="af-label">Tagline</label><input class="af-inp" type="text" id="cust-tagline" placeholder="Handmade with love · Wonogiri" oninput="document.getElementById('pl-tag').textContent=this.value"/></div>
+            <div class="af-group"><label class="af-label">Kota</label><input class="af-inp" type="text" id="cust-city" placeholder="Wonogiri"/></div>
             <div class="af-group"><label class="af-label">Tahun Berdiri</label><input class="af-inp" type="text" id="cust-year" placeholder="2021"/></div>
           </div>
           <button class="adm-btn" onclick="admSaveCustomize()">Simpan</button>
@@ -1086,7 +1094,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
           <div class="af-group"><label class="af-label">Paragraf Tentang</label><textarea class="af-ta" id="tx-about" style="height:90px"></textarea></div>
           <div class="af-group"><label class="af-label">Divider 1</label><input class="af-inp" type="text" id="tx-div1" placeholder="— buket untuk setiap momen —"/></div>
           <div class="af-group"><label class="af-label">Divider 2</label><input class="af-inp" type="text" id="tx-div2" placeholder="— kostumisasi sesuai keinginanmu —"/></div>
-          <div class="af-group"><label class="af-label">Footer</label><input class="af-inp" type="text" id="tx-footer" placeholder="Handmade · Buket Custom · Jakarta"/></div>
+          <div class="af-group"><label class="af-label">Footer</label><input class="af-inp" type="text" id="tx-footer" placeholder="Handmade · Buket Custom · Wonogiri"/></div>
           <button class="adm-btn" onclick="admSaveTeks()">Simpan</button>
         </div>
       </div>
@@ -1211,6 +1219,7 @@ let ST={type:'segar',stems:12,ci:0};
 let selRibbon=RIBBONS[0];
 let wrapData={id:'kraft',name:'Kraft Premium',price:0};
 let deliveryMethod='delivery';
+let paymentMethod='transfer';
 let currentCat='all';
 let ownerOn=false;
 
@@ -1250,14 +1259,13 @@ function exitOwner(){
 }
 function ownerSaveAll(){
   const s=getS();
-  s.wa=document.getElementById('wa-input').value.trim();
+  const waEl=document.getElementById('wa-input');
+  if(waEl)s.wa=waEl.value.trim();
   s.aboutText=document.getElementById('about-text').innerText.trim();
   s.stat1=document.getElementById('stat1').innerText;
   s.stat2=document.getElementById('stat2').innerText;
   s.stat3=document.getElementById('stat3').innerText;
-  const pr=s.prices||{};
-  s.prices={segarBase:parseInt(document.getElementById('pe-sb').value)||85000,segarPer:parseInt(document.getElementById('pe-sp').value)||10000,artBase:parseInt(document.getElementById('pe-ab').value)||65000,snackBase:parseInt(document.getElementById('pe-nb').value)||95000,...pr};
-  [0,1,2].forEach(i=>{const img=document.getElementById('aph'+i).querySelector('img');if(img)s['aph'+i]=img.src});
+  [0,1,2].forEach(i=>{const el=document.getElementById('aph'+i);if(el){const img=el.querySelector('img');if(img)s['aph'+i]=img.src}});
   setS(s);
 }
 
@@ -1281,17 +1289,31 @@ function setAphSrc(i,src){const el=document.getElementById('aph'+i);el.innerHTML
 // GALLERY RENDER
 // ═══════════════════════════════════════════════
 const GL=[{},{style:'grid-row:span 2'},{},{style:'grid-column:span 2'},{},{}];
-function filterCat(el,cat){currentCat=cat;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderGallery()}
+function filterCat(el,cat){currentCat=cat;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderGallery()}
 function renderGallery(){
   const g=document.getElementById('gallery-grid');
   const all=getPhotos();
   const photos=currentCat==='all'?all:all.filter(p=>p.cat===currentCat);
-  if(!photos.length){g.innerHTML=`<div style="grid-column:1/-1;min-height:180px;display:flex;align-items:center;justify-content:center;color:rgba(201,169,110,0.3);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;border:0.5px solid var(--border2)">${ownerOn?'KLIK + TAMBAH FOTO ✦':'Koleksi Segera Hadir'}</div>`;return}
-  g.innerHTML=photos.map((p,i)=>{const orig=all.indexOf(p);const l=GL[i%GL.length];return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
-    <img src="${p.src}" alt="${p.label||''}" loading="lazy"/>
-    <div class="g-overlay"><span class="g-label">${p.label||''}</span></div>
-    <div class="g-oc"><button class="oc-btn oc-edit" onclick="replacePhoto(${orig})">Edit</button><button class="oc-btn oc-del" onclick="delPhoto(${orig})">Hapus</button></div>
-  </div>`}).join('');
+  if(!photos.length){
+    g.innerHTML=`<div style="grid-column:1/-1;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(201,169,110,0.3);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;border:0.5px solid var(--border2)">
+      ${ownerOn?`<span>Belum ada foto di kategori ini</span><button onclick="openUploadModal()" style="padding:8px 18px;background:var(--gold);color:var(--ink);border:none;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">+ Tambah Foto</button>`:'Koleksi Segera Hadir'}
+    </div>`;
+    return;
+  }
+  const CAT_LABELS={'wisuda':'🎓 Wisuda','anniversary':'💑 Anniversary','ulang-tahun':'🎂 Ulang Tahun','valentine':'💝 Valentine','lainnya':'🎁 Lainnya','all':'✨ Semua'};
+  g.innerHTML=photos.map((p,i)=>{
+    const orig=all.indexOf(p);const l=GL[i%GL.length];
+    const catBadge=p.cat&&p.cat!=='all'?`<span style="position:absolute;top:8px;left:8px;background:rgba(13,10,8,0.75);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;z-index:2">${CAT_LABELS[p.cat]||p.cat}</span>`:'';
+    return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
+      <img src="${p.src}" alt="${p.label||''}" loading="lazy"/>
+      ${catBadge}
+      <div class="g-overlay"><span class="g-label">${p.label||''}</span></div>
+      <div class="g-oc">
+        <button class="oc-btn oc-edit" onclick="editPhotoModal(${orig})">Edit</button>
+        <button class="oc-btn oc-del" onclick="delPhoto(${orig})">Hapus</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 function renderHero(){
   const photos=getPhotos();const s=getS();const wrap=document.getElementById('hero-mosaic');
@@ -1308,66 +1330,75 @@ function renderHero(){
 // ═══════════════════════════════════════════════
 // ORDER FORM
 // ═══════════════════════════════════════════════
-function selType(el,t){document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));el.classList.add('active');ST.type=t;updateAll()}
-function chStem(d){ST.stems=Math.max(1,Math.min(200,ST.stems+d));document.getElementById('stem-num').textContent=ST.stems;document.querySelectorAll('.preset').forEach(p=>p.classList.toggle('active',parseInt(p.textContent)===ST.stems));updateAll()}
-function setStem(el,n){ST.stems=n;document.getElementById('stem-num').textContent=n;document.querySelectorAll('.preset').forEach(p=>p.classList.remove('active'));el.classList.add('active');updateAll()}
-function buildColors(){
-  const row=document.getElementById('color-row');row.innerHTML='';COLORS=loadColors();
-  COLORS.forEach((c,i)=>{const d=document.createElement('div');d.className='c-dot'+(i===0?' active':'');d.style.background=c.hex;d.title=c.name;d.onclick=()=>{ST.ci=i;document.querySelectorAll('.c-dot').forEach((s,j)=>s.classList.toggle('active',j===i));document.getElementById('c-disp').textContent='Dipilih: '+c.name;updateAll()};row.appendChild(d)});
-}
-function buildRibbons(){
-  const row=document.getElementById('ribbon-row');row.innerHTML='';
-  RIBBONS.forEach((r,i)=>{const d=document.createElement('div');d.className='rib-dot'+(i===0?' active':'');d.style.background=r.hex;d.title=r.name;d.onclick=()=>{selRibbon=r;document.querySelectorAll('.rib-dot').forEach((s,j)=>s.classList.toggle('active',j===i));document.getElementById('rib-disp').textContent='Dipilih: '+r.name;document.getElementById('dv-ribbon').textContent=r.name;updateAll()};row.appendChild(d)});
-}
-function selWrap(el,id,name,price){document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('active'));el.classList.add('active');wrapData={id,name,price};document.getElementById('dv-wrap').textContent=name;updateETA();updateAll()}
-function updateCard(){const m=document.getElementById('card-msg').value.trim();const p=document.getElementById('card-preview');if(m){p.textContent=m;p.classList.remove('ph');document.getElementById('dv-card').textContent=m.length>18?m.substring(0,18)+'…':m}else{p.textContent='Pesan ucapan akan muncul di sini...';p.classList.add('ph');document.getElementById('dv-card').textContent='—'}}
-function updateETA(){const eta=ST.stems>=99?'3–5 hari kerja':(wrapData?.id==='pbox'||ST.stems>=50)?'2–3 hari kerja':'1–2 hari kerja';document.getElementById('eta-val').textContent=eta;document.getElementById('dv-eta').textContent=eta}
-const getP=()=>{const s=getS();const pr=s.prices||{};return{base:{segar:pr.segarBase||85000,artificial:pr.artBase||65000,snack:pr.snackBase||95000},per:{segar:pr.segarPer||10000,artificial:6000,snack:12000}}};
-const calcPrice=()=>{const p=getP();return p.base[ST.type]+(ST.stems-1)*p.per[ST.type]+(wrapData?.price||0)};
-const tLabel=()=>({segar:'Bunga Segar',artificial:'Bunga Artificial',snack:'Snack / Uang'})[ST.type];
-function updateAll(){
-  const c=COLORS[ST.ci]||COLORS[0];
-  document.getElementById('prev-name').textContent=tLabel()+' — '+c.name;
-  document.getElementById('dv-type').textContent=tLabel();
-  document.getElementById('dv-stems').textContent=ST.stems+' tangkai';
-  document.getElementById('dv-color').textContent=c.name;
-  document.getElementById('total-val').textContent=fmt(calcPrice());
-  updateETA();drawBouquet();
-}
-function refreshPL(){
-  const sb=parseInt(document.getElementById('pe-sb').value)||85000;
-  const ab=parseInt(document.getElementById('pe-ab').value)||65000;
-  const nb=parseInt(document.getElementById('pe-nb').value)||95000;
-  document.getElementById('tp-segar').textContent='mulai '+fmt(sb);
-  document.getElementById('tp-art').textContent='mulai '+fmt(ab);
-  document.getElementById('tp-snack').textContent='mulai '+fmt(nb);
-  updateAll();
+// ═══════════════════════════════════════════════
+// ORDER (simplified — pilih buket dari foto)
+// ═══════════════════════════════════════════════
+let selBuket = null;   // {src, label, cat} or {custom:true}
+let orderQty = 1;
+
+function renderBuketPicker(){
+  const grid = document.getElementById('buket-pick-grid');
+  if(!grid) return;
+  const photos = getPhotos();
+  let html = '';
+  // Custom option first
+  html += `<div class="buket-pick buket-pick-custom" id="pick-custom" onclick="pickCustom(this)">
+    <span class="bpc-icon">✏️</span><span>Custom<br>Request</span>
+  </div>`;
+  // Photos
+  photos.forEach((p,i) => {
+    html += `<div class="buket-pick" onclick="pickBuket(this,${i})">
+      <img src="${p.src}" alt="${p.label||'buket'}" loading="lazy"/>
+      <div class="buket-pick-name">${p.label||'Buket'}</div>
+    </div>`;
+  });
+  grid.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════
-// SVG BOUQUET
-// ═══════════════════════════════════════════════
-function drawBouquet(){
-  const svg=document.getElementById('bsvg');const c=COLORS[ST.ci]||COLORS[0];
-  const n=Math.min(ST.stems,42);const t=ST.type;const cx=100;const sb=205;
-  const cols=Math.min(n,9);let fl='';
-  for(let i=0;i<n;i++){
-    const col=i%cols;const row=Math.floor(i/cols);
-    const x=16+col*(166/Math.max(cols-1,1));const y=22+row*26;
-    const jx=(((i*73)%11)-5)*0.6;const jy=(((i*37)%9)-4)*0.5;
-    const fx=x+jx;const fy=y+jy;
-    fl+=`<line x1="${fx}" y1="${fy+8}" x2="${cx+(fx-cx)*0.12}" y2="${sb}" stroke="#4a7a4a" stroke-width="1" opacity="0.5"/>`;
-    if(t==='snack'){fl+=`<rect x="${fx-8}" y="${fy-5}" width="16" height="11" rx="3" fill="${c.hex}" opacity="0.92"/>`;fl+=`<rect x="${fx-4}" y="${fy-2}" width="8" height="5" rx="1" fill="${c.dark}" opacity="0.18"/>`}
-    else if(t==='artificial'){fl+=`<circle cx="${fx}" cy="${fy}" r="8" fill="rgba(255,255,255,0.03)" stroke="${c.hex}" stroke-width="1.5"/>`;for(let p=0;p<6;p++){const a=(p/6)*2*Math.PI;fl+=`<circle cx="${fx+Math.cos(a)*5.5}" cy="${fy+Math.sin(a)*5.5}" r="3" fill="${c.hex}" opacity="0.88"/>`}fl+=`<circle cx="${fx}" cy="${fy}" r="2" fill="${c.dark}"/>`}
-    else{for(let p=0;p<5;p++){const a=(p/5)*2*Math.PI-Math.PI/2;fl+=`<ellipse cx="${fx+Math.cos(a)*5.5}" cy="${fy+Math.sin(a)*5.5}" rx="4.5" ry="3" fill="${c.hex}" opacity="0.88" transform="rotate(${p*72} ${fx+Math.cos(a)*5.5} ${fy+Math.sin(a)*5.5})"/>`}fl+=`<circle cx="${fx}" cy="${fy}" r="2.8" fill="#C9A96E"/>`}
-  }
-  const wr=`<polygon points="18,${sb} ${cx},${sb-17} ${182},${sb}" fill="rgba(201,169,110,0.12)" stroke="${c.hex}" stroke-width="0.8" opacity="0.9"/>
-    <polygon points="34,${sb} ${cx},${sb+23} ${166},${sb}" fill="${c.hex}" opacity="0.2"/>
-    <path d="M ${cx} ${sb-20} Q ${cx-18} ${sb-38} ${cx-28} ${sb-30}" stroke="${c.hex}" stroke-width="2.5" fill="none" opacity="0.78" stroke-linecap="round"/>
-    <path d="M ${cx} ${sb-20} Q ${cx+18} ${sb-38} ${cx+28} ${sb-30}" stroke="${c.hex}" stroke-width="2.5" fill="none" opacity="0.78" stroke-linecap="round"/>`;
-  let badge='';if(ST.stems>42)badge=`<rect x="134" y="6" width="58" height="18" fill="${c.hex}" opacity="0.88"/><text x="163" y="19" font-size="10" fill="#0D0A08" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700">+${ST.stems-42} lagi</text>`;
-  svg.innerHTML=fl+wr+badge;
+function pickBuket(el,i){
+  document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const photos = getPhotos();
+  const p = photos[i];
+  selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||''};
+  // Show image in preview
+  const pv = document.getElementById('prev-visual');
+  pv.innerHTML = `<img src="${p.src}" class="prev-img-full" alt="buket"/>`;
+  document.getElementById('prev-name').textContent = p.label||'Buket';
+  document.getElementById('dv-buket').textContent = (p.label||'Buket') + (p.cat&&p.cat!=='all'?` (${p.cat})`:'');
+  updateOrder();
 }
+
+function pickCustom(el){
+  document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  selBuket = {custom:true};
+  const pv = document.getElementById('prev-visual');
+  pv.innerHTML = `<div class="prev-ph-empty"><span style="font-size:30px;opacity:0.5">✏️</span><span style="font-size:10px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-top:8px">Custom Request</span></div>`;
+  document.getElementById('prev-name').textContent = 'Custom Request';
+  document.getElementById('dv-buket').textContent = 'Custom (tulis di catatan)';
+  updateOrder();
+}
+
+function chQty(d){
+  orderQty = Math.max(1, Math.min(50, orderQty + d));
+  document.getElementById('qty-num').textContent = orderQty;
+  updateOrder();
+}
+
+function updateCard(){
+  const m = document.getElementById('card-msg').value.trim();
+  const p = document.getElementById('card-preview');
+  if(m){ p.textContent=m; p.classList.remove('ph'); document.getElementById('dv-card').textContent = m.length>18?m.substring(0,18)+'…':m; }
+  else { p.textContent='Pesan ucapan akan muncul di sini...'; p.classList.add('ph'); document.getElementById('dv-card').textContent='—'; }
+}
+
+function updateOrder(){
+  document.getElementById('dv-qty').textContent = orderQty + ' buket';
+}
+
+// kept for backwards-compat (no longer used)
+function refreshPL(){}
 
 // ═══════════════════════════════════════════════
 // FORM PEMESAN
@@ -1375,12 +1406,26 @@ function drawBouquet(){
 function setMethod(m){
   deliveryMethod=m;
   document.getElementById('btn-delivery').classList.toggle('active',m==='delivery');
+  document.getElementById('btn-cod').classList.toggle('active',m==='cod');
   document.getElementById('btn-pickup').classList.toggle('active',m==='pickup');
-  document.getElementById('delivery-fields').classList.toggle('show',m==='delivery');
+  // Delivery & COD both need an address
+  const needAddr = (m==='delivery'||m==='cod');
+  document.getElementById('delivery-fields').classList.toggle('show',needAddr);
   document.getElementById('pickup-note').classList.toggle('show',m==='pickup');
-  document.getElementById('sb-method').textContent=m==='delivery'?'Delivery 🚗':'Pickup 🏪';
-  document.getElementById('sb-alamat-row').style.display=m==='delivery'?'flex':'none';
+  document.getElementById('cod-note').classList.toggle('show',m==='cod');
+  const labels={delivery:'Delivery 🚗',cod:'COD 💵',pickup:'Pickup 🏪'};
+  document.getElementById('sb-method').textContent=labels[m];
+  document.getElementById('sb-alamat-row').style.display=needAddr?'flex':'none';
   syncForm();
+}
+function setPayment(p){
+  paymentMethod=p;
+  document.getElementById('pay-transfer').classList.toggle('active',p==='transfer');
+  document.getElementById('pay-cod').classList.toggle('active',p==='cod');
+  document.getElementById('pay-transfer-note').classList.toggle('show',p==='transfer');
+  document.getElementById('pay-cod-note').classList.toggle('show',p==='cod');
+  const lbl=document.getElementById('sb-payment');
+  if(lbl)lbl.textContent=p==='transfer'?'Transfer Bank 🏦':'COD 💵';
 }
 function syncForm(){
   const nama=document.getElementById('fp-nama').value.trim();
@@ -1406,7 +1451,7 @@ function validateForm(){
   let ok=true;
   const chk=(id,errId)=>{const el=document.getElementById(id);const er=document.getElementById(errId);if(!el.value.trim()){el.classList.add('err');er.classList.add('show');ok=false}};
   chk('fp-nama','err-nama');chk('fp-hp','err-hp');chk('fp-tanggal','err-tanggal');chk('fp-jam','err-jam');
-  if(deliveryMethod==='delivery')chk('fp-alamat','err-alamat');
+  if(deliveryMethod==='delivery'||deliveryMethod==='cod')chk('fp-alamat','err-alamat');
   if(!ok){const fe=document.querySelector('.fp-inp.err,.fp-sel.err,.fp-ta.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'})}
   return ok;
 }
@@ -1415,32 +1460,33 @@ function validateForm(){
 // ORDER WA
 // ═══════════════════════════════════════════════
 function orderWA(){
-  if(!validateForm())return;
-  const c=COLORS[ST.ci]||COLORS[0];
+  if(!selBuket){ toast('Pilih buket dulu', 'err'); document.getElementById('buket-pick-grid').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  if(!validateForm()) return;
   const s=getS();const waNum=s.wa||'6289505264053';
   const cardMsg=document.getElementById('card-msg').value.trim();
   const notes=document.getElementById('notes').value.trim();
-  const eta=document.getElementById('eta-val').textContent;
   const nama=document.getElementById('fp-nama').value.trim();
   const hp=document.getElementById('fp-hp').value.trim();
   const penerimaRaw=document.getElementById('fp-penerima').value.trim();
   const penerima=penerimaRaw||nama;
   const tgl=document.getElementById('fp-tanggal').value;
   const jam=document.getElementById('fp-jam').value;
-  const alamat=deliveryMethod==='delivery'?document.getElementById('fp-alamat').value.trim():'Pickup di toko';
+  const needAddr=(deliveryMethod==='delivery'||deliveryMethod==='cod');
+  const alamat=needAddr?document.getElementById('fp-alamat').value.trim():'Pickup di toko';
   const tglFmt=tgl?new Date(tgl).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'-';
+  const buketName=selBuket.custom?'Custom Request (lihat catatan)':(selBuket.label+(selBuket.cat&&selBuket.cat!=='all'?` (${selBuket.cat})`:''));
   const line='─'.repeat(28);const dline='═'.repeat(28);
   let msg=`Halo ciaflorist! 🌸 Saya ingin memesan buket:\n${dline}\n`;
   msg+=`📋 DATA PEMESAN\nNama: ${nama}\nHP/WA: ${hp}\nPenerima: ${penerima}\n`;
-  msg+=`Metode: ${deliveryMethod==='delivery'?'Delivery 🚗':'Pickup 🏪'}\n`;
-  if(deliveryMethod==='delivery')msg+=`Alamat: ${alamat}\n`;
+  const mLabels={delivery:'Delivery 🚗',cod:'COD 💵 (bayar di tempat)',pickup:'Pickup 🏪'};
+  msg+=`Metode ambil: ${mLabels[deliveryMethod]}\n`;
+  if(needAddr)msg+=`Alamat: ${alamat}\n`;
+  msg+=`Pembayaran: ${paymentMethod==='transfer'?'Transfer Bank 🏦':'COD / Tunai 💵'}\n`;
   msg+=`Tanggal: ${tglFmt}\nJam: ${jam}\n${line}\n`;
-  msg+=`🌸 DETAIL BUKET\nJenis: ${tLabel()}\nJumlah: ${ST.stems} tangkai\n`;
-  msg+=`Warna bunga: ${c.name}\nWarna pita: ${selRibbon?.name||'Emas'}\nKemasan: ${wrapData?.name||'Kraft Premium'}\n`;
+  msg+=`🌸 PESANAN\nBuket: ${buketName}\nJumlah: ${orderQty} buket\n`;
   if(cardMsg)msg+=`Kartu ucapan: "${cardMsg}"\n`;
-  msg+=`${line}\n💰 Total estimasi: ${fmt(calcPrice())}\n⏱ Estimasi: ${eta}\n`;
-  if(notes)msg+=`📝 Catatan: ${notes}\n`;
-  msg+=`${dline}\nMohon konfirmasi ketersediaannya ya, terima kasih! 😊`;
+  if(notes)msg+=`Catatan/Request: ${notes}\n`;
+  msg+=`${dline}\nMohon info ketersediaan & harga totalnya ya, terima kasih! 😊`;
   window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function floatWA(){const s=getS();const n=s.wa||'6289505264053';window.open(`https://wa.me/${n}?text=${encodeURIComponent('Halo ciaflorist! 🌸 Saya ingin bertanya tentang buket, bisa bantu?')}`,'_blank')}
@@ -1455,14 +1501,7 @@ function loadSiteSettings(){
   if(s.stat2)document.getElementById('stat2').innerText=s.stat2;
   if(s.stat3)document.getElementById('stat3').innerText=s.stat3;
   if(s.storeName){document.getElementById('nav-logo').textContent=s.storeName;document.getElementById('f-logo').textContent=s.storeName}
-  if(s.prices){
-    document.getElementById('pe-sb').value=s.prices.segarBase||85000;
-    document.getElementById('pe-sp').value=s.prices.segarPer||10000;
-    document.getElementById('pe-ab').value=s.prices.artBase||65000;
-    document.getElementById('pe-nb').value=s.prices.snackBase||95000;
-    refreshPL();
-  }
-  if(s.wa)document.getElementById('wa-input').value=s.wa;
+  if(s.wa){const wi=document.getElementById('wa-input');if(wi)wi.value=s.wa;}
   [0,1,2].forEach(i=>{if(s['aph'+i])setAphSrc(i,s['aph'+i])});
   if(t.h1)document.querySelector('.hero-title .t1').textContent=t.h1;
   if(t.h2)document.querySelector('.hero-title .t2').textContent=t.h2;
@@ -1472,7 +1511,7 @@ function loadSiteSettings(){
   if(t.div1)document.getElementById('div1-text').textContent=t.div1;
   if(t.div2)document.getElementById('div2-text').textContent=t.div2;
   if(t.footer)document.getElementById('f-sub').textContent=t.footer;
-  const city=s.storeCity||'Jakarta';const year=s.storeYear||'2021';
+  const city=s.storeCity||'Wonogiri';const year=s.storeYear||'2021';
   document.getElementById('hero-tag').innerHTML=`✦ ${s.storeTagline||(s.storeName||'ciaflorist')+' · '+city+' · Est. '+year} ✦`;
 }
 
@@ -1578,7 +1617,7 @@ function admClearSlot(key){if(!confirm('Hapus?'))return;const s=getS();delete s[
 
 // Prices
 function admLoadPrices(){const s=getS();const pr=s.prices||{};document.getElementById('pr-sb').value=pr.segarBase||85000;document.getElementById('pr-sp').value=pr.segarPer||10000;document.getElementById('pr-ab').value=pr.artBase||65000;document.getElementById('pr-ap').value=pr.artPer||6000;document.getElementById('pr-nb').value=pr.snackBase||95000;document.getElementById('pr-np').value=pr.snackPer||12000}
-function admSavePrices(){const s=getS();s.prices={segarBase:parseInt(document.getElementById('pr-sb').value)||85000,segarPer:parseInt(document.getElementById('pr-sp').value)||10000,artBase:parseInt(document.getElementById('pr-ab').value)||65000,artPer:parseInt(document.getElementById('pr-ap').value)||6000,snackBase:parseInt(document.getElementById('pr-nb').value)||95000,snackPer:parseInt(document.getElementById('pr-np').value)||12000};setS(s);document.getElementById('pe-sb').value=s.prices.segarBase;document.getElementById('pe-sp').value=s.prices.segarPer;document.getElementById('pe-ab').value=s.prices.artBase;document.getElementById('pe-nb').value=s.prices.snackBase;refreshPL();admRefreshStats();toast('Harga disimpan ✦','ok')}
+function admSavePrices(){const s=getS();s.prices={segarBase:parseInt(document.getElementById('pr-sb').value)||85000,segarPer:parseInt(document.getElementById('pr-sp').value)||10000,artBase:parseInt(document.getElementById('pr-ab').value)||65000,artPer:parseInt(document.getElementById('pr-ap').value)||6000,snackBase:parseInt(document.getElementById('pr-nb').value)||95000,snackPer:parseInt(document.getElementById('pr-np').value)||12000};setS(s);admRefreshStats();toast('Harga disimpan ✦','ok')}
 function admResetPrices(){document.getElementById('pr-sb').value=85000;document.getElementById('pr-sp').value=10000;document.getElementById('pr-ab').value=65000;document.getElementById('pr-ap').value=6000;document.getElementById('pr-nb').value=95000;document.getElementById('pr-np').value=12000;admSavePrices();toast('Reset ke default','ok')}
 
 // Colors
@@ -1587,8 +1626,8 @@ function admRenderColors(){
   g.innerHTML=colors.map((c,i)=>`<div class="clr-card"><div class="clr-swatch" style="background:${c.hex}"></div><div class="clr-name">${c.name}</div><div class="clr-hex">${c.hex}</div><button class="clr-del" onclick="admDelColor(${i})">✕</button></div>`).join('');
   document.getElementById('ov-colors').textContent=colors.length;
 }
-function admAddColor(){const name=document.getElementById('new-clr-name').value.trim();const hex=document.getElementById('new-clr-hex').value;if(!name){toast('Masukkan nama warna','err');return}const colors=get(K.CLR)||DEF_COLORS;const dark='#'+hex.replace(/^#/,'').match(/.{2}/g).map(x=>Math.max(0,parseInt(x,16)-60).toString(16).padStart(2,'0')).join('');colors.push({name,hex,dark,wrap:hex+'22'});set(K.CLR,colors);admRenderColors();buildColors();document.getElementById('new-clr-name').value='';toast('Warna ditambahkan ✦','ok')}
-function admDelColor(i){if(!confirm('Hapus warna ini?'))return;const colors=get(K.CLR)||DEF_COLORS;colors.splice(i,1);set(K.CLR,colors);admRenderColors();buildColors();toast('Warna dihapus')}
+function admAddColor(){const name=document.getElementById('new-clr-name').value.trim();const hex=document.getElementById('new-clr-hex').value;if(!name){toast('Masukkan nama warna','err');return}const colors=get(K.CLR)||DEF_COLORS;const dark='#'+hex.replace(/^#/,'').match(/.{2}/g).map(x=>Math.max(0,parseInt(x,16)-60).toString(16).padStart(2,'0')).join('');colors.push({name,hex,dark,wrap:hex+'22'});set(K.CLR,colors);admRenderColors();document.getElementById('new-clr-name').value='';toast('Warna ditambahkan ✦','ok')}
+function admDelColor(i){if(!confirm('Hapus warna ini?'))return;const colors=get(K.CLR)||DEF_COLORS;colors.splice(i,1);set(K.CLR,colors);admRenderColors();toast('Warna dihapus')}
 
 // Types
 function admLoadTypes(){const t=get('cia_types')||{segar:true,art:true,snack:true};document.getElementById('type-segar').checked=t.segar!==false;document.getElementById('type-art').checked=t.art!==false;document.getElementById('type-snack').checked=t.snack!==false}
@@ -1615,17 +1654,230 @@ function admResetAll(){if(!confirm('Hapus SEMUA data?'))return;if(!confirm('Yaki
 const uz=document.getElementById('adm-upload-zone');
 if(uz){uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag')});uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag');const files=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));if(files.length)admUploadPhotos({target:{files},preventDefault:()=>{}});e.target.value=''})}
 
+
+
+// ═══════════════════════════════════════════════
+// DYNAMIC CATEGORY TABS
+// ═══════════════════════════════════════════════
+function getCategories(){
+  const photos = getPhotos();
+  const cats = [];
+  photos.forEach(p => {
+    const cat = (p.cat && p.cat !== 'all') ? p.cat : null;
+    if(cat && !cats.includes(cat)) cats.push(cat);
+  });
+  return cats;
+}
+
+function renderCatTabs(){
+  const wrap = document.getElementById('cat-tabs');
+  if(!wrap) return;
+  const cats = getCategories();
+  let html = `<button class="cat-tab${currentCat==='all'?' active':''}" onclick="filterCat(this,'all')">Semua</button>`;
+  cats.forEach(cat => {
+    html += `<button class="cat-tab${currentCat===cat?' active':''}" onclick="filterCat(this,'${cat.replace(/'/g,"")}')">${cat}</button>`;
+  });
+  wrap.innerHTML = html;
+}
+
+function upmRenderCatChips(){
+  const wrap = document.getElementById('upm-cat-chips');
+  if(!wrap) return;
+  const cats = getCategories();
+  if(!cats.length){
+    wrap.innerHTML = `<span style="font-size:10px;color:var(--td);grid-column:1/-1">Belum ada kategori. Ketik yang baru di atas.</span>`;
+    return;
+  }
+  wrap.innerHTML = cats.map(cat =>
+    `<button class="upm-cat-btn" onclick="upmPickCat(this,'${cat.replace(/'/g,"")}')">${cat}</button>`
+  ).join('');
+}
+
+function upmPickCat(el, cat){
+  upmCat = cat;
+  document.getElementById('upm-cat-input').value = cat;
+  document.querySelectorAll('#upm-cat-chips .upm-cat-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+// UPLOAD MODAL (owner)
+// ═══════════════════════════════════════════════
+let upmFiles = [];   // {file, src, label}
+let upmCat   = 'all';
+
+function openUploadModal(){
+  upmFiles = [];
+  upmCat = '';
+  document.getElementById('upm-thumbs').style.display = 'none';
+  document.getElementById('upm-thumbs').innerHTML = '';
+  document.getElementById('upm-label').value = '';
+  document.getElementById('upm-cat-input').value = '';
+  document.getElementById('upm-save-btn').onclick = upmSave;
+  upmRenderCatChips();
+  document.getElementById('upload-modal').classList.add('show');
+  document.body.classList.add('no-scroll');
+}
+
+function closeUploadModal(){
+  document.getElementById('upload-modal').classList.remove('show');
+  document.body.classList.remove('no-scroll');
+  upmFiles = [];
+}
+
+function upmSelCat(el, cat){
+  upmCat = cat;
+  document.querySelectorAll('.upm-cat-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function upmHandleFiles(e){
+  const files = Array.from(e.target.files);
+  if(!files.length) return;
+  files.forEach(f => {
+    if(f.size > 5*1024*1024){ toast(f.name + ' terlalu besar (max 5MB)', 'err'); return; }
+    const r = new FileReader();
+    r.onload = ev => {
+      upmFiles.push({ src: ev.target.result, name: f.name });
+      upmRenderThumbs();
+    };
+    r.readAsDataURL(f);
+  });
+  e.target.value = '';
+}
+
+function upmRenderThumbs(){
+  const wrap = document.getElementById('upm-thumbs');
+  if(!upmFiles.length){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'grid';
+  wrap.innerHTML = upmFiles.map((f, i) => `
+    <div class="upm-thumb">
+      <img src="${f.src}" alt="${f.name}"/>
+      <button class="upm-thumb-del" onclick="upmRemove(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function upmRemove(i){
+  upmFiles.splice(i, 1);
+  upmRenderThumbs();
+}
+
+function upmSave(){
+  if(!upmFiles.length){ toast('Pilih foto terlebih dahulu', 'err'); return; }
+  const catInput = document.getElementById('upm-cat-input').value.trim();
+  if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); document.getElementById('upm-cat-input').focus(); return; }
+  upmCat = catInput;
+  const label = document.getElementById('upm-label').value.trim();
+  const photos = getPhotos();
+  upmFiles.forEach((f, i) => {
+    photos.push({
+      src: f.src,
+      cat: upmCat,
+      label: label || ('Buket ' + (photos.length + 1))
+    });
+  });
+  try {
+    setPhotos(photos);
+    renderCatTabs();
+    renderGallery();
+    renderHero();
+    closeUploadModal();
+    toast('Foto berhasil disimpan ✦', 'ok');
+  } catch(err) {
+    toast('Penyimpanan penuh! Hapus beberapa foto dulu.', 'err');
+  }
+}
+
+function editPhotoModal(idx){
+  const photos = getPhotos();
+  const p = photos[idx];
+  if(!p) return;
+  upmFiles = [{ src: p.src, name: 'foto' }];
+  upmCat = p.cat || '';
+  document.getElementById('upm-label').value = p.label || '';
+  document.getElementById('upm-cat-input').value = (p.cat && p.cat !== 'all') ? p.cat : '';
+  upmRenderCatChips();
+  upmRenderThumbs();
+  document.getElementById('upload-modal').classList.add('show');
+  document.body.classList.add('no-scroll');
+  document.getElementById('upm-save-btn').onclick = () => {
+    const catInput = document.getElementById('upm-cat-input').value.trim();
+    if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); return; }
+    const label = document.getElementById('upm-label').value.trim();
+    photos[idx].cat = catInput;
+    photos[idx].label = label || photos[idx].label;
+    setPhotos(photos);
+    renderCatTabs();
+    renderGallery();
+    closeUploadModal();
+    document.getElementById('upm-save-btn').onclick = upmSave;
+    toast('Foto diperbarui ✦', 'ok');
+  };
+}
+
+// Drag & drop on upload modal
+document.addEventListener('DOMContentLoaded', () => {
+  const drop = document.getElementById('upm-drop');
+  if(drop){
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+    drop.addEventListener('drop', e => {
+      e.preventDefault(); drop.classList.remove('drag');
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      if(files.length) upmHandleFiles({ target: { files }, preventDefault: ()=>{} });
+    });
+  }
+});
+
+
 // ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
-buildColors();
-buildRibbons();
+renderCatTabs();
 renderGallery();
 renderHero();
+renderBuketPicker();
 loadSiteSettings();
-updateAll();
 initWelcome();
 document.getElementById('clr-preview').style.background=document.getElementById('new-clr-hex').value;
 </script>
+
+<!-- ═══ UPLOAD MODAL (owner mode) ═══ -->
+<div id="upload-modal">
+  <div class="upm-box">
+    <button class="upm-close" onclick="closeUploadModal()">✕</button>
+    <div class="upm-title">Upload Foto Buket</div>
+    <div class="upm-sub">Pilih foto, tentukan kategori, lalu simpan</div>
+
+    <!-- Drop zone -->
+    <div class="upm-drop" id="upm-drop">
+      <span class="upm-drop-icon">🌸</span>
+      <div class="upm-drop-txt">Klik atau drag foto ke sini</div>
+      <div class="upm-drop-sub">JPG, PNG, WEBP · max 5MB · bisa banyak</div>
+      <input type="file" accept="image/*" multiple onchange="upmHandleFiles(event)"/>
+    </div>
+
+    <!-- Preview thumbnails -->
+    <div class="upm-thumbs" id="upm-thumbs" style="display:none"></div>
+
+    <!-- Kategori / Jenis Buket -->
+    <label class="upm-lbl">Jenis / Kategori Buket <span style="color:var(--rose)">*</span></label>
+    <input class="upm-inp" type="text" id="upm-cat-input" placeholder="Ketik jenis buket, cth: Wisuda, Buket Mini, Snack Premium..." oninput="upmCat=this.value.trim()" style="margin-bottom:8px"/>
+    <div style="font-size:9px;color:var(--td);margin-bottom:8px;letter-spacing:0.04em">Atau pilih dari yang sudah ada:</div>
+    <div class="upm-cat-grid" id="upm-cat-chips"></div>
+
+    <!-- Label/nama foto -->
+    <label class="upm-lbl">Label Foto (opsional)</label>
+    <input class="upm-inp" type="text" id="upm-label" placeholder="Cth: Buket Wisuda Pink Premium"/>
+
+    <!-- Footer -->
+    <div class="upm-foot">
+      <button onclick="closeUploadModal()" style="padding:9px 20px;background:transparent;color:var(--td);border:0.5px solid var(--border2);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.15s">Batal</button>
+      <button onclick="upmSave()" style="padding:9px 22px;background:var(--gold);color:var(--ink);border:none;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s" id="upm-save-btn">Simpan Foto</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
