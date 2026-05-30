@@ -1244,13 +1244,15 @@ function compressImage(dataUrl, maxW=1000, quality=0.72){
 
 // Load photos from Firestore into cache
 async function loadPhotosFromCloud(){
-  if(!fbReady){ PHOTO_CACHE = getLocalPhotos(); return PHOTO_CACHE; }
+  if(!fbReady){ console.warn('Firebase tidak aktif, baca foto lokal'); PHOTO_CACHE = getLocalPhotos(); return PHOTO_CACHE; }
   try {
     const snap = await fbDB.collection('photos').orderBy('order','asc').get();
     PHOTO_CACHE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    console.log('✓ Memuat', PHOTO_CACHE.length, 'foto dari cloud');
     return PHOTO_CACHE;
   } catch(e) {
-    console.warn('Load cloud gagal, pakai lokal:', e);
+    console.error('✗ Load cloud GAGAL:', e.code, e.message);
+    if(e.code==='permission-denied') toast('Akses ditolak — cek Firestore Rules!','err');
     PHOTO_CACHE = getLocalPhotos();
     return PHOTO_CACHE;
   }
@@ -1258,17 +1260,36 @@ async function loadPhotosFromCloud(){
 
 // Add one photo to cloud
 async function addPhotoCloud(photo){
-  const compressed = await compressImage(photo.src);
+  // Compress hard so it fits Firestore's 1MB/doc limit (base64 adds ~33%)
+  let compressed = await compressImage(photo.src, 900, 0.6);
+  // If still too big, compress more aggressively
+  if(compressed.length > 720000){ compressed = await compressImage(photo.src, 700, 0.5); }
+  if(compressed.length > 720000){ compressed = await compressImage(photo.src, 560, 0.45); }
   const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', order:Date.now() };
+  if(compressed.length > 1000000){
+    toast('Foto terlalu besar walau dikompres. Coba foto lain.','err');
+    console.error('Foto > 1MB setelah kompres:', compressed.length, 'bytes');
+    return false;
+  }
   if(fbReady){
     try {
       const ref = await fbDB.collection('photos').add(data);
       PHOTO_CACHE.push({ id:ref.id, ...data });
+      console.log('✓ Foto tersimpan ke cloud, id:', ref.id);
       return true;
-    } catch(e){ console.warn('Upload cloud gagal:', e); toast('Upload gagal, cek koneksi','err'); return false; }
+    } catch(e){
+      console.error('✗ Upload cloud GAGAL:', e.code, e.message);
+      if(e.code==='permission-denied'){
+        toast('Akses ditolak — cek Firestore Rules!','err');
+      } else {
+        toast('Upload gagal: '+(e.message||'cek koneksi'),'err');
+      }
+      return false;
+    }
   } else {
     PHOTO_CACHE.push({ id:'local_'+Date.now(), ...data });
     saveLocalPhotos();
+    toast('Firebase tidak aktif — foto hanya tersimpan di HP ini','err');
     return true;
   }
 }
