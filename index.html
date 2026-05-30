@@ -592,6 +592,8 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   .add-clr-form{grid-template-columns:44px 1fr;flex-wrap:wrap}
 }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body class="no-scroll">
 
@@ -1175,6 +1177,99 @@ function initWelcome(){
 }
 
 // ═══════════════════════════════════════════════
+// FIREBASE (sinkron foto antar perangkat)
+// ═══════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyD3IKH_jyXuxdB-UsCy54u5spGVyKmX6PE",
+  authDomain: "ciaflorist-d4f92.firebaseapp.com",
+  projectId: "ciaflorist-d4f92",
+  storageBucket: "ciaflorist-d4f92.firebasestorage.app",
+  messagingSenderId: "945193254953",
+  appId: "1:945193254953:web:975701a899c36f6aff9c38"
+};
+let fbDB = null;
+let fbReady = false;
+try {
+  firebase.initializeApp(firebaseConfig);
+  fbDB = firebase.firestore();
+  fbReady = true;
+} catch(e) {
+  console.warn('Firebase init gagal, pakai mode lokal:', e);
+}
+
+// Local cache of photos (mirror of Firestore)
+let PHOTO_CACHE = [];
+
+// Compress image before storing (hemat kuota Firestore)
+function compressImage(dataUrl, maxW=1000, quality=0.72){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*maxW/w);w=maxW}
+      const cv=document.createElement('canvas');
+      cv.width=w;cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      resolve(cv.toDataURL('image/jpeg',quality));
+    };
+    img.onerror=()=>resolve(dataUrl);
+    img.src=dataUrl;
+  });
+}
+
+// Load photos from Firestore into cache
+async function loadPhotosFromCloud(){
+  if(!fbReady){ PHOTO_CACHE = getLocalPhotos(); return PHOTO_CACHE; }
+  try {
+    const snap = await fbDB.collection('photos').orderBy('order','asc').get();
+    PHOTO_CACHE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    return PHOTO_CACHE;
+  } catch(e) {
+    console.warn('Load cloud gagal, pakai lokal:', e);
+    PHOTO_CACHE = getLocalPhotos();
+    return PHOTO_CACHE;
+  }
+}
+
+// Add one photo to cloud
+async function addPhotoCloud(photo){
+  const compressed = await compressImage(photo.src);
+  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', order:Date.now() };
+  if(fbReady){
+    try {
+      const ref = await fbDB.collection('photos').add(data);
+      PHOTO_CACHE.push({ id:ref.id, ...data });
+      return true;
+    } catch(e){ console.warn('Upload cloud gagal:', e); toast('Upload gagal, cek koneksi','err'); return false; }
+  } else {
+    PHOTO_CACHE.push({ id:'local_'+Date.now(), ...data });
+    saveLocalPhotos();
+    return true;
+  }
+}
+
+// Update a photo in cloud (cat/label)
+async function updatePhotoCloud(id, fields){
+  const idx = PHOTO_CACHE.findIndex(p=>p.id===id);
+  if(idx>=0) Object.assign(PHOTO_CACHE[idx], fields);
+  if(fbReady && !String(id).startsWith('local_')){
+    try { await fbDB.collection('photos').doc(id).update(fields); } catch(e){ console.warn(e); }
+  } else { saveLocalPhotos(); }
+}
+
+// Delete photo from cloud
+async function deletePhotoCloud(id){
+  PHOTO_CACHE = PHOTO_CACHE.filter(p=>p.id!==id);
+  if(fbReady && !String(id).startsWith('local_')){
+    try { await fbDB.collection('photos').doc(id).delete(); } catch(e){ console.warn(e); }
+  } else { saveLocalPhotos(); }
+}
+
+// Local fallback helpers
+function getLocalPhotos(){ try{ return JSON.parse(localStorage.getItem('cia_photos')||'[]') }catch{ return [] } }
+function saveLocalPhotos(){ try{ localStorage.setItem('cia_photos', JSON.stringify(PHOTO_CACHE)) }catch(e){ console.warn('local save fail',e) } }
+
+// ═══════════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════════
 const K={PW:'cia_pw',PH:'cia_photos',S:'cia_settings',CLR:'cia_colors',TK:'cia_teks'};
@@ -1183,8 +1278,8 @@ const get=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch{retur
 const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const getS=()=>get(K.S)||{};
 const setS=v=>set(K.S,v);
-const getPhotos=()=>get(K.PH)||[];
-const setPhotos=v=>{try{set(K.PH,v)}catch{toast('Penyimpanan penuh!','err')}};
+const getPhotos=()=>PHOTO_CACHE;
+const setPhotos=v=>{PHOTO_CACHE=v;saveLocalPhotos()};
 const getPW=()=>localStorage.getItem(K.PW)||DEF_PW;
 const getTeks=()=>get(K.TK)||{};
 const fmt=n=>'Rp '+parseInt(n||0).toLocaleString('id-ID');
@@ -1272,16 +1367,20 @@ function ownerSaveAll(){
 // ═══════════════════════════════════════════════
 // PHOTOS (website)
 // ═══════════════════════════════════════════════
-function handleAddPhoto(e){
+async function handleAddPhoto(e){
   const files=Array.from(e.target.files);if(!files.length)return;
-  const photos=getPhotos();let done=0;
-  files.forEach(f=>{
-    if(f.size>5*1024*1024){toast(f.name+' terlalu besar','err');done++;if(done===files.length){setPhotos(photos);renderGallery();renderHero();}return}
-    const r=new FileReader();r.onload=ev=>{photos.push({src:ev.target.result,label:'Buket '+(photos.length+1)});done++;if(done===files.length){setPhotos(photos);renderGallery();renderHero();toast('Foto ditambahkan ✦','ok')}};r.readAsDataURL(f);
-  });e.target.value='';
+  toast('Mengupload ke server...','ok');
+  for(const f of files){
+    if(f.size>5*1024*1024){toast(f.name+' terlalu besar','err');continue}
+    const src=await new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(f)});
+    await addPhotoCloud({src,cat:'',label:'Buket '+(getPhotos().length+1)});
+  }
+  renderCatTabs();renderGallery();renderHero();renderBuketPicker();
+  toast('Foto tersimpan & sinkron ✦','ok');
+  e.target.value='';
 }
-function delPhoto(i){if(!confirm('Hapus foto ini?'))return;const p=getPhotos();p.splice(i,1);setPhotos(p);renderGallery();renderHero();toast('Foto dihapus')}
-function replacePhoto(i){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const p=getPhotos();p[i].src=ev.target.result;setPhotos(p);renderGallery();renderHero();toast('Diperbarui ✦','ok')};r.readAsDataURL(f)};inp.click()}
+async function delPhoto(i){if(!confirm('Hapus foto ini?'))return;const p=getPhotos()[i];if(!p)return;await deletePhotoCloud(p.id);renderCatTabs();renderGallery();renderHero();renderBuketPicker();toast('Foto dihapus')}
+function replacePhoto(i){editPhotoModal(i)}
 function replaceAph(e,i){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{setAphSrc(i,ev.target.result);const s=getS();s['aph'+i]=ev.target.result;setS(s);toast('Foto diperbarui ✦','ok')};r.readAsDataURL(f)}
 function setAphSrc(i,src){const el=document.getElementById('aph'+i);el.innerHTML=`<img src="${src}" alt="about" style="width:100%;height:100%;object-fit:cover;display:block"><div class="aph-ov">📷 Ganti</div><input type="file" accept="image/*" style="display:none" onchange="replaceAph(event,${i})"/>`}
 
@@ -1557,17 +1656,23 @@ function goAdmPage(id,navEl){
   document.getElementById('adm-topbar-title').textContent=ADM_TITLES[id]||'Admin';
 }
 
-function admInit(){
-  admRefreshStats();
-  admRenderPhotos();
-  admRenderHeroSlots();
-  admRenderAboutSlots();
+async function admInit(){
   admLoadPrices();
   admRenderColors();
   admLoadCustomize();
   admLoadTeks();
   admLoadWA();
   admLoadTypes();
+  admRenderHeroSlots();
+  admRenderAboutSlots();
+  // Refresh photos from cloud
+  await loadPhotosFromCloud();
+  admRenderPhotos();
+  admRefreshStats();
+  renderCatTabs();
+  renderGallery();
+  renderHero();
+  renderBuketPicker();
 }
 
 // Admin stats
@@ -1580,18 +1685,22 @@ function admRefreshStats(){
 }
 
 // Admin photos
-function admUploadPhotos(e){
+async function admUploadPhotos(e){
   const files=Array.from(e.target.files);if(!files.length)return;
-  const photos=getPhotos();let done=0;
-  files.forEach(f=>{
-    if(f.size>5*1024*1024){toast(f.name+' terlalu besar','err');done++;if(done===files.length){setPhotos(photos);admRenderPhotos();renderGallery();renderHero()}return}
-    const r=new FileReader();r.onload=ev=>{photos.push({src:ev.target.result,label:'Buket '+(photos.length+1)});done++;if(done===files.length){setPhotos(photos);admRenderPhotos();renderGallery();renderHero();admRefreshStats();toast('Foto ditambahkan ✦','ok')}};r.readAsDataURL(f);
-  });e.target.value='';
+  toast('Mengupload ke server...','ok');
+  for(const f of files){
+    if(f.size>5*1024*1024){toast(f.name+' terlalu besar','err');continue}
+    const src=await new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(f)});
+    await addPhotoCloud({src,cat:'',label:'Buket '+(getPhotos().length+1)});
+  }
+  admRenderPhotos();renderCatTabs();renderGallery();renderHero();renderBuketPicker();admRefreshStats();
+  toast('Foto tersimpan & sinkron ✦','ok');
+  e.target.value='';
 }
-function admDelPhoto(i){if(!confirm('Hapus?'))return;const p=getPhotos();p.splice(i,1);setPhotos(p);admRenderPhotos();renderGallery();renderHero();admRefreshStats();toast('Dihapus')}
-function admReplacePhoto(i){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const p=getPhotos();p[i].src=ev.target.result;setPhotos(p);admRenderPhotos();renderGallery();renderHero();toast('Diperbarui ✦','ok')};r.readAsDataURL(f)};inp.click()}
-function admUpdateLabel(i,val){const p=getPhotos();if(p[i])p[i].label=val;setPhotos(p)}
-function admClearPhotos(){if(!confirm('Hapus semua foto galeri?'))return;setPhotos([]);admRenderPhotos();renderGallery();renderHero();admRefreshStats();toast('Semua foto dihapus')}
+async function admDelPhoto(i){if(!confirm('Hapus?'))return;const p=getPhotos()[i];if(!p)return;await deletePhotoCloud(p.id);admRenderPhotos();renderCatTabs();renderGallery();renderHero();renderBuketPicker();admRefreshStats();toast('Dihapus')}
+function admReplacePhoto(i){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const old=getPhotos()[i];if(!old)return;const src=await new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(f)});toast('Mengupload...','ok');await addPhotoCloud({src,cat:old.cat||'',label:old.label||''});await deletePhotoCloud(old.id);admRenderPhotos();renderCatTabs();renderGallery();renderHero();renderBuketPicker();toast('Diperbarui & sinkron ✦','ok')};inp.click()}
+function admUpdateLabel(i,val){const p=getPhotos()[i];if(p)updatePhotoCloud(p.id,{label:val})}
+async function admClearPhotos(){if(!confirm('Hapus semua foto galeri?'))return;const all=[...getPhotos()];for(const p of all){await deletePhotoCloud(p.id)}admRenderPhotos();renderCatTabs();renderGallery();renderHero();renderBuketPicker();admRefreshStats();toast('Semua foto dihapus')}
 function admRenderPhotos(){
   const g=document.getElementById('adm-photo-grid');const photos=getPhotos();
   if(!photos.length){g.innerHTML=`<div style="grid-column:1/-1;padding:2rem;text-align:center;color:var(--td);font-size:11px;letter-spacing:0.1em;font-weight:500;border:0.5px dashed var(--border2)">Belum ada foto. Upload di atas.</div>`;return}
@@ -1763,30 +1872,24 @@ function upmRemove(i){
   upmRenderThumbs();
 }
 
-function upmSave(){
+async function upmSave(){
   if(!upmFiles.length){ toast('Pilih foto terlebih dahulu', 'err'); return; }
   const catInput = document.getElementById('upm-cat-input').value.trim();
   if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); document.getElementById('upm-cat-input').focus(); return; }
   upmCat = catInput;
   const label = document.getElementById('upm-label').value.trim();
-  const photos = getPhotos();
-  upmFiles.forEach((f, i) => {
-    photos.push({
-      src: f.src,
-      cat: upmCat,
-      label: label || ('Buket ' + (photos.length + 1))
-    });
-  });
-  try {
-    setPhotos(photos);
-    renderCatTabs();
-    renderGallery();
-    renderHero();
-    closeUploadModal();
-    toast('Foto berhasil disimpan ✦', 'ok');
-  } catch(err) {
-    toast('Penyimpanan penuh! Hapus beberapa foto dulu.', 'err');
+  const btn = document.getElementById('upm-save-btn');
+  btn.textContent = 'Mengupload...'; btn.style.opacity = '0.6';
+  toast('Mengupload foto ke server...', 'ok');
+  let ok = 0;
+  for(let i=0;i<upmFiles.length;i++){
+    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)) });
+    if(done) ok++;
   }
+  btn.textContent = 'Simpan Foto'; btn.style.opacity = '1';
+  renderCatTabs(); renderGallery(); renderHero(); renderBuketPicker();
+  closeUploadModal();
+  if(ok>0) toast(`${ok} foto tersimpan & sinkron ✦`, 'ok');
 }
 
 function editPhotoModal(idx){
@@ -1801,18 +1904,17 @@ function editPhotoModal(idx){
   upmRenderThumbs();
   document.getElementById('upload-modal').classList.add('show');
   document.body.classList.add('no-scroll');
-  document.getElementById('upm-save-btn').onclick = () => {
+  document.getElementById('upm-save-btn').onclick = async () => {
     const catInput = document.getElementById('upm-cat-input').value.trim();
     if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); return; }
     const label = document.getElementById('upm-label').value.trim();
-    photos[idx].cat = catInput;
-    photos[idx].label = label || photos[idx].label;
-    setPhotos(photos);
+    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label });
     renderCatTabs();
     renderGallery();
+    renderBuketPicker();
     closeUploadModal();
     document.getElementById('upm-save-btn').onclick = upmSave;
-    toast('Foto diperbarui ✦', 'ok');
+    toast('Foto diperbarui & sinkron ✦', 'ok');
   };
 }
 
@@ -1834,13 +1936,22 @@ document.addEventListener('DOMContentLoaded', () => {
 // ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
-renderCatTabs();
-renderGallery();
-renderHero();
-renderBuketPicker();
 loadSiteSettings();
 initWelcome();
 document.getElementById('clr-preview').style.background=document.getElementById('new-clr-hex').value;
+
+// Load photos from cloud, then render everything
+(async function initPhotos(){
+  // Show loading state in gallery
+  const g=document.getElementById('gallery-grid');
+  if(g) g.innerHTML='<div style="grid-column:1/-1;min-height:160px;display:flex;align-items:center;justify-content:center;color:rgba(201,169,110,0.4);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700">Memuat koleksi...</div>';
+  await loadPhotosFromCloud();
+  renderCatTabs();
+  renderGallery();
+  renderHero();
+  renderBuketPicker();
+  // Refresh admin stats if needed later
+})();
 </script>
 
 <!-- ═══ UPLOAD MODAL (owner mode) ═══ -->
