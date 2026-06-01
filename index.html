@@ -592,6 +592,27 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 .lb-order-btn:hover{opacity:0.88}
 @media(max-width:600px){.lb-nav{width:38px;height:38px;font-size:17px}.lb-prev{left:0.5rem}.lb-next{right:0.5rem}.lb-close{top:0.75rem;right:0.75rem}}
 
+
+/* ── PANDUAN 3 LANGKAH ── */
+#cara-pesan{padding:4rem 0;background:var(--ink2);border-top:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2)}
+.guide-inner{max-width:1100px;margin:0 auto;padding:0 4rem;text-align:center}
+.guide-head{margin-bottom:3rem}
+.guide-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative}
+.guide-step{position:relative;padding:2rem 1.5rem;background:var(--ink3);border:0.5px solid var(--border2);transition:border-color 0.25s,transform 0.25s}
+.guide-step:hover{border-color:var(--gold);transform:translateY(-4px)}
+.guide-num{width:48px;height:48px;margin:0 auto 1.25rem;border:0.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Infant',serif;font-size:24px;font-style:italic;color:var(--gold);background:var(--mist)}
+.guide-icon{font-size:28px;margin-bottom:0.75rem;display:block}
+.guide-title{font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:var(--cream);margin-bottom:8px}
+.guide-desc{font-size:12px;line-height:1.7;color:var(--td);font-weight:300}
+.guide-arrow{position:absolute;top:50%;right:-1.1rem;transform:translateY(-50%);color:var(--gold);font-size:20px;opacity:0.5;z-index:2}
+.guide-cta{margin-top:2.5rem}
+@media(max-width:760px){
+  #cara-pesan{padding:3rem 0}
+  .guide-inner{padding:0 1.5rem}
+  .guide-steps{grid-template-columns:1fr;gap:1rem}
+  .guide-arrow{display:none}
+}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -650,6 +671,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <nav id="nav">
   <a class="nav-logo" href="#" id="nav-logo">ciaflorist</a>
   <ul class="nav-links">
+    <li><a href="#cara-pesan">Cara Pesan</a></li>
     <li><a href="#galeri">Koleksi</a></li>
     <li><a href="#pesan">Pesan Buket</a></li>
     <li><a href="#tentang">Tentang</a></li>
@@ -679,13 +701,50 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
       <div class="hero-rule"></div>
       <p class="hero-body" id="hero-body">Rangkaian bunga segar, artificial, dan snack yang dikerjakan penuh perhatian — untuk wisuda, ulang tahun, anniversary, dan segala perayaan spesialmu.</p>
       <div class="hero-btns">
-        <a class="btn-gold" href="#pesan">Buat Buketmu</a>
-        <a class="btn-outline" href="#galeri">Lihat Koleksi</a>
+        <a class="btn-gold" href="#galeri">Lihat Koleksi</a>
+        <a class="btn-outline" href="#cara-pesan">Cara Pesan</a>
       </div>
     </div>
     <div class="hero-mosaic fi d2" id="hero-mosaic"></div>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+
+<!-- ═══ CARA PESAN (panduan 3 langkah) ═══ -->
+<section id="cara-pesan">
+  <div class="guide-inner">
+    <div class="guide-head fi">
+      <div class="sec-tag" style="justify-content:center">Cara Pesan</div>
+      <h2 class="sec-title">3 langkah <em>mudah</em></h2>
+      <p style="font-size:13px;color:var(--tm);font-weight:300;margin-top:10px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.8">Pesan buket impianmu cuma butuh beberapa menit — gampang banget!</p>
+    </div>
+    <div class="guide-steps fi d1">
+      <div class="guide-step">
+        <div class="guide-num">1</div>
+        <span class="guide-icon">🖼️</span>
+        <div class="guide-title">Lihat Koleksi</div>
+        <div class="guide-desc">Jelajahi galeri buket kami. Klik foto untuk lihat detailnya lebih jelas.</div>
+        <div class="guide-arrow">→</div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-num">2</div>
+        <span class="guide-icon">🌸</span>
+        <div class="guide-title">Pilih & Isi Form</div>
+        <div class="guide-desc">Pilih buket favoritmu, lalu isi data pemesan & detail pesanan di form.</div>
+        <div class="guide-arrow">→</div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-num">3</div>
+        <span class="guide-icon">💬</span>
+        <div class="guide-title">Kirim ke WhatsApp</div>
+        <div class="guide-desc">Klik tombol WhatsApp — pesanan otomatis terkirim ke kami. Tinggal tunggu konfirmasi!</div>
+      </div>
+    </div>
+    <div class="guide-cta fi d2">
+      <a class="btn-gold" href="#galeri">Mulai — Lihat Koleksi ✦</a>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ DIVIDER 1 ═══ -->
@@ -697,7 +756,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <section id="galeri">
   <div class="gallery-inner">
     <div class="gl-top fi">
-      <div><div class="sec-tag">Koleksi</div><h2 class="sec-title">Karya <em>pilihan</em></h2></div>
+      <div><div class="sec-tag">Koleksi</div><h2 class="sec-title">Karya <em>pilihan</em></h2><p style="font-size:12px;color:var(--td);font-weight:300;margin-top:8px;line-height:1.6">Klik foto untuk lihat detail. Sudah nemu yang cocok? Lanjut ke <a href="#pesan" style="color:var(--gold);text-decoration:underline">form pesanan</a> di bawah ⬇</p></div>
       <button class="o-btn" onclick="openUploadModal()">+ Tambah Foto</button>
     </div>
     <div class="cat-tabs fi" id="cat-tabs"></div>
@@ -713,7 +772,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <!-- ═══ ORDER ═══ -->
 <section id="pesan">
   <div class="order-inner">
-    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Pesan buket <em>pilihanmu</em></h2></div>
+    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Form pemesanan <em>buket</em> 💐</h2><p style="font-size:13px;color:var(--tm);font-weight:300;margin-top:10px;max-width:520px;line-height:1.8">Isi form di bawah ini, lalu klik tombol <strong style="color:var(--wa)">WhatsApp</strong> — pesananmu otomatis terkirim ke kami. Gampang!</p></div>
     <div class="order-layout fi d1">
 
       <div class="order-steps">
@@ -725,103 +784,79 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
           <div class="buket-pick-grid" id="buket-pick-grid"></div>
         </div>
 
-        <!-- 02 JUMLAH -->
-        <div class="step-card">
-          <div class="step-head"><div class="step-num">02</div><div class="step-name">Jumlah Pesanan</div></div>
-          <div class="stem-ctrl">
-            <button class="stem-btn" onclick="chQty(-1)">−</button>
-            <span class="stem-num" id="qty-num">1</span>
-            <span class="stem-unit">buket</span>
-          </div>
-        </div>
+        <!-- HIDDEN UNTIL BUKET DIPILIH -->
+        <div id="form-after-pick" style="display:none;flex-direction:column;gap:1px;background:var(--border2)">
 
-        <!-- 03 KARTU UCAPAN -->
+        <!-- 02 DATA PEMESAN -->
         <div class="step-card">
-          <div class="step-head"><div class="step-num">03</div><div class="step-name">Kartu Ucapan</div></div>
-          <textarea id="card-msg" placeholder="Tulis pesan untuk kartu ucapan... (opsional)" oninput="updateCard()" style="height:68px"></textarea>
-          <div class="card-preview"><div class="card-txt ph" id="card-preview">Pesan ucapan akan muncul di sini...</div></div>
-        </div>
-
-        <!-- 04 CATATAN -->
-        <div class="step-card">
-          <div class="step-head"><div class="step-num">04</div><div class="step-name">Catatan / Request</div></div>
-          <textarea id="notes" placeholder="Warna, ukuran, budget, permintaan khusus, dll..."></textarea>
-          <div class="wa-setting"><label>Nomor WA:</label><input type="text" id="wa-input" placeholder="6289505264053"/></div>
-        </div>
-
-        <!-- 05 DATA PEMESAN -->
-        <div class="step-card">
-          <div class="step-head"><div class="step-num">05</div><div class="step-name">Data Pemesan</div></div>
+          <div class="step-head"><div class="step-num">02</div><div class="step-name">🌸 Data Pemesan</div></div>
           <div class="fp-grid">
-            <div class="fp-g">
-              <label class="fp-lbl">Nama Lengkap <span class="req">*</span></label>
-              <input class="fp-inp" type="text" id="fp-nama" placeholder="Nama kamu" oninput="syncForm()"/>
+            <div class="fp-g full">
+              <label class="fp-lbl">Atas Nama <span class="req">*</span></label>
+              <input class="fp-inp" type="text" id="fp-nama" placeholder="Nama pemesan" oninput="syncForm()"/>
               <span class="field-err" id="err-nama">Wajib diisi</span>
             </div>
-            <div class="fp-g">
-              <label class="fp-lbl">No. HP / WA <span class="req">*</span></label>
+            <div class="fp-g full">
+              <label class="fp-lbl">Alamat <span class="req">*</span></label>
+              <textarea class="fp-ta" id="fp-alamat" placeholder="Alamat lengkap..." oninput="syncForm()"></textarea>
+              <span class="field-err" id="err-alamat">Wajib diisi</span>
+            </div>
+            <div class="fp-g full">
+              <label class="fp-lbl">No. WhatsApp <span class="req">*</span></label>
               <input class="fp-inp" type="tel" id="fp-hp" placeholder="08xxxxxxxxxx" oninput="syncForm()"/>
               <span class="field-err" id="err-hp">Wajib diisi</span>
             </div>
+          </div>
+        </div>
+
+        <!-- 03 DETAIL PESANAN -->
+        <div class="step-card">
+          <div class="step-head"><div class="step-num">03</div><div class="step-name">🌸 Detail Pesanan</div></div>
+          <div class="fp-grid">
             <div class="fp-g full">
-              <label class="fp-lbl">Nama Penerima <span style="color:var(--td);font-weight:400">(jika beda dengan pemesan)</span></label>
-              <input class="fp-inp" type="text" id="fp-penerima" placeholder="Kosongkan jika sama" oninput="syncForm()"/>
+              <label class="fp-lbl">Jenis Buket <span class="req">*</span></label>
+              <input class="fp-inp" type="text" id="fp-jenis" placeholder="Cth: Buket Mawar, Buket Wisuda, dll" oninput="syncForm()"/>
+              <span class="field-err" id="err-jenis">Wajib diisi</span>
             </div>
             <div class="fp-g full">
-              <label class="fp-lbl">Metode <span class="req">*</span></label>
-              <div class="method-toggle">
-                <button class="method-btn active" id="btn-delivery" onclick="setMethod('delivery')">🚗 Delivery</button>
-                <button class="method-btn" id="btn-cod" onclick="setMethod('cod')">💵 COD</button>
-                <button class="method-btn" id="btn-pickup" onclick="setMethod('pickup')">🏪 Pickup</button>
-              </div>
-            </div>
-            <div class="fp-g full delivery-fields show" id="delivery-fields">
-              <label class="fp-lbl">Alamat Lengkap <span class="req">*</span></label>
-              <textarea class="fp-ta" id="fp-alamat" placeholder="Jalan, nomor, RT/RW, kelurahan, kota..." oninput="syncForm()"></textarea>
-              <span class="field-err" id="err-alamat">Wajib diisi untuk delivery / COD</span>
-            </div>
-            <div class="fp-g full pickup-note" id="pickup-note">
-              <div class="eta-badge"><span style="font-size:13px">📍</span><span class="eta-text">Alamat toko akan dikonfirmasi via WhatsApp</span></div>
-            </div>
-            <div class="fp-g full pickup-note" id="cod-note">
-              <div class="eta-badge"><span style="font-size:13px">💵</span><span class="eta-text">Bayar di tempat saat buket sampai (khusus area Wonogiri)</span></div>
-            </div>
-            <div class="fp-g">
-              <label class="fp-lbl">Tanggal Diperlukan <span class="req">*</span></label>
+              <label class="fp-lbl">Tanggal Pengambilan <span class="req">*</span></label>
               <input class="fp-inp" type="date" id="fp-tanggal" oninput="syncForm()"/>
               <span class="field-err" id="err-tanggal">Wajib diisi</span>
             </div>
-            <div class="fp-g">
-              <label class="fp-lbl">Jam <span class="req">*</span></label>
-              <select class="fp-sel" id="fp-jam" onchange="syncForm()">
-                <option value="">— Pilih —</option>
-                <option>08:00–10:00</option><option>10:00–12:00</option>
-                <option>12:00–14:00</option><option>14:00–16:00</option>
-                <option>16:00–18:00</option><option>18:00–20:00</option>
-                <option>Sesuai perjanjian</option>
-              </select>
-              <span class="field-err" id="err-jam">Wajib dipilih</span>
-            </div>
             <div class="fp-g full">
-              <label class="fp-lbl">Metode Pembayaran <span class="req">*</span></label>
+              <label class="fp-lbl">Metode Pengambilan <span class="req">*</span></label>
               <div class="method-toggle" style="grid-template-columns:1fr 1fr">
-                <button class="method-btn active" id="pay-transfer" onclick="setPayment('transfer')">🏦 Transfer Bank</button>
-                <button class="method-btn" id="pay-cod" onclick="setPayment('cod')">💵 COD</button>
+                <button class="method-btn active" id="btn-ambil" onclick="setMethod('ambil')">🏪 Diambil</button>
+                <button class="method-btn" id="btn-cod" onclick="setMethod('cod')">💵 COD</button>
               </div>
-              <div class="fp-g full pickup-note show" id="pay-transfer-note" style="margin-top:8px">
-                <div class="eta-badge"><span style="font-size:13px">🏦</span><span class="eta-text">Nomor rekening dikirim via WhatsApp setelah konfirmasi</span></div>
-              </div>
-              <div class="fp-g full pickup-note" id="pay-cod-note" style="margin-top:8px">
-                <div class="eta-badge"><span style="font-size:13px">💵</span><span class="eta-text">Bayar tunai langsung saat buket diterima</span></div>
-              </div>
+            </div>
+            <div class="fp-g full pickup-note" id="cod-fields">
+              <label class="fp-lbl">Lokasi COD <span class="req">*</span></label>
+              <input class="fp-inp" type="text" id="fp-lokasi-cod" placeholder="Daerah/lokasi COD" oninput="syncForm()"/>
+              <span class="field-err" id="err-lokasi">Wajib diisi untuk COD</span>
+            </div>
+            <div class="fp-g full pickup-note show" id="ambil-note">
+              <div class="eta-badge"><span style="font-size:13px">📍</span><span class="eta-text">Alamat toko akan dikonfirmasi via WhatsApp</span></div>
             </div>
           </div>
+          <!-- NOTE FREE ONGKIR -->
+          <div style="margin-top:14px;padding:14px;background:rgba(201,169,110,0.06);border:0.5px solid var(--border);border-left:2px solid var(--gold)">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px">📌 Free Ongkir untuk area:</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Sidoharjo</span>
+              <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Girimarto</span>
+              <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Pandean</span>
+            </div>
+          </div>
+          <div class="wa-setting"><label>Nomor WA Owner:</label><input type="text" id="wa-input" placeholder="6289505264053"/></div>
         </div>
+
+        </div><!-- end form-after-pick -->
 
       </div><!-- end order-steps -->
 
       <!-- RINGKASAN CARD -->
-      <div class="preview-card">
+      <div class="preview-card" id="preview-card" style="display:none">
         <div class="prev-visual" id="prev-visual">
           <div class="prev-ph-empty" id="prev-ph-empty">
             <span style="font-size:30px;opacity:0.4">🌸</span>
@@ -833,20 +868,18 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
           <div class="prev-name" id="prev-name">Belum dipilih</div>
           <div class="detail-list">
             <div class="d-row"><span class="dk">Buket</span><span class="dv" id="dv-buket">—</span></div>
-            <div class="d-row"><span class="dk">Jumlah</span><span class="dv" id="dv-qty">1 buket</span></div>
-            <div class="d-row"><span class="dk">Kartu</span><span class="dv" id="dv-card">—</span></div>
+            <div class="d-row"><span class="dk">Jenis</span><span class="dv" id="dv-jenis">—</span></div>
+            <div class="d-row"><span class="dk">Metode</span><span class="dv" id="dv-method">Diambil</span></div>
           </div>
         </div>
         <div class="summary-block" id="summary-block">
           <div class="sb-title">Data Pemesan</div>
           <div class="sb-row"><span>Nama</span><span class="sb-val" id="sb-nama">—</span></div>
-          <div class="sb-row"><span>HP/WA</span><span class="sb-val" id="sb-hp">—</span></div>
-          <div class="sb-row"><span>Penerima</span><span class="sb-val" id="sb-penerima">—</span></div>
-          <div class="sb-row"><span>Metode</span><span class="sb-val" id="sb-method">Delivery</span></div>
-          <div class="sb-row" id="sb-alamat-row"><span>Alamat</span><span class="sb-val" id="sb-alamat">—</span></div>
+          <div class="sb-row"><span>WhatsApp</span><span class="sb-val" id="sb-hp">—</span></div>
+          <div class="sb-row"><span>Alamat</span><span class="sb-val" id="sb-alamat">—</span></div>
+          <div class="sb-row"><span>Metode</span><span class="sb-val" id="sb-method">Diambil 🏪</span></div>
           <div class="sb-row"><span>Tanggal</span><span class="sb-val" id="sb-tanggal">—</span></div>
-          <div class="sb-row"><span>Jam</span><span class="sb-val" id="sb-jam">—</span></div>
-          <div class="sb-row"><span>Bayar</span><span class="sb-val" id="sb-payment">Transfer Bank</span></div>
+          <div class="sb-row" id="sb-lokasi-row" style="display:none"><span>Lokasi COD</span><span class="sb-val" id="sb-lokasi">—</span></div>
         </div>
         <div class="cta-wrap" style="padding-top:1.25rem">
           <button class="cta-wa" onclick="orderWA()">
@@ -1359,8 +1392,6 @@ let COLORS=loadColors();
 let ST={type:'segar',stems:12,ci:0};
 let selRibbon=RIBBONS[0];
 let wrapData={id:'kraft',name:'Kraft Premium',price:0};
-let deliveryMethod='delivery';
-let paymentMethod='transfer';
 let currentCat='all';
 let ownerOn=false;
 
@@ -1479,18 +1510,16 @@ function renderHero(){
 // ORDER (simplified — pilih buket dari foto)
 // ═══════════════════════════════════════════════
 let selBuket = null;   // {src, label, cat} or {custom:true}
-let orderQty = 1;
+let pickupMethod = 'ambil';   // 'ambil' or 'cod'
 
 function renderBuketPicker(){
   const grid = document.getElementById('buket-pick-grid');
   if(!grid) return;
   const photos = getPhotos();
   let html = '';
-  // Custom option first
   html += `<div class="buket-pick buket-pick-custom" id="pick-custom" onclick="pickCustom(this)">
     <span class="bpc-icon">✏️</span><span>Custom<br>Request</span>
   </div>`;
-  // Photos
   photos.forEach((p,i) => {
     html += `<div class="buket-pick" onclick="pickBuket(this,${i})">
       <img src="${p.src}" alt="${p.label||'buket'}" loading="lazy"/>
@@ -1500,46 +1529,45 @@ function renderBuketPicker(){
   grid.innerHTML = html;
 }
 
+let formRevealed=false;
+function revealForm(){
+  const wrap=document.getElementById('form-after-pick');
+  const card=document.getElementById('preview-card');
+  if(wrap)wrap.style.display='flex';
+  if(card)card.style.display='block';
+  if(!formRevealed){
+    formRevealed=true;
+    setTimeout(()=>{
+      const el=document.getElementById('form-after-pick');
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    },200);
+  }
+}
+
 function pickBuket(el,i){
   document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  const photos = getPhotos();
-  const p = photos[i];
+  const p = getPhotos()[i];
   selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||''};
-  // Show image in preview
+  revealForm();
   const pv = document.getElementById('prev-visual');
   pv.innerHTML = `<img src="${p.src}" class="prev-img-full" alt="buket"/>`;
   document.getElementById('prev-name').textContent = p.label||'Buket';
   document.getElementById('dv-buket').textContent = (p.label||'Buket') + (p.cat&&p.cat!=='all'?` (${p.cat})`:'');
-  updateOrder();
+  // Auto-fill jenis buket field
+  const jenisEl=document.getElementById('fp-jenis');
+  if(jenisEl && !jenisEl.value.trim()){ jenisEl.value=p.label||p.cat||''; syncForm(); }
 }
 
 function pickCustom(el){
   document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   selBuket = {custom:true};
+  revealForm();
   const pv = document.getElementById('prev-visual');
   pv.innerHTML = `<div class="prev-ph-empty"><span style="font-size:30px;opacity:0.5">✏️</span><span style="font-size:10px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-top:8px">Custom Request</span></div>`;
   document.getElementById('prev-name').textContent = 'Custom Request';
-  document.getElementById('dv-buket').textContent = 'Custom (tulis di catatan)';
-  updateOrder();
-}
-
-function chQty(d){
-  orderQty = Math.max(1, Math.min(50, orderQty + d));
-  document.getElementById('qty-num').textContent = orderQty;
-  updateOrder();
-}
-
-function updateCard(){
-  const m = document.getElementById('card-msg').value.trim();
-  const p = document.getElementById('card-preview');
-  if(m){ p.textContent=m; p.classList.remove('ph'); document.getElementById('dv-card').textContent = m.length>18?m.substring(0,18)+'…':m; }
-  else { p.textContent='Pesan ucapan akan muncul di sini...'; p.classList.add('ph'); document.getElementById('dv-card').textContent='—'; }
-}
-
-function updateOrder(){
-  document.getElementById('dv-qty').textContent = orderQty + ' buket';
+  document.getElementById('dv-buket').textContent = 'Custom Request';
 }
 
 // kept for backwards-compat (no longer used)
@@ -1549,54 +1577,47 @@ function refreshPL(){}
 // FORM PEMESAN
 // ═══════════════════════════════════════════════
 function setMethod(m){
-  deliveryMethod=m;
-  document.getElementById('btn-delivery').classList.toggle('active',m==='delivery');
+  pickupMethod=m;
+  document.getElementById('btn-ambil').classList.toggle('active',m==='ambil');
   document.getElementById('btn-cod').classList.toggle('active',m==='cod');
-  document.getElementById('btn-pickup').classList.toggle('active',m==='pickup');
-  // Delivery & COD both need an address
-  const needAddr = (m==='delivery'||m==='cod');
-  document.getElementById('delivery-fields').classList.toggle('show',needAddr);
-  document.getElementById('pickup-note').classList.toggle('show',m==='pickup');
-  document.getElementById('cod-note').classList.toggle('show',m==='cod');
-  const labels={delivery:'Delivery 🚗',cod:'COD 💵',pickup:'Pickup 🏪'};
-  document.getElementById('sb-method').textContent=labels[m];
-  document.getElementById('sb-alamat-row').style.display=needAddr?'flex':'none';
+  document.getElementById('cod-fields').classList.toggle('show',m==='cod');
+  document.getElementById('ambil-note').classList.toggle('show',m==='ambil');
+  document.getElementById('sb-method').textContent = m==='ambil'?'Diambil 🏪':'COD 💵';
+  document.getElementById('sb-lokasi-row').style.display = m==='cod'?'flex':'none';
   syncForm();
 }
-function setPayment(p){
-  paymentMethod=p;
-  document.getElementById('pay-transfer').classList.toggle('active',p==='transfer');
-  document.getElementById('pay-cod').classList.toggle('active',p==='cod');
-  document.getElementById('pay-transfer-note').classList.toggle('show',p==='transfer');
-  document.getElementById('pay-cod-note').classList.toggle('show',p==='cod');
-  const lbl=document.getElementById('sb-payment');
-  if(lbl)lbl.textContent=p==='transfer'?'Transfer Bank 🏦':'COD 💵';
-}
+
 function syncForm(){
   const nama=document.getElementById('fp-nama').value.trim();
   const hp=document.getElementById('fp-hp').value.trim();
-  const penerima=document.getElementById('fp-penerima').value.trim();
   const alamat=document.getElementById('fp-alamat').value.trim();
+  const jenis=document.getElementById('fp-jenis').value.trim();
   const tgl=document.getElementById('fp-tanggal').value;
-  const jam=document.getElementById('fp-jam').value;
-  const hasData=nama||hp||tgl;
+  const lokasi=document.getElementById('fp-lokasi-cod').value.trim();
+  const hasData=nama||hp||tgl||jenis;
   document.getElementById('summary-block').classList.toggle('show',!!hasData);
   const setV=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'—'};
-  setV('sb-nama',nama);setV('sb-hp',hp);
-  setV('sb-penerima',penerima||(nama?'Sama dengan pemesan':'—'));
-  setV('sb-alamat',alamat);setV('sb-jam',jam);
+  setV('sb-nama',nama);
+  setV('sb-hp',hp);
+  setV('sb-alamat',alamat);
+  setV('sb-lokasi',lokasi);
+  setV('dv-jenis',jenis);
   if(tgl){const d=new Date(tgl);setV('sb-tanggal',d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}))}else setV('sb-tanggal','—');
-  if(nama){document.getElementById('fp-nama').classList.remove('err');document.getElementById('err-nama').classList.remove('show')}
-  if(hp){document.getElementById('fp-hp').classList.remove('err');document.getElementById('err-hp').classList.remove('show')}
-  if(tgl){document.getElementById('fp-tanggal').classList.remove('err');document.getElementById('err-tanggal').classList.remove('show')}
-  if(jam){document.getElementById('fp-jam').classList.remove('err');document.getElementById('err-jam').classList.remove('show')}
-  if(alamat){document.getElementById('fp-alamat').classList.remove('err');document.getElementById('err-alamat').classList.remove('show')}
+  // clear errors on input
+  const clr=(id,errId)=>{const el=document.getElementById(id);if(el&&el.value.trim()){el.classList.remove('err');const er=document.getElementById(errId);if(er)er.classList.remove('show')}};
+  clr('fp-nama','err-nama');clr('fp-hp','err-hp');clr('fp-alamat','err-alamat');
+  clr('fp-jenis','err-jenis');clr('fp-tanggal','err-tanggal');clr('fp-lokasi-cod','err-lokasi');
 }
+
 function validateForm(){
   let ok=true;
-  const chk=(id,errId)=>{const el=document.getElementById(id);const er=document.getElementById(errId);if(!el.value.trim()){el.classList.add('err');er.classList.add('show');ok=false}};
-  chk('fp-nama','err-nama');chk('fp-hp','err-hp');chk('fp-tanggal','err-tanggal');chk('fp-jam','err-jam');
-  if(deliveryMethod==='delivery'||deliveryMethod==='cod')chk('fp-alamat','err-alamat');
+  const chk=(id,errId)=>{const el=document.getElementById(id);const er=document.getElementById(errId);if(el&&!el.value.trim()){el.classList.add('err');if(er)er.classList.add('show');ok=false}};
+  chk('fp-nama','err-nama');
+  chk('fp-hp','err-hp');
+  chk('fp-alamat','err-alamat');
+  chk('fp-jenis','err-jenis');
+  chk('fp-tanggal','err-tanggal');
+  if(pickupMethod==='cod')chk('fp-lokasi-cod','err-lokasi');
   if(!ok){const fe=document.querySelector('.fp-inp.err,.fp-sel.err,.fp-ta.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'})}
   return ok;
 }
@@ -1605,33 +1626,29 @@ function validateForm(){
 // ORDER WA
 // ═══════════════════════════════════════════════
 function orderWA(){
-  if(!selBuket){ toast('Pilih buket dulu', 'err'); document.getElementById('buket-pick-grid').scrollIntoView({behavior:'smooth',block:'center'}); return; }
   if(!validateForm()) return;
   const s=getS();const waNum=s.wa||'6289505264053';
-  const cardMsg=document.getElementById('card-msg').value.trim();
-  const notes=document.getElementById('notes').value.trim();
   const nama=document.getElementById('fp-nama').value.trim();
   const hp=document.getElementById('fp-hp').value.trim();
-  const penerimaRaw=document.getElementById('fp-penerima').value.trim();
-  const penerima=penerimaRaw||nama;
+  const alamat=document.getElementById('fp-alamat').value.trim();
+  const jenis=document.getElementById('fp-jenis').value.trim();
   const tgl=document.getElementById('fp-tanggal').value;
-  const jam=document.getElementById('fp-jam').value;
-  const needAddr=(deliveryMethod==='delivery'||deliveryMethod==='cod');
-  const alamat=needAddr?document.getElementById('fp-alamat').value.trim():'Pickup di toko';
+  const lokasi=document.getElementById('fp-lokasi-cod').value.trim();
   const tglFmt=tgl?new Date(tgl).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'-';
-  const buketName=selBuket.custom?'Custom Request (lihat catatan)':(selBuket.label+(selBuket.cat&&selBuket.cat!=='all'?` (${selBuket.cat})`:''));
-  const line='─'.repeat(28);const dline='═'.repeat(28);
-  let msg=`Halo ciaflorist! 🌸 Saya ingin memesan buket:\n${dline}\n`;
-  msg+=`📋 DATA PEMESAN\nNama: ${nama}\nHP/WA: ${hp}\nPenerima: ${penerima}\n`;
-  const mLabels={delivery:'Delivery 🚗',cod:'COD 💵 (bayar di tempat)',pickup:'Pickup 🏪'};
-  msg+=`Metode ambil: ${mLabels[deliveryMethod]}\n`;
-  if(needAddr)msg+=`Alamat: ${alamat}\n`;
-  msg+=`Pembayaran: ${paymentMethod==='transfer'?'Transfer Bank 🏦':'COD / Tunai 💵'}\n`;
-  msg+=`Tanggal: ${tglFmt}\nJam: ${jam}\n${line}\n`;
-  msg+=`🌸 PESANAN\nBuket: ${buketName}\nJumlah: ${orderQty} buket\n`;
-  if(cardMsg)msg+=`Kartu ucapan: "${cardMsg}"\n`;
-  if(notes)msg+=`Catatan/Request: ${notes}\n`;
-  msg+=`${dline}\nMohon info ketersediaan & harga totalnya ya, terima kasih! 😊`;
+  const buketName=selBuket?(selBuket.custom?'Custom Request':(selBuket.label||'Buket')):'';
+  const line='─'.repeat(28);
+  let msg=`FORM PEMESANAN BUKET 💐\n${line}\n`;
+  msg+=`🌸 Data Pemesan\n`;
+  msg+=`Atas Nama : ${nama}\n`;
+  msg+=`Alamat : ${alamat}\n`;
+  msg+=`No. WhatsApp : ${hp}\n`;
+  msg+=`${line}\n🌸 Detail Pesanan\n`;
+  if(buketName)msg+=`Buket Pilihan : ${buketName}\n`;
+  msg+=`Jenis Buket : ${jenis}\n`;
+  msg+=`Tanggal Pengambilan : ${tglFmt}\n`;
+  msg+=`Metode Pengambilan : ${pickupMethod==='ambil'?'Diambil':'COD'}\n`;
+  if(pickupMethod==='cod')msg+=`Lokasi COD : ${lokasi}\n`;
+  msg+=`${line}\nMohon info ketersediaan & harga totalnya ya, terima kasih! 😊`;
   window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function floatWA(){const s=getS();const n=s.wa||'6289505264053';window.open(`https://wa.me/${n}?text=${encodeURIComponent('Halo ciaflorist! 🌸 Saya ingin bertanya tentang buket, bisa bantu?')}`,'_blank')}
