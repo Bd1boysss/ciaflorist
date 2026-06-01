@@ -593,24 +593,37 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 @media(max-width:600px){.lb-nav{width:38px;height:38px;font-size:17px}.lb-prev{left:0.5rem}.lb-next{right:0.5rem}.lb-close{top:0.75rem;right:0.75rem}}
 
 
-/* ── PANDUAN 3 LANGKAH ── */
-#cara-pesan{padding:4rem 0;background:var(--ink2);border-top:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2)}
-.guide-inner{max-width:1100px;margin:0 auto;padding:0 4rem;text-align:center}
-.guide-head{margin-bottom:3rem}
-.guide-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative}
-.guide-step{position:relative;padding:2rem 1.5rem;background:var(--ink3);border:0.5px solid var(--border2);transition:border-color 0.25s,transform 0.25s}
-.guide-step:hover{border-color:var(--gold);transform:translateY(-4px)}
-.guide-num{width:48px;height:48px;margin:0 auto 1.25rem;border:0.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Infant',serif;font-size:24px;font-style:italic;color:var(--gold);background:var(--mist)}
-.guide-icon{font-size:28px;margin-bottom:0.75rem;display:block}
-.guide-title{font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:var(--cream);margin-bottom:8px}
-.guide-desc{font-size:12px;line-height:1.7;color:var(--td);font-weight:300}
-.guide-arrow{position:absolute;top:50%;right:-1.1rem;transform:translateY(-50%);color:var(--gold);font-size:20px;opacity:0.5;z-index:2}
-.guide-cta{margin-top:2.5rem}
+/* ── PANDUAN 3 LANGKAH (premium) ── */
+#cara-pesan{padding:5rem 0;background:var(--ink2);border-top:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2);position:relative;overflow:hidden}
+#cara-pesan::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(201,169,110,0.06),transparent 70%);pointer-events:none}
+.guide-inner{max-width:1100px;margin:0 auto;padding:0 4rem;text-align:center;position:relative;z-index:1}
+.guide-head{margin-bottom:3.5rem}
+.guide-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;position:relative}
+.guide-step{position:relative;padding:2.75rem 1.75rem 2.25rem;background:linear-gradient(160deg,var(--ink3),var(--ink2));border:0.5px solid var(--border2);transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;overflow:hidden}
+.guide-step::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity 0.3s}
+.guide-step::after{content:'';position:absolute;top:8px;right:8px;width:16px;height:16px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);opacity:0;transition:opacity 0.3s}
+.guide-step:hover{border-color:rgba(201,169,110,0.4);transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.35)}
+.guide-step:hover::before,.guide-step:hover::after{opacity:0.6}
+.guide-num{width:42px;height:42px;margin:0 auto 1.5rem;border:0.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Infant',serif;font-size:20px;font-style:italic;color:var(--gold);background:var(--mist);position:relative}
+.guide-num::before{content:'';position:absolute;inset:-5px;border:0.5px solid rgba(201,169,110,0.2);border-radius:50%}
+.guide-icon-wrap{width:64px;height:64px;margin:0 auto 1.25rem;display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.12),transparent 70%);transition:transform 0.3s}
+.guide-step:hover .guide-icon-wrap{transform:scale(1.1)}
+.guide-icon-wrap svg{width:34px;height:34px;stroke:var(--gold);stroke-width:1.3;fill:none}
+.guide-title{font-size:13px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--cream);margin-bottom:10px}
+.guide-desc{font-size:12px;line-height:1.8;color:var(--td);font-weight:300;max-width:240px;margin:0 auto}
+.guide-arrow{position:absolute;top:50%;right:-0.95rem;transform:translateY(-50%);color:var(--gold);font-size:18px;opacity:0.4;z-index:3}
+.guide-cta{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+/* Instagram link */
+.guide-ig{display:inline-flex;align-items:center;gap:10px;color:var(--tm);text-decoration:none;font-size:11px;letter-spacing:0.1em;font-weight:500;padding:10px 22px;border:0.5px solid var(--border);transition:all 0.25s}
+.guide-ig:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.guide-ig svg{width:18px;height:18px;fill:currentColor}
+.guide-ig .ig-handle{font-weight:700}
 @media(max-width:760px){
-  #cara-pesan{padding:3rem 0}
+  #cara-pesan{padding:3.5rem 0}
   .guide-inner{padding:0 1.5rem}
   .guide-steps{grid-template-columns:1fr;gap:1rem}
   .guide-arrow{display:none}
+}
 }
 
 
@@ -788,6 +801,17 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 .gf-btn:hover{border-color:var(--gold);color:var(--gold)}
 .gf-btn.active{background:var(--gold);color:var(--ink);border-color:var(--gold)}
 
+
+/* ── GUIDE ICON ANIMATIONS ── */
+.gi-anim-1 .gi-frame-front{transform-origin:center;animation:giFloat 3.5s ease-in-out infinite}
+.gi-anim-1 .gi-sparkle{transform-origin:37px 16px;animation:giSparkle 2.4s ease-in-out infinite}
+@keyframes giFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes giSparkle{0%,100%{opacity:0.3;transform:scale(0.7) rotate(0deg)}50%{opacity:1;transform:scale(1.1) rotate(90deg)}}
+.gi-anim-2 .gi-bloom{transform-origin:24px 18px;animation:giBloom 3.2s ease-in-out infinite}
+@keyframes giBloom{0%,100%{transform:scale(0.92) rotate(0deg)}50%{transform:scale(1.05) rotate(18deg)}}
+.guide-step:hover .gi-bloom{animation-duration:1.6s}
+.guide-step:hover .gi-frame-front{animation-duration:1.8s}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -849,6 +873,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
     <li><a href="#cara-pesan">Cara Pesan</a></li>
     <li><a href="#galeri">Koleksi</a></li>
     <li><a href="#tentang">Tentang</a></li>
+    <li><a href="https://www.instagram.com/ciaflorist__" target="_blank" rel="noopener">Instagram</a></li>
   </ul>
   <button class="owner-pill" id="owner-btn" onclick="ownerToggle()">Owner</button>
 </nav>
@@ -896,27 +921,55 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
     <div class="guide-steps fi d1">
       <div class="guide-step">
         <div class="guide-num">1</div>
-        <span class="guide-icon">🖼️</span>
+        <div class="guide-icon-wrap gi-anim-1">
+          <svg viewBox="0 0 48 48">
+            <rect class="gi-frame-back" x="8" y="10" width="26" height="22" rx="2" fill="none" stroke="var(--gold)" stroke-width="1.3" opacity="0.4"/>
+            <rect class="gi-frame-front" x="14" y="16" width="26" height="22" rx="2" fill="rgba(201,169,110,0.06)" stroke="var(--gold)" stroke-width="1.3"/>
+            <circle cx="21" cy="23" r="2.5" fill="var(--gold)"/>
+            <path d="M16 36l8-8 6 5 4-4 6 6" fill="none" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            <g class="gi-sparkle"><path d="M37 12l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z" fill="var(--gold2)"/></g>
+          </svg>
+        </div>
         <div class="guide-title">Lihat Koleksi</div>
         <div class="guide-desc">Jelajahi galeri buket kami. Klik foto untuk lihat detailnya lebih jelas.</div>
         <div class="guide-arrow">→</div>
       </div>
       <div class="guide-step">
         <div class="guide-num">2</div>
-        <span class="guide-icon">🌸</span>
-        <div class="guide-title">Pilih & Isi Form</div>
-        <div class="guide-desc">Pilih buket favoritmu, lalu isi data pemesan & detail pesanan di form.</div>
+        <div class="guide-icon-wrap gi-anim-2">
+          <svg viewBox="0 0 48 48">
+            <g class="gi-bloom">
+              <ellipse cx="24" cy="14" rx="4.5" ry="7" fill="rgba(201,169,110,0.25)" stroke="var(--gold)" stroke-width="1" transform="rotate(0 24 18)"/>
+              <ellipse cx="24" cy="14" rx="4.5" ry="7" fill="rgba(201,169,110,0.2)" stroke="var(--gold)" stroke-width="1" transform="rotate(72 24 18)"/>
+              <ellipse cx="24" cy="14" rx="4.5" ry="7" fill="rgba(201,169,110,0.2)" stroke="var(--gold)" stroke-width="1" transform="rotate(144 24 18)"/>
+              <ellipse cx="24" cy="14" rx="4.5" ry="7" fill="rgba(201,169,110,0.2)" stroke="var(--gold)" stroke-width="1" transform="rotate(216 24 18)"/>
+              <ellipse cx="24" cy="14" rx="4.5" ry="7" fill="rgba(201,169,110,0.2)" stroke="var(--gold)" stroke-width="1" transform="rotate(288 24 18)"/>
+              <circle cx="24" cy="18" r="3" fill="var(--gold2)"/>
+            </g>
+            <path d="M24 21v18" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M24 30c-3-1-6-3-7-6 3 0 6 2 7 5" fill="rgba(201,169,110,0.12)" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M24 34c3-1 6-3 7-6-3 0-6 2-7 5" fill="rgba(201,169,110,0.12)" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="guide-title">Pilih &amp; Isi Form</div>
+        <div class="guide-desc">Pilih buket favoritmu, lalu isi data pemesan &amp; detail pesanan di form.</div>
         <div class="guide-arrow">→</div>
       </div>
       <div class="guide-step">
         <div class="guide-num">3</div>
-        <span class="guide-icon">💬</span>
+        <div class="guide-icon-wrap" style="background:radial-gradient(circle,rgba(37,211,102,0.16),transparent 70%)">
+          <svg viewBox="0 0 24 24" style="fill:#25D366;stroke:none;width:36px;height:36px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        </div>
         <div class="guide-title">Kirim ke WhatsApp</div>
         <div class="guide-desc">Klik tombol WhatsApp — pesanan otomatis terkirim ke kami. Tinggal tunggu konfirmasi!</div>
       </div>
     </div>
     <div class="guide-cta fi d2">
       <a class="btn-gold" href="#galeri">Mulai — Lihat Koleksi ✦</a>
+      <a class="guide-ig" href="https://www.instagram.com/ciaflorist__" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38C1.35 2.67.94 3.34.63 4.13c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13C21.33 1.35 20.66.94 19.87.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.41-10.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg>
+        Follow kami <span class="ig-handle">@ciaflorist__</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1121,6 +1174,10 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   <div class="f-orn"><div></div><span>✦ ✦ ✦</span><div></div></div>
   <div class="f-logo" id="f-logo">ciaflorist</div>
   <div class="f-sub" id="f-sub">Handmade &nbsp;·&nbsp; Buket Custom &nbsp;·&nbsp; Wonogiri</div>
+  <a href="https://www.instagram.com/ciaflorist__" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:1.25rem;color:var(--tm);text-decoration:none;font-size:11px;letter-spacing:0.08em;font-weight:600;padding:9px 20px;border:0.5px solid var(--border);transition:all 0.25s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--tm)'">
+    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38C1.35 2.67.94 3.34.63 4.13c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13C21.33 1.35 20.66.94 19.87.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.41-10.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg>
+    @ciaflorist__
+  </a>
 </footer>
 
 <!-- ═══ FLOATING WA ═══ -->
