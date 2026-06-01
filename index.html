@@ -779,6 +779,15 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 .load-more-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 32px;background:transparent;color:var(--gold);border:0.5px solid var(--gold);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
 .load-more-btn:hover{background:var(--gold);color:var(--ink)}
 
+
+/* ── PRICE FILTER + SORT ── */
+.gal-filters{display:flex;flex-wrap:wrap;gap:1.5rem;margin-bottom:1.25rem}
+.gf-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gf-label{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--td);font-weight:700;margin-right:2px}
+.gf-btn{font-size:9px;padding:5px 12px;border:0.5px solid var(--border2);background:transparent;color:var(--td);cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:0.06em;transition:all 0.15s}
+.gf-btn:hover{border-color:var(--gold);color:var(--gold)}
+.gf-btn.active{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -929,6 +938,21 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
       <input type="text" id="gal-search" placeholder="Cari buket... (nama / jenis)" oninput="onGallerySearch(this.value)"/>
     </div>
+    <div class="gal-filters fi" id="gal-filters">
+      <div class="gf-group">
+        <span class="gf-label">Harga:</span>
+        <button class="gf-btn active" onclick="setPriceFilter(this,'all')">Semua</button>
+        <button class="gf-btn" onclick="setPriceFilter(this,'low')">&lt; 100rb</button>
+        <button class="gf-btn" onclick="setPriceFilter(this,'mid')">100–200rb</button>
+        <button class="gf-btn" onclick="setPriceFilter(this,'high')">&gt; 200rb</button>
+      </div>
+      <div class="gf-group">
+        <span class="gf-label">Urutkan:</span>
+        <button class="gf-btn active" onclick="setSort(this,'default')">Terbaru</button>
+        <button class="gf-btn" onclick="setSort(this,'low')">Termurah</button>
+        <button class="gf-btn" onclick="setSort(this,'high')">Termahal</button>
+      </div>
+    </div>
     <div class="gal-count fi" id="gal-count"></div>
     <div class="gallery-grid fi d1" id="gallery-grid"></div>
     <div class="load-more-wrap" id="load-more-wrap" style="display:none">
@@ -1050,6 +1074,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
           <div class="fsw-rev-sec">
             <div class="fsw-rev-head">Detail Pesanan</div>
             <div class="fsw-rev-row"><span class="fsw-rev-k">Buket</span><span class="fsw-rev-v" id="rev-buket">—</span></div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Harga</span><span class="fsw-rev-v" id="rev-harga">—</span></div>
             <div class="fsw-rev-row"><span class="fsw-rev-k">Jenis</span><span class="fsw-rev-v" id="rev-jenis">—</span></div>
             <div class="fsw-rev-row"><span class="fsw-rev-k">Tanggal</span><span class="fsw-rev-v" id="rev-tanggal">—</span></div>
             <div class="fsw-rev-row"><span class="fsw-rev-k">Metode</span><span class="fsw-rev-v" id="rev-method">Diambil</span></div>
@@ -1475,7 +1500,7 @@ async function addPhotoCloud(photo){
   // If still too big, compress more aggressively
   if(compressed.length > 720000){ compressed = await compressImage(photo.src, 700, 0.5); }
   if(compressed.length > 720000){ compressed = await compressImage(photo.src, 560, 0.45); }
-  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', order:Date.now() };
+  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', price:photo.price||'', order:Date.now() };
   if(compressed.length > 1000000){
     toast('Foto terlalu besar walau dikompres. Coba foto lain.','err');
     console.error('Foto > 1MB setelah kompres:', compressed.length, 'bytes');
@@ -1644,28 +1669,74 @@ function setAphSrc(i,src){const el=document.getElementById('aph'+i);el.innerHTML
 const GL=[{},{style:'grid-row:span 2'},{},{style:'grid-column:span 2'},{},{}];
 function filterCat(el,cat){currentCat=cat;galLimit=GAL_PAGE;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderGallery()}
 let galSearch = '';
-let galLimit = 12;   // show 12 at a time
+let galLimit = 12;
 const GAL_PAGE = 12;
+let priceFilter = 'all';
+let sortMode = 'default';
 
 function onGallerySearch(val){
   galSearch = val.toLowerCase().trim();
-  galLimit = GAL_PAGE; // reset pagination on new search
+  galLimit = GAL_PAGE;
   renderGallery();
 }
 function loadMorePhotos(){
   galLimit += GAL_PAGE;
   renderGallery();
 }
+function setPriceFilter(el,mode){
+  priceFilter = mode;
+  galLimit = GAL_PAGE;
+  el.parentElement.querySelectorAll('.gf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderGallery();
+}
+function setSort(el,mode){
+  sortMode = mode;
+  galLimit = GAL_PAGE;
+  el.parentElement.querySelectorAll('.gf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderGallery();
+}
+
+// Ambil angka dari teks harga bebas (cth "Rp 85.000" -> 85000, "150-200rb" -> 150000)
+function parsePrice(str){
+  if(!str) return null;
+  let s = str.toLowerCase().replace(/\s/g,'');
+  // ambil angka pertama
+  let m = s.match(/(\d+[.,]?\d*)/);
+  if(!m) return null;
+  let num = parseFloat(m[1].replace(/[.,]/g,''));
+  // handle "rb"/"ribu"/"k" => ribuan
+  if(/rb|ribu|k/.test(s) && num < 1000) num *= 1000;
+  // handle "jt"/"juta"
+  if(/jt|juta/.test(s)) num *= (num<100?1000000:1);
+  return num;
+}
 
 function getFilteredPhotos(){
   let all = getPhotos();
-  // category filter
   let list = currentCat==='all' ? all : all.filter(p=>p.cat===currentCat);
-  // search filter
+  // search
   if(galSearch){
+    list = list.filter(p=>((p.label||'')+' '+(p.cat||'')).toLowerCase().includes(galSearch));
+  }
+  // price filter
+  if(priceFilter!=='all'){
     list = list.filter(p=>{
-      const hay = ((p.label||'')+' '+(p.cat||'')).toLowerCase();
-      return hay.includes(galSearch);
+      const n = parsePrice(p.price);
+      if(n===null) return false;
+      if(priceFilter==='low') return n < 100000;
+      if(priceFilter==='mid') return n >= 100000 && n <= 200000;
+      if(priceFilter==='high') return n > 200000;
+      return true;
+    });
+  }
+  // sort
+  if(sortMode!=='default'){
+    list = [...list].sort((a,b)=>{
+      const na=parsePrice(a.price), nb=parsePrice(b.price);
+      if(na===null) return 1; if(nb===null) return -1;
+      return sortMode==='low' ? na-nb : nb-na;
     });
   }
   return list;
@@ -1700,7 +1771,8 @@ function renderGallery(){
     return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
       <img src="${p.src}" alt="${p.label||''}" loading="lazy" onclick="openLightbox(${orig})" style="cursor:zoom-in"/>
       ${catBadge}
-      <div class="g-overlay"><span class="g-label">${p.label||''}</span></div>
+      <div class="g-overlay"><span class="g-label">${p.label||''}</span>${p.price?`<span style="display:block;color:var(--gold);font-size:12px;font-weight:600;margin-top:2px">${p.price}</span>`:''}</div>
+      ${p.price?`<span style="position:absolute;top:8px;right:8px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:700;letter-spacing:0.04em;padding:3px 9px;z-index:2">${p.price}</span>`:''}
       <button class="g-pick-btn" onclick="event.stopPropagation();pickFromGallery(${orig})">🌸 Pilih Buket Ini</button>
       <div class="g-oc">
         <button class="oc-btn oc-edit" onclick="event.stopPropagation();editPhotoModal(${orig})">Edit</button>
@@ -1751,7 +1823,7 @@ function renderBuketPicker(){}
 function pickFromGallery(origIdx){
   const p = getPhotos()[origIdx];
   if(!p) return;
-  selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||''};
+  selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||'', price:p.price||''};
   const jenisEl=document.getElementById('fp-jenis');
   if(jenisEl){ jenisEl.value=p.label||p.cat||''; }
   openFsWizard();
@@ -1890,6 +1962,7 @@ function updateReview(){
   setR('rev-tanggal',tgl?new Date(tgl).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—');
   setR('rev-method',pickupMethod==='ambil'?'Diambil 🏪':'COD 💵');
   setR('rev-buket',selBuket?(selBuket.custom?'Custom Request':(selBuket.label||'Buket')):'—');
+  setR('rev-harga',selBuket&&selBuket.price?selBuket.price:'Dikonfirmasi via WA');
   const img=document.getElementById('fsw-chosen-img');
   if(selBuket && !selBuket.custom && selBuket.src){ img.src=selBuket.src; img.style.display='block'; }
   else { img.style.display='none'; }
@@ -1921,6 +1994,7 @@ function orderWA(){
   msg+=`No. WhatsApp : ${hp}\n`;
   msg+=`${line}\n🌸 Detail Pesanan\n`;
   if(buketName)msg+=`Buket Pilihan : ${buketName}\n`;
+  if(selBuket&&selBuket.price)msg+=`Harga : ${selBuket.price}\n`;
   msg+=`Jenis Buket : ${jenis}\n`;
   msg+=`Tanggal Pengambilan : ${tglFmt}\n`;
   msg+=`Metode Pengambilan : ${pickupMethod==='ambil'?'Diambil':'COD'}\n`;
@@ -2161,6 +2235,7 @@ function openUploadModal(){
   document.getElementById('upm-thumbs').style.display = 'none';
   document.getElementById('upm-thumbs').innerHTML = '';
   document.getElementById('upm-label').value = '';
+  document.getElementById('upm-price').value = '';
   document.getElementById('upm-cat-input').value = '';
   document.getElementById('upm-save-btn').onclick = upmSave;
   upmRenderCatChips();
@@ -2218,12 +2293,13 @@ async function upmSave(){
   if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); document.getElementById('upm-cat-input').focus(); return; }
   upmCat = catInput;
   const label = document.getElementById('upm-label').value.trim();
+  const price = document.getElementById('upm-price').value.trim();
   const btn = document.getElementById('upm-save-btn');
   btn.textContent = 'Mengupload...'; btn.style.opacity = '0.6';
   toast('Mengupload foto ke server...', 'ok');
   let ok = 0;
   for(let i=0;i<upmFiles.length;i++){
-    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)) });
+    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)), price: price });
     if(done) ok++;
   }
   btn.textContent = 'Simpan Foto'; btn.style.opacity = '1';
@@ -2239,6 +2315,7 @@ function editPhotoModal(idx){
   upmFiles = [{ src: p.src, name: 'foto' }];
   upmCat = p.cat || '';
   document.getElementById('upm-label').value = p.label || '';
+  document.getElementById('upm-price').value = p.price || '';
   document.getElementById('upm-cat-input').value = (p.cat && p.cat !== 'all') ? p.cat : '';
   upmRenderCatChips();
   upmRenderThumbs();
@@ -2248,7 +2325,8 @@ function editPhotoModal(idx){
     const catInput = document.getElementById('upm-cat-input').value.trim();
     if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); return; }
     const label = document.getElementById('upm-label').value.trim();
-    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label });
+    const price = document.getElementById('upm-price').value.trim();
+    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label, price: price });
     renderCatTabs();
     renderGallery();
     renderBuketPicker();
@@ -2298,6 +2376,7 @@ function showLightbox(){
   document.getElementById('lb-img').src = p.src;
   document.getElementById('lb-caption').textContent = p.label || '';
   document.getElementById('lb-cat').textContent = (p.cat && p.cat!=='all') ? (CAT_LABELS[p.cat]||p.cat) : '';
+  document.getElementById('lb-price').textContent = p.price || '';
   // Hide nav arrows if only 1 photo
   const showNav = lbList.length > 1;
   document.querySelector('.lb-prev').style.display = showNav?'flex':'none';
@@ -2362,6 +2441,7 @@ document.getElementById('clr-preview').style.background=document.getElementById(
     <div style="text-align:center">
       <div class="lb-cat" id="lb-cat"></div>
       <div class="lb-caption" id="lb-caption"></div>
+      <div id="lb-price" style="color:var(--gold);font-size:20px;font-family:'Cormorant Infant',serif;font-weight:400;margin-top:4px"></div>
     </div>
     <button class="lb-order-btn" onclick="lbOrderThis()">🌸 Pesan Buket Ini</button>
   </div>
@@ -2392,8 +2472,12 @@ document.getElementById('clr-preview').style.background=document.getElementById(
     <div class="upm-cat-grid" id="upm-cat-chips"></div>
 
     <!-- Label/nama foto -->
-    <label class="upm-lbl">Label Foto (opsional)</label>
+    <label class="upm-lbl">Label / Nama Buket (opsional)</label>
     <input class="upm-inp" type="text" id="upm-label" placeholder="Cth: Buket Wisuda Pink Premium"/>
+
+    <!-- Harga -->
+    <label class="upm-lbl">Harga (opsional)</label>
+    <input class="upm-inp" type="text" id="upm-price" placeholder="Cth: Rp 85.000 / mulai 100rb / 150-200rb"/>
 
     <!-- Footer -->
     <div class="upm-foot">
