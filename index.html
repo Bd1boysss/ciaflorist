@@ -682,7 +682,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 #fs-fade.active{opacity:1;pointer-events:all}
 /* Top bar with progress + close */
 .fsw-top{
-  position:sticky;top:0;z-index:10;background:rgba(13,10,8,0.95);backdrop-filter:blur(16px);
+  position:sticky;z-index:5;;top:0;z-index:10;background:rgba(13,10,8,0.95);backdrop-filter:blur(16px);
   border-bottom:0.5px solid var(--border2);
   display:flex;align-items:center;justify-content:space-between;
   padding:1rem 1.5rem;gap:1rem;
@@ -700,7 +700,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 .fsw-close:hover{border-color:var(--rose);color:var(--rose)}
 /* Body — centered content per step */
 .fsw-body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2.5rem 1.5rem 3rem}
-.fsw-panel{width:100%;max-width:560px;animation:fswIn 0.6s cubic-bezier(0.16,1,0.3,1)}
+.fsw-panel{width:100%;max-width:560px;position:relative;z-index:5;animation:fswIn 0.6s cubic-bezier(0.16,1,0.3,1)}
 @keyframes fswIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 /* Step heading like intro */
 .fsw-eyebrow{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;opacity:0;animation:fswFade 0.6s 0.2s ease forwards}
@@ -757,6 +757,27 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 .g-custom:hover{border-color:var(--gold);background:rgba(201,169,110,0.12)}
 .g-custom .gc-icon{font-size:30px;opacity:0.8}
 .g-custom .gc-txt{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-align:center;line-height:1.4}
+
+
+/* ── FIX iOS auto-zoom: input font >=16px mencegah Safari zoom otomatis ── */
+@media(max-width:820px){
+  .fp-inp,.fp-ta,.fp-sel,.wa-setting input,.upm-inp,.af-inp,.af-ta,.af-sel,.m-input,.price-inp,input,textarea,select{
+    font-size:16px !important;
+  }
+}
+
+
+/* ── GALLERY SEARCH + LOAD MORE ── */
+.gal-search{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;max-width:380px;border:0.5px solid var(--border2);background:var(--ink);padding:0 14px;transition:border-color 0.18s}
+.gal-search:focus-within{border-color:var(--gold)}
+.gal-search svg{width:15px;height:15px;fill:var(--td);flex-shrink:0}
+.gal-search input{flex:1;background:transparent;border:none;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:13px;padding:11px 0;outline:none}
+.gal-search input::placeholder{color:var(--td)}
+.gal-count{font-size:10px;color:var(--td);letter-spacing:0.08em;margin-bottom:1rem;font-weight:500}
+.gal-count strong{color:var(--gold)}
+.load-more-wrap{text-align:center;margin-top:2rem}
+.load-more-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 32px;background:transparent;color:var(--gold);border:0.5px solid var(--gold);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.load-more-btn:hover{background:var(--gold);color:var(--ink)}
 
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
@@ -904,13 +925,22 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
       <button class="o-btn" onclick="openUploadModal()">+ Tambah Foto</button>
     </div>
     <div class="cat-tabs fi" id="cat-tabs"></div>
+    <div class="gal-search fi" id="gal-search-wrap">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      <input type="text" id="gal-search" placeholder="Cari buket... (nama / jenis)" oninput="onGallerySearch(this.value)"/>
+    </div>
+    <div class="gal-count fi" id="gal-count"></div>
     <div class="gallery-grid fi d1" id="gallery-grid"></div>
+    <div class="load-more-wrap" id="load-more-wrap" style="display:none">
+      <button class="load-more-btn" onclick="loadMorePhotos()">Lihat Lebih Banyak ↓</button>
+    </div>
   </div>
 </section>
 
 <!-- ═══ FULLSCREEN WIZARD (cinematic) ═══ -->
 <div id="fs-fade"></div>
 <div id="fs-wizard">
+  <div id="fsw-petals" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0"></div>
   <!-- Top bar -->
   <div class="fsw-top">
     <div class="fsw-progress">
@@ -1612,19 +1642,59 @@ function setAphSrc(i,src){const el=document.getElementById('aph'+i);el.innerHTML
 // GALLERY RENDER
 // ═══════════════════════════════════════════════
 const GL=[{},{style:'grid-row:span 2'},{},{style:'grid-column:span 2'},{},{}];
-function filterCat(el,cat){currentCat=cat;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderGallery()}
+function filterCat(el,cat){currentCat=cat;galLimit=GAL_PAGE;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderGallery()}
+let galSearch = '';
+let galLimit = 12;   // show 12 at a time
+const GAL_PAGE = 12;
+
+function onGallerySearch(val){
+  galSearch = val.toLowerCase().trim();
+  galLimit = GAL_PAGE; // reset pagination on new search
+  renderGallery();
+}
+function loadMorePhotos(){
+  galLimit += GAL_PAGE;
+  renderGallery();
+}
+
+function getFilteredPhotos(){
+  let all = getPhotos();
+  // category filter
+  let list = currentCat==='all' ? all : all.filter(p=>p.cat===currentCat);
+  // search filter
+  if(galSearch){
+    list = list.filter(p=>{
+      const hay = ((p.label||'')+' '+(p.cat||'')).toLowerCase();
+      return hay.includes(galSearch);
+    });
+  }
+  return list;
+}
+
 function renderGallery(){
   const g=document.getElementById('gallery-grid');
   const all=getPhotos();
-  const photos=currentCat==='all'?all:all.filter(p=>p.cat===currentCat);
-  if(!photos.length){
+  const filtered=getFilteredPhotos();
+  const countEl=document.getElementById('gal-count');
+  const moreWrap=document.getElementById('load-more-wrap');
+
+  if(!filtered.length){
+    if(countEl)countEl.textContent='';
+    if(moreWrap)moreWrap.style.display='none';
     g.innerHTML=`<div style="grid-column:1/-1;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(201,169,110,0.3);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;border:0.5px solid var(--border2)">
-      ${ownerOn?`<span>Belum ada foto di kategori ini</span><button onclick="openUploadModal()" style="padding:8px 18px;background:var(--gold);color:var(--ink);border:none;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">+ Tambah Foto</button>`:'Koleksi Segera Hadir'}
+      ${ownerOn?`<span>Belum ada foto${galSearch?' yang cocok':' di kategori ini'}</span><button onclick="openUploadModal()" style="padding:8px 18px;background:var(--gold);color:var(--ink);border:none;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">+ Tambah Foto</button>`:(galSearch?'Tidak ada hasil — coba kata lain':'Koleksi Segera Hadir')}
     </div>`;
     return;
   }
+
+  // Show count
+  if(countEl){
+    countEl.innerHTML = `Menampilkan <strong>${Math.min(galLimit,filtered.length)}</strong> dari <strong>${filtered.length}</strong> buket`;
+  }
+
+  const shown = filtered.slice(0, galLimit);
   const CAT_LABELS={'wisuda':'🎓 Wisuda','anniversary':'💑 Anniversary','ulang-tahun':'🎂 Ulang Tahun','valentine':'💝 Valentine','lainnya':'🎁 Lainnya','all':'✨ Semua'};
-  let html=photos.map((p,i)=>{
+  let html=shown.map((p,i)=>{
     const orig=all.indexOf(p);const l=GL[i%GL.length];
     const catBadge=p.cat&&p.cat!=='all'?`<span style="position:absolute;top:8px;left:8px;background:rgba(13,10,8,0.75);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;z-index:2">${CAT_LABELS[p.cat]||p.cat}</span>`:'';
     return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
@@ -1638,11 +1708,18 @@ function renderGallery(){
       </div>
     </div>`;
   }).join('');
-  // Custom request card at the end
-  html+=`<div class="g-item g-custom" onclick="pickCustomGallery()">
-    <span class="gc-icon">✏️</span><span class="gc-txt">Custom<br>Request</span>
-  </div>`;
+  // Custom card only on first page & no search
+  if(galLimit<=GAL_PAGE && !galSearch){
+    html+=`<div class="g-item g-custom" onclick="pickCustomGallery()">
+      <span class="gc-icon">✏️</span><span class="gc-txt">Custom<br>Request</span>
+    </div>`;
+  }
   g.innerHTML=html;
+
+  // Load more button
+  if(moreWrap){
+    moreWrap.style.display = (filtered.length > galLimit) ? 'block' : 'none';
+  }
 }
 function renderHero(){
   const photos=getPhotos();const s=getS();const wrap=document.getElementById('hero-mosaic');
@@ -1692,6 +1769,18 @@ function refreshPL(){}
 // ═══════════════════════════════════════════════
 // FULLSCREEN WIZARD (cinematic, fade hitam)
 // ═══════════════════════════════════════════════
+function spawnWizardPetals(){
+  const pc=document.getElementById('fsw-petals');
+  if(!pc||pc.dataset.done)return;
+  pc.dataset.done='1';
+  for(let i=0;i<10;i++){
+    const p=document.createElement('div');p.className='wpetal';
+    const sz=Math.random()*90+40;
+    p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:-${sz}px;animation-duration:${Math.random()*14+12}s;animation-delay:${Math.random()*8}s`;
+    pc.appendChild(p);
+  }
+}
+
 function openFsWizard(){
   fsStep = 0;
   // Fade to black, then show wizard
@@ -1700,6 +1789,7 @@ function openFsWizard(){
   setTimeout(()=>{
     document.getElementById('fs-wizard').classList.add('show');
     document.body.classList.add('no-scroll');
+    spawnWizardPetals();
     showFsPanel(0);
     // fade back out to reveal wizard
     setTimeout(()=>fade.classList.remove('active'), 60);
@@ -2191,10 +2281,8 @@ let lbIdx = 0;
 let lbList = [];
 
 function openLightbox(origIdx){
-  // Build list based on current category filter (same as gallery shows)
   const all = getPhotos();
-  lbList = currentCat==='all' ? all : all.filter(p=>p.cat===currentCat);
-  // Find position of clicked photo within filtered list
+  lbList = getFilteredPhotos();
   const clicked = all[origIdx];
   lbIdx = lbList.indexOf(clicked);
   if(lbIdx<0) lbIdx=0;
