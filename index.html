@@ -812,6 +812,93 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 .guide-step:hover .gi-bloom{animation-duration:1.6s}
 .guide-step:hover .gi-frame-front{animation-duration:1.8s}
 
+
+/* ── TESTIMONI ── */
+#testimoni{padding:5rem 0;background:var(--ink2)}
+.testi-inner{max-width:1280px;margin:0 auto;padding:0 4rem}
+.testi-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.testi-card{background:linear-gradient(160deg,var(--ink3),var(--ink2));border:0.5px solid var(--border2);padding:1.75rem;position:relative;transition:border-color 0.25s,transform 0.25s}
+.testi-card:hover{border-color:rgba(201,169,110,0.35);transform:translateY(-4px)}
+.testi-quote{font-family:'Cormorant Infant',serif;font-size:40px;font-style:italic;color:var(--gold);opacity:0.35;line-height:0.5;height:20px}
+.testi-text{font-size:13px;line-height:1.8;color:var(--tm);font-weight:300;margin:1rem 0 1.25rem;font-style:italic;font-family:'Cormorant Infant',serif}
+.testi-stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:10px}
+.testi-foot{display:flex;align-items:center;gap:12px;border-top:0.5px solid var(--border2);padding-top:1rem}
+.testi-ava{width:38px;height:38px;border-radius:50%;background:var(--mist);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Infant',serif;font-style:italic;color:var(--gold);font-size:17px;flex-shrink:0;overflow:hidden}
+.testi-ava img{width:100%;height:100%;object-fit:cover}
+.testi-name{font-size:12px;font-weight:600;color:var(--cream)}
+.testi-role{font-size:10px;color:var(--td);letter-spacing:0.06em}
+.testi-del{position:absolute;top:10px;right:10px;width:24px;height:24px;background:var(--rose-l);border:0.5px solid rgba(184,66,74,0.3);color:var(--rose);font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center}
+body.om .testi-del{display:flex}
+.testi-empty{grid-column:1/-1;text-align:center;padding:3rem;color:var(--td);font-size:11px;letter-spacing:0.1em;border:0.5px dashed var(--border2);text-transform:uppercase;font-weight:600}
+
+/* ── FAQ ── */
+#faq{padding:5rem 0;background:var(--ink)}
+.faq-inner{max-width:820px;margin:0 auto;padding:0 4rem}
+.faq-head{text-align:center;margin-bottom:2.5rem}
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{border:0.5px solid var(--border2);background:var(--ink2);transition:border-color 0.2s}
+.faq-item.open{border-color:rgba(201,169,110,0.4)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.5rem;cursor:pointer;font-size:13px;font-weight:600;color:var(--cream);transition:color 0.2s}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{width:22px;height:22px;flex-shrink:0;position:relative}
+.faq-icon::before,.faq-icon::after{content:'';position:absolute;background:var(--gold);transition:transform 0.3s}
+.faq-icon::before{top:50%;left:3px;right:3px;height:1px;transform:translateY(-50%)}
+.faq-icon::after{left:50%;top:3px;bottom:3px;width:1px;transform:translateX(-50%)}
+.faq-item.open .faq-icon::after{transform:translateX(-50%) scaleY(0)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;color:var(--tm)}
+.faq-a-inner{padding:0 1.5rem 1.25rem;font-size:12px;line-height:1.9;font-weight:300}
+@media(max-width:760px){
+  .testi-inner,.faq-inner{padding-left:1.5rem;padding-right:1.5rem}
+  .testi-grid{grid-template-columns:1fr}
+  #testimoni,#faq{padding:3.5rem 0}
+}
+
+
+/* ── PHOTO BADGES ── */
+.g-badge{position:absolute;top:8px;left:8px;font-size:9px;font-weight:700;letter-spacing:0.04em;padding:3px 9px;z-index:3;color:#fff}
+.g-badge-terlaris{background:#B8424A}
+.g-badge-baru{background:#4a8c6a}
+.g-badge-promo{background:#C9A96E;color:var(--ink)}
+/* shift category badge down if both present */
+
+
+/* ── CARD TEMPLATE CHIPS ── */
+.card-tpl-chips{display:flex;gap:5px;flex-wrap:wrap}
+.card-tpl-btn{font-size:9px;padding:6px 11px;border:0.5px solid var(--border2);background:var(--ink);color:var(--td);cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:0.04em;transition:all 0.15s}
+.card-tpl-btn:hover{border-color:var(--gold);color:var(--gold)}
+.card-tpl-btn.active{background:var(--mist);border-color:var(--gold);color:var(--gold)}
+
+
+/* ── SHARE BUTTON ── */
+.lb-share-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:transparent;color:var(--cream);border:0.5px solid var(--border);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.lb-share-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+
+/* ── LOADING SKELETON ── */
+.skel-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr;grid-template-rows:280px 220px;gap:6px}
+.skel-item{background:linear-gradient(90deg,var(--ink3) 0%,var(--ink2) 50%,var(--ink3) 100%);background-size:200% 100%;animation:skelShimmer 1.4s ease-in-out infinite;border:0.5px solid var(--border2)}
+.skel-item:first-child{grid-row:span 2}
+@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(max-width:760px){.skel-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.skel-item:first-child{grid-row:auto}.skel-item{height:140px}}
+
+
+/* ── LIGHT MODE ── */
+body.light{
+  --ink:#FBF8F3;--ink2:#F3EEE5;--ink3:#ECE5D8;
+  --dust:#E8DFD0;
+  --cream:#2A2018;--cream2:#3D2E22;
+  --tm:rgba(42,32,24,0.78);--td:rgba(42,32,24,0.45);
+  --border:rgba(160,130,80,0.28);--border2:rgba(160,130,80,0.15);
+  --mist:rgba(201,169,110,0.12);
+}
+body.light::after{opacity:0.15}
+/* Theme toggle button */
+#theme-toggle{position:fixed;bottom:2rem;left:2rem;z-index:300;width:42px;height:42px;border-radius:50%;border:0.5px solid var(--border);background:var(--ink2);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+#theme-toggle:hover{border-color:var(--gold);transform:scale(1.08)}
+#theme-toggle svg{width:18px;height:18px;fill:var(--gold)}
+@media(max-width:600px){#theme-toggle{width:38px;height:38px;bottom:1.5rem;left:1.5rem}}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -872,6 +959,8 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   <ul class="nav-links">
     <li><a href="#cara-pesan">Cara Pesan</a></li>
     <li><a href="#galeri">Koleksi</a></li>
+    <li><a href="#testimoni">Testimoni</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#tentang">Tentang</a></li>
     <li><a href="https://www.instagram.com/ciaflorist__" target="_blank" rel="noopener">Instagram</a></li>
   </ul>
@@ -1075,6 +1164,17 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
             <span class="field-err" id="err-jenis">Wajib diisi</span>
           </div>
           <div class="fp-g full">
+            <label class="fp-lbl">Kartu Ucapan <span style="color:var(--td);font-weight:400">(opsional)</span></label>
+            <div class="card-tpl-chips" id="card-tpl-chips">
+              <button type="button" class="card-tpl-btn" onclick="useCardTpl(this,'wisuda')">🎓 Wisuda</button>
+              <button type="button" class="card-tpl-btn" onclick="useCardTpl(this,'ultah')">🎂 Ultah</button>
+              <button type="button" class="card-tpl-btn" onclick="useCardTpl(this,'anniv')">💑 Anniversary</button>
+              <button type="button" class="card-tpl-btn" onclick="useCardTpl(this,'sayang')">💝 Buat Tersayang</button>
+              <button type="button" class="card-tpl-btn" onclick="useCardTpl(this,'semangat')">🌟 Semangat</button>
+            </div>
+            <textarea class="fp-ta" id="fp-kartu" placeholder="Tulis pesan kartu ucapan, atau pilih template di atas..." style="height:64px;margin-top:8px"></textarea>
+          </div>
+          <div class="fp-g full">
             <label class="fp-lbl">Tanggal Pengambilan <span class="req">*</span></label>
             <input class="fp-inp" type="date" id="fp-tanggal" oninput="syncForm()"/>
             <span class="field-err" id="err-tanggal">Wajib diisi</span>
@@ -1148,7 +1248,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   </div>
 </div>
 
-<!-- ═══ ABOUT ═══ --><!-- ═══ ABOUT ═══ -->
+<!-- ═══ ABOUT ═══ -->
 <section id="tentang">
   <div class="about-inner">
     <div class="about-body fi">
@@ -1169,6 +1269,29 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   </div>
 </section>
 
+
+<!-- ═══ TESTIMONI ═══ -->
+<section id="testimoni">
+  <div class="testi-inner">
+    <div class="testi-top fi">
+      <div><div class="sec-tag">Kata Mereka</div><h2 class="sec-title">Testimoni <em>pelanggan</em></h2></div>
+      <button class="o-btn" onclick="openTestiModal()" style="display:none">+ Tambah Testimoni</button>
+    </div>
+    <div class="testi-grid fi d1" id="testi-grid"></div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-head fi">
+      <div class="sec-tag" style="justify-content:center">Tanya Jawab</div>
+      <h2 class="sec-title">Pertanyaan <em>umum</em></h2>
+    </div>
+    <div class="faq-list fi d1" id="faq-list"></div>
+  </div>
+</section>
+
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="f-orn"><div></div><span>✦ ✦ ✦</span><div></div></div>
@@ -1179,6 +1302,11 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
     @ciaflorist__
   </a>
 </footer>
+
+<!-- ═══ THEME TOGGLE ═══ -->
+<button id="theme-toggle" onclick="toggleTheme()" title="Ganti tema">
+  <svg id="theme-icon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-5.4-5.4c0-1.81.89-3.41 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+</button>
 
 <!-- ═══ FLOATING WA ═══ -->
 <div id="wa-float">
@@ -1557,7 +1685,7 @@ async function addPhotoCloud(photo){
   // If still too big, compress more aggressively
   if(compressed.length > 720000){ compressed = await compressImage(photo.src, 700, 0.5); }
   if(compressed.length > 720000){ compressed = await compressImage(photo.src, 560, 0.45); }
-  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', price:photo.price||'', order:Date.now() };
+  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', price:photo.price||'', badge:photo.badge||'', order:Date.now() };
   if(compressed.length > 1000000){
     toast('Foto terlalu besar walau dikompres. Coba foto lain.','err');
     console.error('Foto > 1MB setelah kompres:', compressed.length, 'bytes');
@@ -1678,6 +1806,7 @@ function enterOwner(){
   ['about-text','stat1','stat2','stat3'].forEach(id=>document.getElementById(id).setAttribute('contenteditable','true'));
   document.querySelectorAll('.aph').forEach(el=>{el.style.cursor='pointer';el.onclick=()=>el.querySelector('input[type=file]').click()});
   const s=getS();if(s.wa)document.getElementById('wa-input').value=s.wa;
+  document.querySelectorAll('#testimoni .o-btn').forEach(b=>b.style.display='inline-flex');
   toast('Mode owner aktif ✦','ok');
 }
 function exitOwner(){
@@ -1686,6 +1815,7 @@ function exitOwner(){
   const ob=document.getElementById('owner-btn');ob.classList.remove('on');ob.textContent='Owner';
   ['about-text','stat1','stat2','stat3'].forEach(id=>document.getElementById(id).setAttribute('contenteditable','false'));
   document.querySelectorAll('.aph').forEach(el=>{el.style.cursor='default';el.onclick=null});
+  document.querySelectorAll('#testimoni .o-btn').forEach(b=>b.style.display='none');
   ownerSaveAll();toast('Tersimpan ✦','ok');
 }
 function ownerSaveAll(){
@@ -1824,7 +1954,7 @@ function renderGallery(){
   const CAT_LABELS={'wisuda':'🎓 Wisuda','anniversary':'💑 Anniversary','ulang-tahun':'🎂 Ulang Tahun','valentine':'💝 Valentine','lainnya':'🎁 Lainnya','all':'✨ Semua'};
   let html=shown.map((p,i)=>{
     const orig=all.indexOf(p);const l=GL[i%GL.length];
-    const catBadge=p.cat&&p.cat!=='all'?`<span style="position:absolute;top:8px;left:8px;background:rgba(13,10,8,0.75);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;z-index:2">${CAT_LABELS[p.cat]||p.cat}</span>`:'';
+    const catTop=p.badge?34:8;const catBadge=p.cat&&p.cat!=='all'?`<span style="position:absolute;top:${catTop}px;left:8px;background:rgba(13,10,8,0.75);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;z-index:2">${CAT_LABELS[p.cat]||p.cat}</span>`:'';
     return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
       <img src="${p.src}" alt="${p.label||''}" loading="lazy" onclick="openLightbox(${orig})" style="cursor:zoom-in"/>
       ${catBadge}
@@ -1994,6 +2124,19 @@ function validateStep2(){
   return ok;
 }
 
+const CARD_TEMPLATES={
+  wisuda:'Selamat atas wisudamu! 🎓 Semoga ilmu yang didapat membawa keberkahan dan kesuksesan di masa depan. Bangga padamu!',
+  ultah:'Selamat ulang tahun! 🎂 Semoga panjang umur, sehat selalu, dan semua impianmu terkabul. Bahagia terus ya!',
+  anniv:'Happy anniversary! 💑 Semoga cinta kalian semakin kuat dan langgeng selamanya. Tetap saling menyayangi ya!',
+  sayang:'Untukmu yang tersayang 💝 Sebuket bunga ini tak sebanding dengan rasa sayangku padamu. Terima kasih sudah ada.',
+  semangat:'Tetap semangat ya! 🌟 Bunga ini buat menemani hari-harimu. Kamu hebat dan pasti bisa melewati semuanya!'
+};
+function useCardTpl(el,key){
+  const ta=document.getElementById('fp-kartu');
+  ta.value=CARD_TEMPLATES[key]||'';
+  document.querySelectorAll('.card-tpl-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
 function setMethod(m){
   pickupMethod=m;
   document.getElementById('btn-ambil').classList.toggle('active',m==='ambil');
@@ -2053,6 +2196,8 @@ function orderWA(){
   if(buketName)msg+=`Buket Pilihan : ${buketName}\n`;
   if(selBuket&&selBuket.price)msg+=`Harga : ${selBuket.price}\n`;
   msg+=`Jenis Buket : ${jenis}\n`;
+  const kartu=document.getElementById('fp-kartu')?document.getElementById('fp-kartu').value.trim():'';
+  if(kartu)msg+=`Kartu Ucapan : "${kartu}"\n`;
   msg+=`Tanggal Pengambilan : ${tglFmt}\n`;
   msg+=`Metode Pengambilan : ${pickupMethod==='ambil'?'Diambil':'COD'}\n`;
   if(pickupMethod==='cod')msg+=`Lokasi COD : ${lokasi}\n`;
@@ -2283,7 +2428,8 @@ function upmPickCat(el, cat){
 // ═══════════════════════════════════════════════
 // UPLOAD MODAL (owner)
 // ═══════════════════════════════════════════════
-let upmFiles = [];   // {file, src, label}
+let upmFiles = [];
+let upmBadge = '';
 let upmCat   = 'all';
 
 function openUploadModal(){
@@ -2293,6 +2439,8 @@ function openUploadModal(){
   document.getElementById('upm-thumbs').innerHTML = '';
   document.getElementById('upm-label').value = '';
   document.getElementById('upm-price').value = '';
+  upmBadge='';
+  document.querySelectorAll('#upload-modal .upm-cat-grid')[1] && document.querySelectorAll('#upload-modal .upm-cat-grid')[1].querySelectorAll('.upm-cat-btn').forEach((b,idx)=>b.classList.toggle('active',idx===0));
   document.getElementById('upm-cat-input').value = '';
   document.getElementById('upm-save-btn').onclick = upmSave;
   upmRenderCatChips();
@@ -2306,6 +2454,11 @@ function closeUploadModal(){
   upmFiles = [];
 }
 
+function upmSetBadge(el, badge){
+  upmBadge = badge;
+  el.parentElement.querySelectorAll('.upm-cat-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
 function upmSelCat(el, cat){
   upmCat = cat;
   document.querySelectorAll('.upm-cat-btn').forEach(b => b.classList.remove('active'));
@@ -2356,7 +2509,7 @@ async function upmSave(){
   toast('Mengupload foto ke server...', 'ok');
   let ok = 0;
   for(let i=0;i<upmFiles.length;i++){
-    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)), price: price });
+    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)), price: price, badge: upmBadge });
     if(done) ok++;
   }
   btn.textContent = 'Simpan Foto'; btn.style.opacity = '1';
@@ -2373,6 +2526,8 @@ function editPhotoModal(idx){
   upmCat = p.cat || '';
   document.getElementById('upm-label').value = p.label || '';
   document.getElementById('upm-price').value = p.price || '';
+  upmBadge = p.badge || '';
+  document.querySelectorAll('#upload-modal .upm-cat-grid')[1] && document.querySelectorAll('#upload-modal .upm-cat-grid')[1].querySelectorAll('.upm-cat-btn').forEach(b=>{const bv=b.getAttribute('onclick').match(/'([^']*)'/)[1];b.classList.toggle('active',bv===upmBadge)});
   document.getElementById('upm-cat-input').value = (p.cat && p.cat !== 'all') ? p.cat : '';
   upmRenderCatChips();
   upmRenderThumbs();
@@ -2383,7 +2538,7 @@ function editPhotoModal(idx){
     if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); return; }
     const label = document.getElementById('upm-label').value.trim();
     const price = document.getElementById('upm-price').value.trim();
-    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label, price: price });
+    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label, price: price, badge: upmBadge });
     renderCatTabs();
     renderGallery();
     renderBuketPicker();
@@ -2450,6 +2605,18 @@ function closeLightbox(){
   document.body.classList.remove('no-scroll');
 }
 
+function shareBuket(){
+  const p = lbList[lbIdx];
+  if(!p) return;
+  const txt = `Lihat buket "${p.label||'cantik'}" dari ciaflorist! 🌸${p.price?' '+p.price:''}`;
+  const url = window.location.href;
+  if(navigator.share){
+    navigator.share({title:'ciaflorist',text:txt,url:url}).catch(()=>{});
+  } else {
+    // fallback: share via WhatsApp
+    window.open(`https://wa.me/?text=${encodeURIComponent(txt+' '+url)}`,'_blank');
+  }
+}
 function lbOrderThis(){
   const p = lbList[lbIdx];
   const all = getPhotos();
@@ -2467,9 +2634,116 @@ document.addEventListener('keydown', e=>{
 
 
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// TESTIMONI
+// ═══════════════════════════════════════════════
+const DEF_TESTI=[
+  {name:'Sarah A.',role:'Wisuda UNS',text:'Buketnya cantik banget, persis kayak foto! Pengerjaan rapi dan wangi. Penerima happy banget. Makasih ciaflorist!',stars:5},
+  {name:'Dimas R.',role:'Anniversary',text:'Pesan dadakan buat anniversary, eh ternyata bisa & hasilnya memuaskan. Bakal langganan di sini.',stars:5},
+  {name:'Nabila P.',role:'Ulang Tahun',text:'Custom request warna & kartu ucapan dilayani dengan sabar. Buketnya bikin yang ulang tahun terharu.',stars:5},
+];
+const getTesti=()=>{try{return JSON.parse(localStorage.getItem('cia_testi')||'null')||DEF_TESTI}catch{return DEF_TESTI}};
+const setTesti=v=>localStorage.setItem('cia_testi',JSON.stringify(v));
+
+function renderTesti(){
+  const g=document.getElementById('testi-grid');if(!g)return;
+  const list=getTesti();
+  if(!list.length){g.innerHTML=`<div class="testi-empty">${ownerOn?'Klik + Tambah Testimoni':'Belum ada testimoni'}</div>`;return}
+  g.innerHTML=list.map((t,i)=>{
+    const stars='★'.repeat(t.stars||5)+'☆'.repeat(5-(t.stars||5));
+    const initial=(t.name||'?').charAt(0).toUpperCase();
+    return`<div class="testi-card">
+      <button class="testi-del" onclick="delTesti(${i})">✕</button>
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">${stars}</div>
+      <div class="testi-text">${t.text||''}</div>
+      <div class="testi-foot">
+        <div class="testi-ava">${t.avatar?`<img src="${t.avatar}"/>`:initial}</div>
+        <div><div class="testi-name">${t.name||''}</div><div class="testi-role">${t.role||''}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openTestiModal(){
+  document.getElementById('testi-modal').classList.add('show');
+  document.body.classList.add('no-scroll');
+  document.getElementById('tm-name').value='';
+  document.getElementById('tm-role').value='';
+  document.getElementById('tm-text').value='';
+  document.getElementById('tm-stars').value='5';
+}
+function closeTestiModal(){document.getElementById('testi-modal').classList.remove('show');document.body.classList.remove('no-scroll')}
+function saveTesti(){
+  const name=document.getElementById('tm-name').value.trim();
+  const text=document.getElementById('tm-text').value.trim();
+  if(!name||!text){toast('Isi nama & testimoni','err');return}
+  const list=getTesti();
+  list.unshift({name,role:document.getElementById('tm-role').value.trim(),text,stars:parseInt(document.getElementById('tm-stars').value)||5});
+  setTesti(list);renderTesti();closeTestiModal();toast('Testimoni ditambahkan ✦','ok');
+}
+function delTesti(i){if(!confirm('Hapus testimoni ini?'))return;const list=getTesti();list.splice(i,1);setTesti(list);renderTesti();toast('Dihapus')}
+
+// ═══════════════════════════════════════════════
+// FAQ
+// ═══════════════════════════════════════════════
+const FAQ_DATA=[
+  {q:'Berapa lama pengerjaan buket?',a:'Untuk buket reguler biasanya 1-2 hari. Untuk pesanan besar atau custom khusus bisa 2-3 hari. Pesan jauh-jauh hari ya biar lebih aman, terutama di musim wisuda.'},
+  {q:'Apakah bisa request warna & desain sendiri?',a:'Bisa banget! Pilih "Custom Request" saat memesan, lalu tulis keinginanmu di kolom catatan. Kami akan diskusikan detailnya via WhatsApp.'},
+  {q:'Area mana saja yang free ongkir?',a:'Free ongkir untuk area Sidoharjo, Girimarto, dan Pandean. Untuk area lain, ongkir menyesuaikan jarak — bisa ditanyakan saat konfirmasi via WhatsApp.'},
+  {q:'Metode pembayaran apa saja yang diterima?',a:'Kami menerima Transfer Bank dan COD (bayar di tempat). Untuk transfer, nomor rekening akan dikirim via WhatsApp setelah konfirmasi pesanan.'},
+  {q:'Apakah bisa pesan untuk hari yang sama?',a:'Tergantung ketersediaan bahan & antrian. Kalau mau pesan mendadak, langsung chat WhatsApp kami dulu untuk memastikan bisa atau tidak.'},
+  {q:'Bisa tambah kartu ucapan?',a:'Tentu! Saat memesan kamu bisa tulis pesan kartu ucapan, atau pilih template yang sudah kami sediakan. Gratis tanpa biaya tambahan.'},
+];
+function renderFAQ(){
+  const wrap=document.getElementById('faq-list');if(!wrap)return;
+  wrap.innerHTML=FAQ_DATA.map((f,i)=>`
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="toggleFAQ(${i})">${f.q}<span class="faq-icon"></span></div>
+      <div class="faq-a" id="faq-a-${i}"><div class="faq-a-inner">${f.a}</div></div>
+    </div>`).join('');
+}
+function toggleFAQ(i){
+  const item=document.getElementById('faq-'+i);
+  const ans=document.getElementById('faq-a-'+i);
+  const isOpen=item.classList.contains('open');
+  // close all
+  document.querySelectorAll('.faq-item').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('.faq-a').forEach(el=>el.style.maxHeight='0');
+  if(!isOpen){item.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}
+}
+
+// ═══════════════════════════════════════════════
+// THEME TOGGLE
+// ═══════════════════════════════════════════════
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light');
+  try{localStorage.setItem('cia_theme',isLight?'light':'dark')}catch{}
+  updateThemeIcon(isLight);
+}
+function updateThemeIcon(isLight){
+  const ic=document.getElementById('theme-icon');
+  if(!ic)return;
+  if(isLight){
+    // sun icon
+    ic.innerHTML='<path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5v2m0 16v2M4.2 4.2l1.4 1.4m12.8 12.8l1.4 1.4M2 12h2m16 0h2M4.2 19.8l1.4-1.4M17 6.6l1.4-1.4" stroke="var(--gold)" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+  } else {
+    ic.innerHTML='<path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-5.4-5.4c0-1.81.89-3.41 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
+  }
+}
+(function initTheme(){
+  try{
+    if(localStorage.getItem('cia_theme')==='light'){
+      document.body.classList.add('light');
+      setTimeout(()=>updateThemeIcon(true),50);
+    }
+  }catch{}
+})();
+
 // INIT
 // ═══════════════════════════════════════════════
 loadSiteSettings();
+renderTesti();
+renderFAQ();
 initWelcome();
 document.getElementById('clr-preview').style.background=document.getElementById('new-clr-hex').value;
 
@@ -2477,7 +2751,7 @@ document.getElementById('clr-preview').style.background=document.getElementById(
 (async function initPhotos(){
   // Show loading state in gallery
   const g=document.getElementById('gallery-grid');
-  if(g) g.innerHTML='<div style="grid-column:1/-1;min-height:160px;display:flex;align-items:center;justify-content:center;color:rgba(201,169,110,0.4);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700">Memuat koleksi...</div>';
+  if(g) g.innerHTML='<div class="skel-grid" style="grid-column:1/-1"><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div></div>';
   await loadPhotosFromCloud();
   renderCatTabs();
   renderGallery();
@@ -2500,7 +2774,32 @@ document.getElementById('clr-preview').style.background=document.getElementById(
       <div class="lb-caption" id="lb-caption"></div>
       <div id="lb-price" style="color:var(--gold);font-size:20px;font-family:'Cormorant Infant',serif;font-weight:400;margin-top:4px"></div>
     </div>
-    <button class="lb-order-btn" onclick="lbOrderThis()">🌸 Pesan Buket Ini</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button class="lb-order-btn" onclick="lbOrderThis()">🌸 Pesan Buket Ini</button>
+      <button class="lb-share-btn" onclick="shareBuket()">↗ Bagikan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TESTIMONI MODAL ═══ -->
+<div id="testi-modal" class="modal-bg">
+  <div class="modal" style="max-width:420px">
+    <button class="m-close" onclick="closeTestiModal()">✕</button>
+    <div class="m-logo" style="font-size:24px">Tambah Testimoni</div>
+    <div class="m-sub">Review Pelanggan</div>
+    <label class="m-label">Nama Pelanggan *</label>
+    <input class="m-input" type="text" id="tm-name" placeholder="Cth: Sarah A."/>
+    <label class="m-label">Acara / Keterangan</label>
+    <input class="m-input" type="text" id="tm-role" placeholder="Cth: Wisuda UNS"/>
+    <label class="m-label">Rating</label>
+    <select class="m-input" id="tm-stars" style="cursor:pointer">
+      <option value="5">★★★★★ (5)</option>
+      <option value="4">★★★★ (4)</option>
+      <option value="3">★★★ (3)</option>
+    </select>
+    <label class="m-label">Testimoni *</label>
+    <textarea class="m-input" id="tm-text" placeholder="Tulis review pelanggan..." style="height:80px;resize:none;font-family:'Montserrat',sans-serif"></textarea>
+    <button class="m-btn" onclick="saveTesti()">Simpan Testimoni</button>
   </div>
 </div>
 
@@ -2535,6 +2834,15 @@ document.getElementById('clr-preview').style.background=document.getElementById(
     <!-- Harga -->
     <label class="upm-lbl">Harga (opsional)</label>
     <input class="upm-inp" type="text" id="upm-price" placeholder="Cth: Rp 85.000 / mulai 100rb / 150-200rb"/>
+
+    <!-- Badge -->
+    <label class="upm-lbl">Label Khusus (opsional)</label>
+    <div class="upm-cat-grid" style="grid-template-columns:repeat(4,1fr)">
+      <button type="button" class="upm-cat-btn active" onclick="upmSetBadge(this,'')">Tidak ada</button>
+      <button type="button" class="upm-cat-btn" onclick="upmSetBadge(this,'terlaris')">🔥 Terlaris</button>
+      <button type="button" class="upm-cat-btn" onclick="upmSetBadge(this,'baru')">✨ Baru</button>
+      <button type="button" class="upm-cat-btn" onclick="upmSetBadge(this,'promo')">🏷️ Promo</button>
+    </div>
 
     <!-- Footer -->
     <div class="upm-foot">
