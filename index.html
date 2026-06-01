@@ -741,6 +741,23 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   .fsw-back{width:100%;justify-content:center;order:2}
 }
 
+
+/* ── PILIH BUKET di galeri ── */
+.g-pick-btn{position:absolute;left:50%;bottom:14px;transform:translateX(-50%) translateY(8px);z-index:4;
+  display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--gold);color:var(--ink);
+  border:none;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;cursor:pointer;opacity:0;transition:opacity 0.25s,transform 0.25s;white-space:nowrap}
+.g-item:hover .g-pick-btn{opacity:1;transform:translateX(-50%) translateY(0)}
+.g-pick-btn:hover{background:var(--gold2)}
+/* Always show pick button on mobile (no hover) */
+@media(hover:none){.g-pick-btn{opacity:1;transform:translateX(-50%)}}
+/* Custom request card in gallery */
+.g-custom{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  background:var(--mist);border:1px dashed var(--border);cursor:pointer;transition:all 0.2s;min-height:160px}
+.g-custom:hover{border-color:var(--gold);background:rgba(201,169,110,0.12)}
+.g-custom .gc-icon{font-size:30px;opacity:0.8}
+.g-custom .gc-txt{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-align:center;line-height:1.4}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -801,7 +818,6 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   <ul class="nav-links">
     <li><a href="#cara-pesan">Cara Pesan</a></li>
     <li><a href="#galeri">Koleksi</a></li>
-    <li><a href="#pesan">Pesan Buket</a></li>
     <li><a href="#tentang">Tentang</a></li>
   </ul>
   <button class="owner-pill" id="owner-btn" onclick="ownerToggle()">Owner</button>
@@ -884,30 +900,11 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <section id="galeri">
   <div class="gallery-inner">
     <div class="gl-top fi">
-      <div><div class="sec-tag">Koleksi</div><h2 class="sec-title">Karya <em>pilihan</em></h2><p style="font-size:12px;color:var(--td);font-weight:300;margin-top:8px;line-height:1.6">Klik foto untuk lihat detail. Sudah nemu yang cocok? Lanjut ke <a href="#pesan" style="color:var(--gold);text-decoration:underline">form pesanan</a> di bawah ⬇</p></div>
+      <div><div class="sec-tag">Koleksi</div><h2 class="sec-title">Pilih <em>buketmu</em></h2><p style="font-size:12px;color:var(--td);font-weight:300;margin-top:8px;line-height:1.6">Klik foto untuk lihat detail, atau langsung tekan <strong style="color:var(--gold)">Pilih Buket Ini</strong> untuk memesan.</p></div>
       <button class="o-btn" onclick="openUploadModal()">+ Tambah Foto</button>
     </div>
     <div class="cat-tabs fi" id="cat-tabs"></div>
     <div class="gallery-grid fi d1" id="gallery-grid"></div>
-  </div>
-</section>
-
-<!-- ═══ DIVIDER 2 ═══ -->
-<div class="orn-div" style="background:var(--ink3)">
-  <div class="orn-inner"><div class="orn-line"></div><div class="orn-text" id="div2-text">— kostumisasi sesuai keinginanmu —</div><div class="orn-line"></div></div>
-</div>
-
-<!-- ═══ ORDER ═══ -->
-<section id="pesan">
-  <div class="order-inner">
-    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Pesan buket <em>pilihanmu</em> 💐</h2><p style="font-size:13px;color:var(--tm);font-weight:300;margin-top:10px;max-width:520px;line-height:1.8">Pilih buket favoritmu — nanti kamu akan dipandu langkah demi langkah sampai kirim ke WhatsApp.</p></div>
-
-    <!-- STEP 01: PILIH BUKET -->
-    <div class="fi d1" style="margin-top:2.5rem">
-      <div class="step-head" style="margin-bottom:1.25rem"><div class="step-num">01</div><div class="step-name">Pilih Buket</div></div>
-      <div class="buket-pick-grid" id="buket-pick-grid"></div>
-    </div>
-
   </div>
 </section>
 
@@ -1627,19 +1624,25 @@ function renderGallery(){
     return;
   }
   const CAT_LABELS={'wisuda':'🎓 Wisuda','anniversary':'💑 Anniversary','ulang-tahun':'🎂 Ulang Tahun','valentine':'💝 Valentine','lainnya':'🎁 Lainnya','all':'✨ Semua'};
-  g.innerHTML=photos.map((p,i)=>{
+  let html=photos.map((p,i)=>{
     const orig=all.indexOf(p);const l=GL[i%GL.length];
     const catBadge=p.cat&&p.cat!=='all'?`<span style="position:absolute;top:8px;left:8px;background:rgba(13,10,8,0.75);color:var(--gold);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;z-index:2">${CAT_LABELS[p.cat]||p.cat}</span>`:'';
     return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
       <img src="${p.src}" alt="${p.label||''}" loading="lazy" onclick="openLightbox(${orig})" style="cursor:zoom-in"/>
       ${catBadge}
       <div class="g-overlay"><span class="g-label">${p.label||''}</span></div>
+      <button class="g-pick-btn" onclick="event.stopPropagation();pickFromGallery(${orig})">🌸 Pilih Buket Ini</button>
       <div class="g-oc">
         <button class="oc-btn oc-edit" onclick="event.stopPropagation();editPhotoModal(${orig})">Edit</button>
         <button class="oc-btn oc-del" onclick="event.stopPropagation();delPhoto(${orig})">Hapus</button>
       </div>
     </div>`;
   }).join('');
+  // Custom request card at the end
+  html+=`<div class="g-item g-custom" onclick="pickCustomGallery()">
+    <span class="gc-icon">✏️</span><span class="gc-txt">Custom<br>Request</span>
+  </div>`;
+  g.innerHTML=html;
 }
 function renderHero(){
   const photos=getPhotos();const s=getS();const wrap=document.getElementById('hero-mosaic');
@@ -1664,37 +1667,22 @@ let pickupMethod = 'ambil';
 let fsStep = 0;
 const FS_TOTAL = 3;
 
-function renderBuketPicker(){
-  const grid = document.getElementById('buket-pick-grid');
-  if(!grid) return;
-  const photos = getPhotos();
-  let html = '';
-  html += `<div class="buket-pick buket-pick-custom" id="pick-custom" onclick="pickCustom(this)">
-    <span class="bpc-icon">✏️</span><span>Custom<br>Request</span>
-  </div>`;
-  photos.forEach((p,i) => {
-    html += `<div class="buket-pick" onclick="pickBuket(this,${i})">
-      <img src="${p.src}" alt="${p.label||'buket'}" loading="lazy"/>
-      <div class="buket-pick-name">${p.label||'Buket'}</div>
-    </div>`;
-  });
-  grid.innerHTML = html;
-}
+// no-op (picker pindah ke galeri)
+function renderBuketPicker(){}
 
-function pickBuket(el,i){
-  document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  const p = getPhotos()[i];
+// Pilih buket langsung dari galeri
+function pickFromGallery(origIdx){
+  const p = getPhotos()[origIdx];
+  if(!p) return;
   selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||''};
   const jenisEl=document.getElementById('fp-jenis');
-  if(jenisEl && !jenisEl.value.trim()){ jenisEl.value=p.label||p.cat||''; }
+  if(jenisEl){ jenisEl.value=p.label||p.cat||''; }
   openFsWizard();
 }
-
-function pickCustom(el){
-  document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
+function pickCustomGallery(){
   selBuket = {custom:true};
+  const jenisEl=document.getElementById('fp-jenis');
+  if(jenisEl && !jenisEl.value.trim()){ jenisEl.value=''; }
   openFsWizard();
 }
 
@@ -1870,7 +1858,7 @@ function loadSiteSettings(){
   if(t.heroDesc)document.getElementById('hero-body').textContent=t.heroDesc;
   if(t.about)document.getElementById('about-text').innerText=t.about;
   if(t.div1)document.getElementById('div1-text').textContent=t.div1;
-  if(t.div2)document.getElementById('div2-text').textContent=t.div2;
+  if(t.div2){const d2=document.getElementById('div2-text');if(d2)d2.textContent=t.div2;}
   if(t.footer)document.getElementById('f-sub').textContent=t.footer;
   const city=s.storeCity||'Wonogiri';const year=s.storeYear||'2021';
   document.getElementById('hero-tag').innerHTML=`✦ ${s.storeTagline||(s.storeName||'ciaflorist')+' · '+city+' · Est. '+year} ✦`;
@@ -2010,7 +1998,7 @@ function admSaveCustomize(){const s=getS();s.storeName=document.getElementById('
 
 // Teks
 function admLoadTeks(){const t=getTeks();const s=getS();if(t.h1)document.getElementById('tx-h1').value=t.h1;if(t.h2)document.getElementById('tx-h2').value=t.h2;if(t.h3)document.getElementById('tx-h3').value=t.h3;if(t.heroDesc)document.getElementById('tx-desc').value=t.heroDesc;if(s.aboutText)document.getElementById('tx-about').value=s.aboutText;if(t.div1)document.getElementById('tx-div1').value=t.div1;if(t.div2)document.getElementById('tx-div2').value=t.div2;if(t.footer)document.getElementById('tx-footer').value=t.footer}
-function admSaveTeks(){const t=getTeks();const s=getS();t.h1=document.getElementById('tx-h1').value;t.h2=document.getElementById('tx-h2').value;t.h3=document.getElementById('tx-h3').value;t.heroDesc=document.getElementById('tx-desc').value;s.aboutText=document.getElementById('tx-about').value;t.div1=document.getElementById('tx-div1').value;t.div2=document.getElementById('tx-div2').value;t.footer=document.getElementById('tx-footer').value;set(K.TK,t);setS(s);if(t.h1)document.querySelector('.hero-title .t1').textContent=t.h1;if(t.h2)document.querySelector('.hero-title .t2').textContent=t.h2;if(t.h3)document.querySelector('.hero-title .t3').textContent=t.h3;if(t.heroDesc)document.getElementById('hero-body').textContent=t.heroDesc;if(s.aboutText)document.getElementById('about-text').innerText=s.aboutText;if(t.div1)document.getElementById('div1-text').textContent=t.div1;if(t.div2)document.getElementById('div2-text').textContent=t.div2;if(t.footer)document.getElementById('f-sub').textContent=t.footer;toast('Teks disimpan ✦','ok')}
+function admSaveTeks(){const t=getTeks();const s=getS();t.h1=document.getElementById('tx-h1').value;t.h2=document.getElementById('tx-h2').value;t.h3=document.getElementById('tx-h3').value;t.heroDesc=document.getElementById('tx-desc').value;s.aboutText=document.getElementById('tx-about').value;t.div1=document.getElementById('tx-div1').value;t.div2=document.getElementById('tx-div2').value;t.footer=document.getElementById('tx-footer').value;set(K.TK,t);setS(s);if(t.h1)document.querySelector('.hero-title .t1').textContent=t.h1;if(t.h2)document.querySelector('.hero-title .t2').textContent=t.h2;if(t.h3)document.querySelector('.hero-title .t3').textContent=t.h3;if(t.heroDesc)document.getElementById('hero-body').textContent=t.heroDesc;if(s.aboutText)document.getElementById('about-text').innerText=s.aboutText;if(t.div1)document.getElementById('div1-text').textContent=t.div1;if(t.div2){const d2=document.getElementById('div2-text');if(d2)d2.textContent=t.div2;}if(t.footer)document.getElementById('f-sub').textContent=t.footer;toast('Teks disimpan ✦','ok')}
 
 // WA
 function admLoadWA(){const s=getS();if(s.wa)document.getElementById('wa-num').value=s.wa;if(s.waTemplate)document.getElementById('wa-tmpl').value=s.waTemplate}
@@ -2243,12 +2231,7 @@ function lbOrderThis(){
   const all = getPhotos();
   const realIdx = all.indexOf(p);
   closeLightbox();
-  // Select matching buket pick (which shows wizard)
-  setTimeout(()=>{
-    const picks = document.querySelectorAll('#buket-pick-grid .buket-pick');
-    const target = picks[realIdx+1]; // +1 for Custom card
-    if(target) target.click();
-  }, 350);
+  setTimeout(()=>pickFromGallery(realIdx), 350);
 }
 // Keyboard nav for lightbox
 document.addEventListener('keydown', e=>{
