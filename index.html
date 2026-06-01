@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
 <title>ciaflorist — Buket Custom Handmade</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -665,6 +665,82 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
   .wiz-progress{padding:1.25rem 1.25rem 0}
 }
 
+
+/* ── FULLSCREEN WIZARD (cinematic) ── */
+#fs-wizard{
+  position:fixed;inset:0;z-index:7000;
+  background:var(--ink);
+  display:none;flex-direction:column;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+#fs-wizard.show{display:flex}
+/* Black fade overlay for transitions */
+#fs-fade{
+  position:fixed;inset:0;z-index:7200;background:var(--ink);
+  opacity:0;pointer-events:none;transition:opacity 0.4s ease;
+}
+#fs-fade.active{opacity:1;pointer-events:all}
+/* Top bar with progress + close */
+.fsw-top{
+  position:sticky;top:0;z-index:10;background:rgba(13,10,8,0.95);backdrop-filter:blur(16px);
+  border-bottom:0.5px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.5rem;gap:1rem;
+}
+.fsw-progress{display:flex;align-items:center;gap:0;flex:1;max-width:420px}
+.fsw-dot{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0}
+.fsw-dot-c{width:30px;height:30px;border-radius:50%;border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--td);background:var(--ink2);transition:all 0.4s;font-family:'Montserrat',sans-serif}
+.fsw-dot.active .fsw-dot-c{border-color:var(--gold);color:var(--ink);background:var(--gold);transform:scale(1.1)}
+.fsw-dot.done .fsw-dot-c{border-color:var(--gold);color:var(--gold);background:var(--mist)}
+.fsw-dot-l{font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--td);font-weight:700;white-space:nowrap}
+.fsw-dot.active .fsw-dot-l{color:var(--gold)}
+.fsw-line{flex:1;height:0.5px;background:var(--border);margin:0 6px;position:relative;top:-9px;transition:background 0.4s}
+.fsw-line.done{background:var(--gold)}
+.fsw-close{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border);background:transparent;color:var(--td);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.18s;flex-shrink:0}
+.fsw-close:hover{border-color:var(--rose);color:var(--rose)}
+/* Body — centered content per step */
+.fsw-body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2.5rem 1.5rem 3rem}
+.fsw-panel{width:100%;max-width:560px;animation:fswIn 0.6s cubic-bezier(0.16,1,0.3,1)}
+@keyframes fswIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+/* Step heading like intro */
+.fsw-eyebrow{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;opacity:0;animation:fswFade 0.6s 0.2s ease forwards}
+.fsw-title{font-family:'Cormorant Infant',serif;font-size:clamp(34px,7vw,52px);font-style:italic;font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:8px;overflow:hidden}
+.fsw-title span{display:inline-block;transform:translateY(110%);animation:fswSlideUp 0.8s 0.15s cubic-bezier(0.16,1,0.3,1) forwards}
+@keyframes fswSlideUp{to{transform:translateY(0)}}
+@keyframes fswFade{to{opacity:1}}
+.fsw-rule{display:flex;align-items:center;gap:12px;margin:1.25rem 0 2rem;opacity:0;animation:fswFade 0.6s 0.5s ease forwards}
+.fsw-rule-line{height:0.5px;background:var(--gold);opacity:0.4;flex:1;max-width:60px}
+.fsw-rule-orn{color:var(--gold);font-size:12px}
+.fsw-fields{opacity:0;animation:fswFade 0.7s 0.6s ease forwards}
+/* Nav buttons */
+.fsw-nav{display:flex;gap:12px;align-items:center;margin-top:2rem;opacity:0;animation:fswFade 0.7s 0.8s ease forwards}
+.fsw-next{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;background:var(--gold);color:var(--ink);border:none;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:auto}
+.fsw-next:hover{background:var(--gold2);transform:translateX(3px)}
+.fsw-back{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:transparent;color:var(--td);border:0.5px solid var(--border);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.fsw-back:hover{border-color:var(--gold);color:var(--gold)}
+.fsw-wa{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--wa);color:#fff;border:none;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:auto}
+.fsw-wa:hover{opacity:0.92;transform:translateX(3px)}
+.fsw-wa svg{width:18px;height:18px;fill:#fff}
+/* Review (konfirmasi) */
+.fsw-chosen-img{width:100%;max-height:240px;object-fit:cover;border:0.5px solid var(--border);margin-bottom:1.25rem}
+.fsw-review{background:var(--ink2);border:0.5px solid var(--border2);padding:1.5rem}
+.fsw-rev-sec{margin-bottom:1.25rem}
+.fsw-rev-sec:last-child{margin-bottom:0}
+.fsw-rev-head{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.fsw-rev-head::before{content:'';width:16px;height:0.5px;background:var(--gold)}
+.fsw-rev-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:0.5px solid var(--border2);gap:1rem}
+.fsw-rev-row:last-child{border-bottom:none}
+.fsw-rev-k{color:var(--td);font-weight:300;flex-shrink:0}
+.fsw-rev-v{color:var(--cream);font-weight:600;text-align:right;word-break:break-word}
+@media(max-width:600px){
+  .fsw-body{padding:1.75rem 1.25rem 2.5rem}
+  .fsw-dot-l{display:none}
+  .fsw-top{padding:0.85rem 1rem}
+  .fsw-nav{flex-wrap:wrap}
+  .fsw-next,.fsw-wa{width:100%;justify-content:center;margin-left:0}
+  .fsw-back{width:100%;justify-content:center;order:2}
+}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -824,7 +900,7 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 <!-- ═══ ORDER ═══ -->
 <section id="pesan">
   <div class="order-inner">
-    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Pesan buket <em>pilihanmu</em> 💐</h2><p style="font-size:13px;color:var(--tm);font-weight:300;margin-top:10px;max-width:520px;line-height:1.8">Pilih buket favoritmu dulu, lalu ikuti langkahnya sampai kirim ke WhatsApp.</p></div>
+    <div class="fi"><div class="sec-tag">Pesan Sekarang</div><h2 class="sec-title">Pesan buket <em>pilihanmu</em> 💐</h2><p style="font-size:13px;color:var(--tm);font-weight:300;margin-top:10px;max-width:520px;line-height:1.8">Pilih buket favoritmu — nanti kamu akan dipandu langkah demi langkah sampai kirim ke WhatsApp.</p></div>
 
     <!-- STEP 01: PILIH BUKET -->
     <div class="fi d1" style="margin-top:2.5rem">
@@ -832,118 +908,131 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
       <div class="buket-pick-grid" id="buket-pick-grid"></div>
     </div>
 
-    <!-- WIZARD (muncul setelah pilih buket) -->
-    <div id="wizard-wrap" style="display:none;margin-top:2rem;max-width:720px">
-      <div class="wizard">
-        <!-- Progress -->
-        <div class="wiz-progress">
-          <div class="wiz-dot active" id="wdot-0"><div class="wiz-dot-circle">1</div><div class="wiz-dot-label">Data</div></div>
-          <div class="wiz-line" id="wline-0"></div>
-          <div class="wiz-dot" id="wdot-1"><div class="wiz-dot-circle">2</div><div class="wiz-dot-label">Detail</div></div>
-          <div class="wiz-line" id="wline-1"></div>
-          <div class="wiz-dot" id="wdot-2"><div class="wiz-dot-circle">3</div><div class="wiz-dot-label">Konfirmasi</div></div>
-        </div>
+  </div>
+</section>
 
-        <!-- Slides -->
-        <div class="wiz-viewport">
-          <div class="wiz-track" id="wiz-track">
+<!-- ═══ FULLSCREEN WIZARD (cinematic) ═══ -->
+<div id="fs-fade"></div>
+<div id="fs-wizard">
+  <!-- Top bar -->
+  <div class="fsw-top">
+    <div class="fsw-progress">
+      <div class="fsw-dot active" id="fdot-0"><div class="fsw-dot-c">1</div><div class="fsw-dot-l">Data</div></div>
+      <div class="fsw-line" id="fline-0"></div>
+      <div class="fsw-dot" id="fdot-1"><div class="fsw-dot-c">2</div><div class="fsw-dot-l">Detail</div></div>
+      <div class="fsw-line" id="fline-1"></div>
+      <div class="fsw-dot" id="fdot-2"><div class="fsw-dot-c">3</div><div class="fsw-dot-l">Konfirmasi</div></div>
+    </div>
+    <button class="fsw-close" onclick="closeFsWizard()">✕</button>
+  </div>
 
-            <!-- SLIDE 1: DATA PEMESAN -->
-            <div class="wiz-slide">
-              <div class="wiz-slide-title">🌸 Data Pemesan</div>
-              <div class="wiz-slide-sub">Siapa yang memesan?</div>
-              <div class="fp-grid">
-                <div class="fp-g full">
-                  <label class="fp-lbl">Atas Nama <span class="req">*</span></label>
-                  <input class="fp-inp" type="text" id="fp-nama" placeholder="Nama pemesan" oninput="syncForm()"/>
-                  <span class="field-err" id="err-nama">Wajib diisi</span>
-                </div>
-                <div class="fp-g full">
-                  <label class="fp-lbl">Alamat <span class="req">*</span></label>
-                  <textarea class="fp-ta" id="fp-alamat" placeholder="Alamat lengkap..." oninput="syncForm()"></textarea>
-                  <span class="field-err" id="err-alamat">Wajib diisi</span>
-                </div>
-                <div class="fp-g full">
-                  <label class="fp-lbl">No. WhatsApp <span class="req">*</span></label>
-                  <input class="fp-inp" type="tel" id="fp-hp" placeholder="08xxxxxxxxxx" oninput="syncForm()"/>
-                  <span class="field-err" id="err-hp">Wajib diisi</span>
-                </div>
-              </div>
-            </div>
+  <!-- Body (one panel visible at a time) -->
+  <div class="fsw-body">
 
-            <!-- SLIDE 2: DETAIL PESANAN -->
-            <div class="wiz-slide">
-              <div class="wiz-slide-title">🌸 Detail Pesanan</div>
-              <div class="wiz-slide-sub">Buket apa & kapan diambil?</div>
-              <div class="fp-grid">
-                <div class="fp-g full">
-                  <label class="fp-lbl">Jenis Buket <span class="req">*</span></label>
-                  <input class="fp-inp" type="text" id="fp-jenis" placeholder="Cth: Buket Mawar, Buket Wisuda" oninput="syncForm()"/>
-                  <span class="field-err" id="err-jenis">Wajib diisi</span>
-                </div>
-                <div class="fp-g full">
-                  <label class="fp-lbl">Tanggal Pengambilan <span class="req">*</span></label>
-                  <input class="fp-inp" type="date" id="fp-tanggal" oninput="syncForm()"/>
-                  <span class="field-err" id="err-tanggal">Wajib diisi</span>
-                </div>
-                <div class="fp-g full">
-                  <label class="fp-lbl">Metode Pengambilan <span class="req">*</span></label>
-                  <div class="method-toggle" style="grid-template-columns:1fr 1fr">
-                    <button class="method-btn active" id="btn-ambil" onclick="setMethod('ambil')">🏪 Diambil</button>
-                    <button class="method-btn" id="btn-cod" onclick="setMethod('cod')">💵 COD</button>
-                  </div>
-                </div>
-                <div class="fp-g full pickup-note" id="cod-fields">
-                  <label class="fp-lbl">Lokasi COD <span class="req">*</span></label>
-                  <input class="fp-inp" type="text" id="fp-lokasi-cod" placeholder="Daerah/lokasi COD" oninput="syncForm()"/>
-                  <span class="field-err" id="err-lokasi">Wajib diisi untuk COD</span>
-                </div>
-                <div class="fp-g full pickup-note show" id="ambil-note">
-                  <div class="eta-badge"><span style="font-size:13px">📍</span><span class="eta-text">Alamat toko dikonfirmasi via WhatsApp</span></div>
-                </div>
-              </div>
-              <div style="margin-top:14px;padding:14px;background:rgba(201,169,110,0.06);border:0.5px solid var(--border);border-left:2px solid var(--gold)">
-                <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px">📌 Free Ongkir untuk area:</div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap">
-                  <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Sidoharjo</span>
-                  <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Girimarto</span>
-                  <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Pandean</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- SLIDE 3: KONFIRMASI -->
-            <div class="wiz-slide">
-              <div class="wiz-slide-title">✓ Konfirmasi Pesanan</div>
-              <div class="wiz-slide-sub">Cek lagi sebelum kirim ke WhatsApp</div>
-              <img id="wiz-chosen-img" class="wiz-chosen-img" src="" alt="buket" style="display:none"/>
-              <div class="wiz-review">
-                <div class="wiz-review-section">
-                  <div class="wiz-rev-head">Data Pemesan</div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">Atas Nama</span><span class="wiz-rev-v" id="rev-nama">—</span></div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">Alamat</span><span class="wiz-rev-v" id="rev-alamat">—</span></div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">No. WhatsApp</span><span class="wiz-rev-v" id="rev-hp">—</span></div>
-                </div>
-                <div class="wiz-review-section">
-                  <div class="wiz-rev-head">Detail Pesanan</div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">Buket</span><span class="wiz-rev-v" id="rev-buket">—</span></div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">Jenis</span><span class="wiz-rev-v" id="rev-jenis">—</span></div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">Tanggal</span><span class="wiz-rev-v" id="rev-tanggal">—</span></div>
-                  <div class="wiz-rev-row"><span class="wiz-rev-k">Metode</span><span class="wiz-rev-v" id="rev-method">Diambil</span></div>
-                  <div class="wiz-rev-row" id="rev-lokasi-row" style="display:none"><span class="wiz-rev-k">Lokasi COD</span><span class="wiz-rev-v" id="rev-lokasi">—</span></div>
-                </div>
-              </div>
-              <div class="wa-setting" style="margin-top:12px"><label>Nomor WA Owner:</label><input type="text" id="wa-input" placeholder="6289505264053"/></div>
-            </div>
-
+    <!-- PANEL 0: DATA -->
+    <div class="fsw-panel" id="fpanel-0">
+      <div class="fsw-eyebrow">Langkah 1 dari 3</div>
+      <h2 class="fsw-title"><span>Data Pemesan</span></h2>
+      <div class="fsw-rule"><div class="fsw-rule-line"></div><div class="fsw-rule-orn">✦</div></div>
+      <div class="fsw-fields">
+        <div class="fp-grid">
+          <div class="fp-g full">
+            <label class="fp-lbl">Atas Nama <span class="req">*</span></label>
+            <input class="fp-inp" type="text" id="fp-nama" placeholder="Nama pemesan" oninput="syncForm()"/>
+            <span class="field-err" id="err-nama">Wajib diisi</span>
+          </div>
+          <div class="fp-g full">
+            <label class="fp-lbl">Alamat <span class="req">*</span></label>
+            <textarea class="fp-ta" id="fp-alamat" placeholder="Alamat lengkap..." oninput="syncForm()"></textarea>
+            <span class="field-err" id="err-alamat">Wajib diisi</span>
+          </div>
+          <div class="fp-g full">
+            <label class="fp-lbl">No. WhatsApp <span class="req">*</span></label>
+            <input class="fp-inp" type="tel" id="fp-hp" placeholder="08xxxxxxxxxx" oninput="syncForm()"/>
+            <span class="field-err" id="err-hp">Wajib diisi</span>
           </div>
         </div>
+        <div class="fsw-nav">
+          <button class="fsw-next" onclick="fsNext()">Lanjut ›</button>
+        </div>
+      </div>
+    </div>
 
-        <!-- Nav -->
-        <div class="wiz-nav">
-          <button class="wiz-btn-back" id="wiz-back" onclick="wizPrev()" style="visibility:hidden">‹ Kembali</button>
-          <button class="wiz-btn-next" id="wiz-next" onclick="wizNext()">Lanjut ›</button>
-          <button class="wiz-btn-wa" id="wiz-send" onclick="orderWA()" style="display:none">
+    <!-- PANEL 1: DETAIL -->
+    <div class="fsw-panel" id="fpanel-1" style="display:none">
+      <div class="fsw-eyebrow">Langkah 2 dari 3</div>
+      <h2 class="fsw-title"><span>Detail Pesanan</span></h2>
+      <div class="fsw-rule"><div class="fsw-rule-line"></div><div class="fsw-rule-orn">✦</div></div>
+      <div class="fsw-fields">
+        <div class="fp-grid">
+          <div class="fp-g full">
+            <label class="fp-lbl">Jenis Buket <span class="req">*</span></label>
+            <input class="fp-inp" type="text" id="fp-jenis" placeholder="Cth: Buket Mawar, Buket Wisuda" oninput="syncForm()"/>
+            <span class="field-err" id="err-jenis">Wajib diisi</span>
+          </div>
+          <div class="fp-g full">
+            <label class="fp-lbl">Tanggal Pengambilan <span class="req">*</span></label>
+            <input class="fp-inp" type="date" id="fp-tanggal" oninput="syncForm()"/>
+            <span class="field-err" id="err-tanggal">Wajib diisi</span>
+          </div>
+          <div class="fp-g full">
+            <label class="fp-lbl">Metode Pengambilan <span class="req">*</span></label>
+            <div class="method-toggle" style="grid-template-columns:1fr 1fr">
+              <button class="method-btn active" id="btn-ambil" onclick="setMethod('ambil')">🏪 Diambil</button>
+              <button class="method-btn" id="btn-cod" onclick="setMethod('cod')">💵 COD</button>
+            </div>
+          </div>
+          <div class="fp-g full pickup-note" id="cod-fields">
+            <label class="fp-lbl">Lokasi COD <span class="req">*</span></label>
+            <input class="fp-inp" type="text" id="fp-lokasi-cod" placeholder="Daerah/lokasi COD" oninput="syncForm()"/>
+            <span class="field-err" id="err-lokasi">Wajib diisi untuk COD</span>
+          </div>
+          <div class="fp-g full pickup-note show" id="ambil-note">
+            <div class="eta-badge"><span style="font-size:13px">📍</span><span class="eta-text">Alamat toko dikonfirmasi via WhatsApp</span></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:14px;background:rgba(201,169,110,0.06);border:0.5px solid var(--border);border-left:2px solid var(--gold)">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px">📌 Free Ongkir untuk area:</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Sidoharjo</span>
+            <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Girimarto</span>
+            <span style="font-size:11px;color:var(--cream);background:var(--mist);padding:4px 12px;border:0.5px solid var(--border2)">📍 Pandean</span>
+          </div>
+        </div>
+        <div class="fsw-nav">
+          <button class="fsw-back" onclick="fsPrev()">‹ Kembali</button>
+          <button class="fsw-next" onclick="fsNext()">Lanjut ›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: KONFIRMASI -->
+    <div class="fsw-panel" id="fpanel-2" style="display:none">
+      <div class="fsw-eyebrow">Langkah 3 dari 3</div>
+      <h2 class="fsw-title"><span>Konfirmasi</span></h2>
+      <div class="fsw-rule"><div class="fsw-rule-line"></div><div class="fsw-rule-orn">✦</div></div>
+      <div class="fsw-fields">
+        <img id="fsw-chosen-img" class="fsw-chosen-img" src="" alt="buket" style="display:none"/>
+        <div class="fsw-review">
+          <div class="fsw-rev-sec">
+            <div class="fsw-rev-head">Data Pemesan</div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Atas Nama</span><span class="fsw-rev-v" id="rev-nama">—</span></div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Alamat</span><span class="fsw-rev-v" id="rev-alamat">—</span></div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">No. WhatsApp</span><span class="fsw-rev-v" id="rev-hp">—</span></div>
+          </div>
+          <div class="fsw-rev-sec">
+            <div class="fsw-rev-head">Detail Pesanan</div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Buket</span><span class="fsw-rev-v" id="rev-buket">—</span></div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Jenis</span><span class="fsw-rev-v" id="rev-jenis">—</span></div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Tanggal</span><span class="fsw-rev-v" id="rev-tanggal">—</span></div>
+            <div class="fsw-rev-row"><span class="fsw-rev-k">Metode</span><span class="fsw-rev-v" id="rev-method">Diambil</span></div>
+            <div class="fsw-rev-row" id="rev-lokasi-row" style="display:none"><span class="fsw-rev-k">Lokasi COD</span><span class="fsw-rev-v" id="rev-lokasi">—</span></div>
+          </div>
+        </div>
+        <div class="wa-setting" style="margin-top:12px"><label>Nomor WA Owner:</label><input type="text" id="wa-input" placeholder="6289505264053"/></div>
+        <div class="fsw-nav">
+          <button class="fsw-back" onclick="fsPrev()">‹ Kembali</button>
+          <button class="fsw-wa" onclick="orderWA()">
             <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
             Kirim ke WhatsApp
           </button>
@@ -952,9 +1041,9 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
     </div>
 
   </div>
-</section>
+</div>
 
-<!-- ═══ ABOUT ═══ -->
+<!-- ═══ ABOUT ═══ --><!-- ═══ ABOUT ═══ -->
 <section id="tentang">
   <div class="about-inner">
     <div class="about-body fi">
@@ -1572,8 +1661,8 @@ function renderHero(){
 // ═══════════════════════════════════════════════
 let selBuket = null;
 let pickupMethod = 'ambil';
-let wizStep = 0;
-const WIZ_TOTAL = 3;
+let fsStep = 0;
+const FS_TOTAL = 3;
 
 function renderBuketPicker(){
   const grid = document.getElementById('buket-pick-grid');
@@ -1592,80 +1681,101 @@ function renderBuketPicker(){
   grid.innerHTML = html;
 }
 
-let wizardShown=false;
-function showWizard(){
-  const w=document.getElementById('wizard-wrap');
-  if(!w)return;
-  w.style.display='block';
-  // reset to step 0
-  wizStep=0; updateWizard();
-  if(!wizardShown){
-    wizardShown=true;
-    setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'center'}),200);
-  } else {
-    setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'center'}),100);
-  }
-}
-
 function pickBuket(el,i){
   document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   const p = getPhotos()[i];
   selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||''};
-  // Auto-fill jenis
   const jenisEl=document.getElementById('fp-jenis');
   if(jenisEl && !jenisEl.value.trim()){ jenisEl.value=p.label||p.cat||''; }
-  showWizard();
+  openFsWizard();
 }
 
 function pickCustom(el){
   document.querySelectorAll('.buket-pick').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   selBuket = {custom:true};
-  showWizard();
+  openFsWizard();
 }
 
 // kept for backwards-compat
 function refreshPL(){}
 
 // ═══════════════════════════════════════════════
-// WIZARD NAVIGATION
+// FULLSCREEN WIZARD (cinematic, fade hitam)
 // ═══════════════════════════════════════════════
-function updateWizard(){
-  // Move track
-  const track=document.getElementById('wiz-track');
-  if(track) track.style.transform=`translateX(-${wizStep*100}%)`;
-  // Progress dots
-  for(let i=0;i<WIZ_TOTAL;i++){
-    const dot=document.getElementById('wdot-'+i);
-    if(dot){ dot.classList.toggle('active',i===wizStep); dot.classList.toggle('done',i<wizStep); }
-    const line=document.getElementById('wline-'+i);
-    if(line) line.classList.toggle('done',i<wizStep);
-  }
-  // Buttons
-  const back=document.getElementById('wiz-back');
-  const next=document.getElementById('wiz-next');
-  const send=document.getElementById('wiz-send');
-  back.style.visibility = wizStep===0 ? 'hidden' : 'visible';
-  if(wizStep===WIZ_TOTAL-1){ next.style.display='none'; send.style.display='inline-flex'; updateReview(); }
-  else { next.style.display='inline-flex'; send.style.display='none'; }
+function openFsWizard(){
+  fsStep = 0;
+  // Fade to black, then show wizard
+  const fade = document.getElementById('fs-fade');
+  fade.classList.add('active');
+  setTimeout(()=>{
+    document.getElementById('fs-wizard').classList.add('show');
+    document.body.classList.add('no-scroll');
+    showFsPanel(0);
+    // fade back out to reveal wizard
+    setTimeout(()=>fade.classList.remove('active'), 60);
+  }, 400);
 }
 
-function wizNext(){
-  // validate current step before advancing
-  if(wizStep===0){ if(!validateStep1()) return; }
-  if(wizStep===1){ if(!validateStep2()) return; }
-  if(wizStep<WIZ_TOTAL-1){ wizStep++; updateWizard();
-    document.querySelector('.wizard').scrollIntoView({behavior:'smooth',block:'center'});
-  }
+function closeFsWizard(){
+  const fade = document.getElementById('fs-fade');
+  fade.classList.add('active');
+  setTimeout(()=>{
+    document.getElementById('fs-wizard').classList.remove('show');
+    document.body.classList.remove('no-scroll');
+    setTimeout(()=>fade.classList.remove('active'), 60);
+  }, 400);
 }
-function wizPrev(){ if(wizStep>0){ wizStep--; updateWizard(); } }
+
+function showFsPanel(step){
+  // Hide all panels, show target, re-trigger entrance animation
+  for(let i=0;i<FS_TOTAL;i++){
+    const pnl=document.getElementById('fpanel-'+i);
+    if(pnl) pnl.style.display = (i===step)?'block':'none';
+  }
+  const active=document.getElementById('fpanel-'+step);
+  if(active){
+    active.style.animation='none';
+    void active.offsetWidth; // reflow
+    active.style.animation='';
+  }
+  // Update progress dots
+  for(let i=0;i<FS_TOTAL;i++){
+    const dot=document.getElementById('fdot-'+i);
+    if(dot){ dot.classList.toggle('active',i===step); dot.classList.toggle('done',i<step); }
+    const line=document.getElementById('fline-'+i);
+    if(line) line.classList.toggle('done',i<step);
+  }
+  // scroll wizard body to top
+  const w=document.getElementById('fs-wizard');
+  if(w) w.scrollTop=0;
+  if(step===FS_TOTAL-1) updateReview();
+}
+
+function fsGoto(step){
+  // Cinematic fade between panels
+  const fade=document.getElementById('fs-fade');
+  fade.classList.add('active');
+  setTimeout(()=>{
+    fsStep=step;
+    showFsPanel(step);
+    setTimeout(()=>fade.classList.remove('active'),60);
+  },380);
+}
+
+function fsNext(){
+  if(fsStep===0){ if(!validateStep1()) return; }
+  if(fsStep===1){ if(!validateStep2()) return; }
+  if(fsStep<FS_TOTAL-1) fsGoto(fsStep+1);
+}
+function fsPrev(){ if(fsStep>0) fsGoto(fsStep-1); }
 
 function validateStep1(){
   let ok=true;
   const chk=(id,errId)=>{const el=document.getElementById(id);const er=document.getElementById(errId);if(!el.value.trim()){el.classList.add('err');if(er)er.classList.add('show');ok=false}};
   chk('fp-nama','err-nama'); chk('fp-alamat','err-alamat'); chk('fp-hp','err-hp');
-  if(!ok){const fe=document.querySelector('.wiz-slide .fp-inp.err,.wiz-slide .fp-ta.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'})}
+  if(!ok){const fe=document.querySelector('#fpanel-0 .fp-inp.err,#fpanel-0 .fp-ta.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'})}
   return ok;
 }
 function validateStep2(){
@@ -1673,7 +1783,7 @@ function validateStep2(){
   const chk=(id,errId)=>{const el=document.getElementById(id);const er=document.getElementById(errId);if(!el.value.trim()){el.classList.add('err');if(er)er.classList.add('show');ok=false}};
   chk('fp-jenis','err-jenis'); chk('fp-tanggal','err-tanggal');
   if(pickupMethod==='cod')chk('fp-lokasi-cod','err-lokasi');
-  if(!ok){const fe=document.querySelector('.wiz-slide .fp-inp.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'})}
+  if(!ok){const fe=document.querySelector('#fpanel-1 .fp-inp.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'})}
   return ok;
 }
 
@@ -1686,7 +1796,6 @@ function setMethod(m){
 }
 
 function syncForm(){
-  // clear errors live
   const clr=(id,errId)=>{const el=document.getElementById(id);if(el&&el.value.trim()){el.classList.remove('err');const er=document.getElementById(errId);if(er)er.classList.remove('show')}};
   clr('fp-nama','err-nama');clr('fp-hp','err-hp');clr('fp-alamat','err-alamat');
   clr('fp-jenis','err-jenis');clr('fp-tanggal','err-tanggal');clr('fp-lokasi-cod','err-lokasi');
@@ -1703,11 +1812,9 @@ function updateReview(){
   setR('rev-tanggal',tgl?new Date(tgl).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—');
   setR('rev-method',pickupMethod==='ambil'?'Diambil 🏪':'COD 💵');
   setR('rev-buket',selBuket?(selBuket.custom?'Custom Request':(selBuket.label||'Buket')):'—');
-  // chosen image
-  const img=document.getElementById('wiz-chosen-img');
+  const img=document.getElementById('fsw-chosen-img');
   if(selBuket && !selBuket.custom && selBuket.src){ img.src=selBuket.src; img.style.display='block'; }
   else { img.style.display='none'; }
-  // lokasi cod
   const lokRow=document.getElementById('rev-lokasi-row');
   if(pickupMethod==='cod'){ lokRow.style.display='flex'; setR('rev-lokasi',v('fp-lokasi-cod')); }
   else lokRow.style.display='none';
@@ -1717,9 +1824,8 @@ function updateReview(){
 // ORDER WA
 // ═══════════════════════════════════════════════
 function orderWA(){
-  // final validation
-  if(!validateStep1()){ wizStep=0; updateWizard(); return; }
-  if(!validateStep2()){ wizStep=1; updateWizard(); return; }
+  if(!validateStep1()){ fsGoto(0); return; }
+  if(!validateStep2()){ fsGoto(1); return; }
   const s=getS();const waNum=s.wa||'6289505264053';
   const nama=document.getElementById('fp-nama').value.trim();
   const hp=document.getElementById('fp-hp').value.trim();
