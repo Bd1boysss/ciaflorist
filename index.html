@@ -992,8 +992,14 @@ body.om .fsc-upload-btn{display:inline-flex!important}
 
 
 /* ── CINEMATIC TUTORIAL ── */
-#tutorial{position:fixed;inset:0;z-index:6000;background:var(--ink);display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
-#tutorial.show{display:flex}
+#tutorial{
+  position:fixed;inset:0;z-index:6000;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity 0.5s ease,visibility 0.5s;
+}
+#tutorial.show{opacity:1;visibility:visible;pointer-events:all}
 .tut-overlay-fade{position:absolute;inset:0;background:var(--ink);opacity:0;transition:opacity 0.45s ease;pointer-events:none;z-index:2}
 .tut-overlay-fade.active{opacity:1}
 /* petals bg */
@@ -1797,7 +1803,9 @@ function closeWelcome(){
   if(!w)return;
   w.classList.add('leaving');
   document.body.classList.remove('no-scroll');
-  setTimeout(()=>{w.remove();triggerFadeIns();setTimeout(showTutorial,600)},1100);
+  // Start tutorial while welcome is still fading — seamless crossfade
+  setTimeout(showTutorial, 400);
+  setTimeout(()=>{w.remove();triggerFadeIns();},1100);
 }
 function initWelcome(){
   const s=getS();
@@ -2585,9 +2593,11 @@ function showTutorial(){
   // Show every visit (same as welcome screen)
   tutStep = 0;
   spawnTutPetals();
-  document.getElementById('tutorial').classList.add('show');
-  document.body.classList.add('no-scroll');
-  tutShowStep(0);
+  const tut=document.getElementById('tutorial');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    tut.classList.add('show');
+    tutShowStep(0);
+  }));
 }
 
 function spawnTutPetals(){
@@ -2604,24 +2614,29 @@ function spawnTutPetals(){
 function tutShowStep(idx){
   const steps=['tut-s1','tut-s2','tut-s3'];
   const fade=document.getElementById('tut-fade');
-  // Fade in
-  fade.classList.add('active');
-  setTimeout(()=>{
-    // Hide all, show target
+  if(idx===0){
+    // First step — no black fade, just show directly (we came from welcome)
     steps.forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='none';el.classList.remove('in')}});
-    const cur=document.getElementById(steps[idx]);
-    if(cur){ cur.style.display='flex'; void cur.offsetWidth; setTimeout(()=>cur.classList.add('in'),30); }
-    // Fade back out
-    fade.classList.remove('active');
-    // Auto-advance
+    const cur=document.getElementById(steps[0]);
+    if(cur){cur.style.display='flex';requestAnimationFrame(()=>requestAnimationFrame(()=>cur.classList.add('in')));}
     if(tutTimer) clearTimeout(tutTimer);
-    if(idx < steps.length-1){
-      tutTimer = setTimeout(()=>{ tutStep=idx+1; tutShowStep(tutStep); }, TUT_DURATION);
-    } else {
-      // Last step — wait then close
-      tutTimer = setTimeout(closeTutorial, TUT_DURATION);
-    }
-  }, 420);
+    tutTimer=setTimeout(()=>{tutStep=1;tutShowStep(1);},TUT_DURATION);
+  } else {
+    // Subsequent steps — brief black fade between
+    fade.classList.add('active');
+    setTimeout(()=>{
+      steps.forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='none';el.classList.remove('in')}});
+      const cur=document.getElementById(steps[idx]);
+      if(cur){cur.style.display='flex';requestAnimationFrame(()=>requestAnimationFrame(()=>cur.classList.add('in')));}
+      fade.classList.remove('active');
+      if(tutTimer) clearTimeout(tutTimer);
+      if(idx<steps.length-1){
+        tutTimer=setTimeout(()=>{tutStep=idx+1;tutShowStep(tutStep);},TUT_DURATION);
+      } else {
+        tutTimer=setTimeout(closeTutorial,TUT_DURATION);
+      }
+    },350);
+  }
 }
 
 function skipTutorial(){
