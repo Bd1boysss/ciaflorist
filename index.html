@@ -952,8 +952,20 @@ body.light{--ink:#FBF8F3;--ink2:#F3EEE5;--ink3:#ECE5D8;--dust:#E8DFD0;--cream:#2
 
 
 /* ── FULLSCREEN COLLECTION ── */
-#fs-col{position:fixed;inset:0;z-index:6500;background:var(--ink);display:none;flex-direction:column;overflow:hidden}
-#fs-col.show{display:flex}
+#fs-col{
+  position:fixed;inset:0;z-index:6500;
+  background:var(--ink);
+  display:flex;flex-direction:column;overflow:hidden;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1), visibility 0.5s;
+}
+#fs-col.show{opacity:1;visibility:visible;pointer-events:all}
+#fs-col .fsc-top{transform:translateY(-20px);opacity:0;transition:transform 0.6s 0.15s cubic-bezier(0.16,1,0.3,1),opacity 0.5s 0.15s ease}
+#fs-col.show .fsc-top{transform:none;opacity:1}
+#fs-col .fsc-toolbar{transform:translateY(-10px);opacity:0;transition:transform 0.6s 0.25s cubic-bezier(0.16,1,0.3,1),opacity 0.5s 0.25s ease}
+#fs-col.show .fsc-toolbar{transform:none;opacity:1}
+#fs-col .fsc-body{transform:translateY(24px);opacity:0;transition:transform 0.7s 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.6s 0.35s ease}
+#fs-col.show .fsc-body{transform:none;opacity:1}
 .fsc-top{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:0.5px solid var(--border2);background:rgba(13,10,8,0.95);backdrop-filter:blur(16px);flex-shrink:0}
 .fsc-tag{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:2px}
 .fsc-title{font-family:'Cormorant Infant',serif;font-size:22px;font-weight:300;color:var(--cream);line-height:1}
@@ -2423,10 +2435,11 @@ async function openFsCol(){
   document.querySelectorAll('#col-filters .gf-group').forEach(g=>{
     g.querySelectorAll('.gf-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
   });
-  // Show overlay first with loading state
+  // Animate in smoothly
   const fsCol=document.getElementById('fs-col');
-  fsCol.classList.add('show');
   document.body.classList.add('no-scroll');
+  // small delay so transition fires properly
+  requestAnimationFrame(()=>requestAnimationFrame(()=>fsCol.classList.add('show')));
   const g=document.getElementById('col-gallery-grid');
   if(g) g.innerHTML='<div style="grid-column:1/-1;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><div class="skel-grid" style="width:100%"><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div></div></div>';
   // Reload photos from cloud if needed
@@ -2435,7 +2448,8 @@ async function openFsCol(){
   renderFsCol();
 }
 function closeFsCol(){
-  document.getElementById('fs-col').classList.remove('show');
+  const fsCol=document.getElementById('fs-col');
+  fsCol.classList.remove('show');
   document.body.classList.remove('no-scroll');
 }
 
@@ -2568,8 +2582,7 @@ const TUT_DURATION = 3000; // ms per step
 let tutTimer = null;
 
 function showTutorial(){
-  // Only show once per session
-  try{ if(sessionStorage.getItem('tut_done')) return; }catch{}
+  // Show every visit (same as welcome screen)
   tutStep = 0;
   spawnTutPetals();
   document.getElementById('tutorial').classList.add('show');
@@ -2623,7 +2636,7 @@ function closeTutorial(){
     document.getElementById('tutorial').classList.remove('show');
     document.body.classList.remove('no-scroll');
     fade.classList.remove('active');
-    try{ sessionStorage.setItem('tut_done','1'); }catch{}
+    // no session storage - shows every refresh
   }, 450);
 }
 
