@@ -976,6 +976,42 @@ body.om .fsc-upload-btn{display:inline-flex!important}
   .fsc-search-row .gal-search{max-width:100%}
 }
 
+
+
+
+/* ── CINEMATIC TUTORIAL ── */
+#tutorial{position:fixed;inset:0;z-index:6000;background:var(--ink);display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+#tutorial.show{display:flex}
+.tut-overlay-fade{position:absolute;inset:0;background:var(--ink);opacity:0;transition:opacity 0.45s ease;pointer-events:none;z-index:2}
+.tut-overlay-fade.active{opacity:1}
+/* petals bg */
+.tut-petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0.5}
+/* step panel */
+.tut-step{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;z-index:1}
+.tut-step-num{font-family:'Cormorant Infant',serif;font-size:13px;font-style:italic;color:var(--gold);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;transform:translateY(16px);transition:all 0.6s 0.1s ease}
+.tut-step-icon{font-size:52px;margin-bottom:1.5rem;opacity:0;transform:scale(0.7);transition:all 0.7s 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+.tut-step-title{font-family:'Cormorant Infant',serif;font-size:clamp(36px,7vw,60px);font-weight:300;color:var(--cream);line-height:1.1;margin-bottom:1rem;overflow:hidden}
+.tut-step-title span{display:block;transform:translateY(110%);transition:transform 0.8s 0.35s cubic-bezier(0.16,1,0.3,1)}
+.tut-step-title em{display:block;color:var(--gold);font-style:italic;transform:translateY(110%);transition:transform 0.8s 0.5s cubic-bezier(0.16,1,0.3,1)}
+.tut-step-desc{font-size:14px;color:var(--tm);font-weight:300;max-width:420px;line-height:1.8;opacity:0;transform:translateY(12px);transition:all 0.6s 0.7s ease}
+.tut-progress{display:flex;gap:8px;margin-top:2.5rem;opacity:0;transition:opacity 0.5s 0.8s ease}
+.tut-progress-dot{width:6px;height:6px;border-radius:50%;background:rgba(201,169,110,0.3);transition:background 0.3s}
+.tut-progress-dot.active{background:var(--gold)}
+.tut-skip{position:absolute;bottom:2rem;right:2rem;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--td);background:transparent;border:0.5px solid var(--border);padding:8px 20px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;transition:all 0.2s;z-index:5}
+.tut-skip:hover{color:var(--gold);border-color:var(--gold)}
+/* animate in */
+.tut-step.in .tut-step-num{opacity:1;transform:none}
+.tut-step.in .tut-step-icon{opacity:1;transform:scale(1)}
+.tut-step.in .tut-step-title span,.tut-step.in .tut-step-title em{transform:none}
+.tut-step.in .tut-step-desc{opacity:1;transform:none}
+.tut-step.in .tut-progress{opacity:1}
+/* gold rule */
+.tut-rule{display:flex;align-items:center;gap:16px;margin:1rem auto 1.25rem;opacity:0;transition:opacity 0.5s 0.6s ease}
+.tut-step.in .tut-rule{opacity:1}
+.tut-rule-line{width:0;height:0.5px;background:linear-gradient(to right,transparent,var(--gold),transparent);transition:width 1s 0.6s ease;max-width:120px}
+.tut-step.in .tut-rule-line{width:120px}
+.tut-rule-orn{color:var(--gold);font-size:11px;opacity:0.6}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -1411,6 +1447,46 @@ body.om .fsc-upload-btn{display:inline-flex!important}
   </div>
 </div>
 
+
+
+<!-- ═══ CINEMATIC TUTORIAL ═══ -->
+<div id="tutorial">
+  <div class="tut-petals" id="tut-petals"></div>
+  <div class="tut-overlay-fade" id="tut-fade"></div>
+
+  <!-- STEP 1 -->
+  <div class="tut-step" id="tut-s1">
+    <div class="tut-step-num">Langkah 1 dari 3</div>
+    <div class="tut-step-icon">🖼️</div>
+    <div class="tut-step-title"><span>Lihat</span><em>koleksi buket</em></div>
+    <div class="tut-rule"><div class="tut-rule-line"></div><span class="tut-rule-orn">✦</span><div class="tut-rule-line"></div></div>
+    <div class="tut-step-desc">Tekan <strong style="color:var(--gold)">"Lihat Koleksi"</strong> untuk melihat semua buket kami. Klik foto untuk lihat detail dan harga.</div>
+    <div class="tut-progress"><div class="tut-progress-dot active"></div><div class="tut-progress-dot"></div><div class="tut-progress-dot"></div></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="tut-step" id="tut-s2" style="display:none">
+    <div class="tut-step-num">Langkah 2 dari 3</div>
+    <div class="tut-step-icon">🌸</div>
+    <div class="tut-step-title"><span>Pilih &amp; isi</span><em>form pesanan</em></div>
+    <div class="tut-rule"><div class="tut-rule-line"></div><span class="tut-rule-orn">✦</span><div class="tut-rule-line"></div></div>
+    <div class="tut-step-desc">Pilih buket favoritmu lalu tekan <strong style="color:var(--gold)">"Pilih Buket Ini"</strong>. Isi nama, alamat, dan detail pesanan di form yang muncul.</div>
+    <div class="tut-progress"><div class="tut-progress-dot"></div><div class="tut-progress-dot active"></div><div class="tut-progress-dot"></div></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="tut-step" id="tut-s3" style="display:none">
+    <div class="tut-step-num">Langkah 3 dari 3</div>
+    <div class="tut-step-icon"><svg viewBox="0 0 24 24" style="width:52px;height:52px;fill:#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></div>
+    <div class="tut-step-title"><span>Kirim ke</span><em>WhatsApp</em></div>
+    <div class="tut-rule"><div class="tut-rule-line"></div><span class="tut-rule-orn">✦</span><div class="tut-rule-line"></div></div>
+    <div class="tut-step-desc">Setelah cek ulang pesanan, tekan <strong style="color:#25D366">"Kirim ke WhatsApp"</strong>. Pesananmu langsung terkirim ke kami dan kami akan konfirmasi segera!</div>
+    <div class="tut-progress"><div class="tut-progress-dot"></div><div class="tut-progress-dot"></div><div class="tut-progress-dot active"></div></div>
+  </div>
+
+  <button class="tut-skip" onclick="skipTutorial()">Lewati ✕</button>
+</div>
+
 <!-- ═══ FLOATING WA ═══ -->
 <div id="wa-float">
   <div class="wa-float-lbl">Chat dengan kami ✦</div>
@@ -1709,7 +1785,7 @@ function closeWelcome(){
   if(!w)return;
   w.classList.add('leaving');
   document.body.classList.remove('no-scroll');
-  setTimeout(()=>{w.remove();triggerFadeIns()},1100);
+  setTimeout(()=>{w.remove();triggerFadeIns();setTimeout(showTutorial,600)},1100);
 }
 function initWelcome(){
   const s=getS();
@@ -2479,6 +2555,76 @@ function colPickPhoto(origIdx){
   if(jenisEl) jenisEl.value=p.label||p.cat||'';
   closeFsCol();
   setTimeout(openFsWizard, 200);
+}
+
+
+
+
+// ═══════════════════════════════════════════════
+// CINEMATIC TUTORIAL
+// ═══════════════════════════════════════════════
+let tutStep = 0;
+const TUT_DURATION = 3000; // ms per step
+let tutTimer = null;
+
+function showTutorial(){
+  // Only show once per session
+  try{ if(sessionStorage.getItem('tut_done')) return; }catch{}
+  tutStep = 0;
+  spawnTutPetals();
+  document.getElementById('tutorial').classList.add('show');
+  document.body.classList.add('no-scroll');
+  tutShowStep(0);
+}
+
+function spawnTutPetals(){
+  const pc=document.getElementById('tut-petals');
+  if(!pc||pc.children.length>0) return;
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div');p.className='wpetal';
+    const sz=Math.random()*80+40;
+    p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:-${sz}px;animation-duration:${Math.random()*12+10}s;animation-delay:${Math.random()*6}s`;
+    pc.appendChild(p);
+  }
+}
+
+function tutShowStep(idx){
+  const steps=['tut-s1','tut-s2','tut-s3'];
+  const fade=document.getElementById('tut-fade');
+  // Fade in
+  fade.classList.add('active');
+  setTimeout(()=>{
+    // Hide all, show target
+    steps.forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='none';el.classList.remove('in')}});
+    const cur=document.getElementById(steps[idx]);
+    if(cur){ cur.style.display='flex'; void cur.offsetWidth; setTimeout(()=>cur.classList.add('in'),30); }
+    // Fade back out
+    fade.classList.remove('active');
+    // Auto-advance
+    if(tutTimer) clearTimeout(tutTimer);
+    if(idx < steps.length-1){
+      tutTimer = setTimeout(()=>{ tutStep=idx+1; tutShowStep(tutStep); }, TUT_DURATION);
+    } else {
+      // Last step — wait then close
+      tutTimer = setTimeout(closeTutorial, TUT_DURATION);
+    }
+  }, 420);
+}
+
+function skipTutorial(){
+  if(tutTimer) clearTimeout(tutTimer);
+  closeTutorial();
+}
+
+function closeTutorial(){
+  const fade=document.getElementById('tut-fade');
+  fade.classList.add('active');
+  setTimeout(()=>{
+    document.getElementById('tutorial').classList.remove('show');
+    document.body.classList.remove('no-scroll');
+    fade.classList.remove('active');
+    try{ sessionStorage.setItem('tut_done','1'); }catch{}
+  }, 450);
 }
 
 // ─── COLLECTION CINEMATIC ───
