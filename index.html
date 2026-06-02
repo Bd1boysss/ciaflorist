@@ -95,8 +95,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;b
 .owner-pill{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;border:0.5px solid var(--border);padding:7px 18px;background:transparent;color:var(--td);cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:500;transition:all 0.2s}
 .owner-pill:hover{border-color:var(--gold);color:var(--gold)}
 .owner-pill.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-#owner-banner{display:none;position:fixed;top:64px;left:0;right:0;z-index:190;background:var(--gold);color:var(--ink);text-align:center;padding:9px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase}
-#owner-banner.show{display:block}
 .exit-pill{margin-left:14px;opacity:0.6;cursor:pointer;border:0.5px solid rgba(13,10,8,0.3);padding:3px 10px;font-size:9px;transition:opacity 0.2s}
 .exit-pill:hover{opacity:1}
 
@@ -520,9 +518,6 @@ footer{background:var(--ink);border-top:0.5px solid var(--border2);padding:3.5re
 #adm-dash.show{display:flex}
 
 /* Secret trigger */
-#adm-trigger{position:fixed;bottom:2rem;left:2rem;z-index:400;width:32px;height:32px;border-radius:50%;background:transparent;border:0.5px solid rgba(201,169,110,0.12);cursor:pointer;opacity:0.25;transition:all 0.3s}
-#adm-trigger:hover{opacity:1;border-color:var(--gold);background:var(--mist)}
-#adm-trigger svg{width:13px;height:13px;fill:var(--gold)}
 
 /* Fade in scroll */
 
@@ -899,6 +894,14 @@ body.light::after{opacity:0.15}
 #theme-toggle svg{width:18px;height:18px;fill:var(--gold)}
 @media(max-width:600px){#theme-toggle{width:38px;height:38px;bottom:1.5rem;left:1.5rem}}
 
+#owner-banner{display:none;position:fixed;top:64px;left:0;right:0;z-index:190;background:var(--gold);color:var(--ink);text-align:center;padding:9px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase}
+#owner-banner.show{display:block}
+
+
+/* ── PROMO PRICE ── */
+.g-promo-badge{display:block;color:var(--rose);font-size:13px;font-weight:700;margin-top:2px}
+.g-price-strike{display:block;color:rgba(245,240,232,0.45);font-size:11px;text-decoration:line-through;margin-top:1px}
+
 .fi{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
 .fi.vis{opacity:1;transform:none}
 .fi.d1{transition-delay:0.1s}
@@ -964,10 +967,11 @@ body.light::after{opacity:0.15}
     <li><a href="#tentang">Tentang</a></li>
     <li><a href="https://www.instagram.com/ciaflorist__" target="_blank" rel="noopener">Instagram</a></li>
   </ul>
-  <button class="owner-pill" id="owner-btn" onclick="ownerToggle()">Owner</button>
+  <button class="owner-pill" id="owner-btn" onclick="ownerToggle()">Owner</button><button class="owner-pill" onclick="openAdmin()" style="margin-left:6px;background:var(--mist);border-color:var(--border)">Admin</button>
 </nav>
+
 <div id="owner-banner">
-  ✦ &nbsp;Mode Owner Aktif &nbsp;— Edit foto & teks langsung, atau buka Admin untuk pengaturan lengkap
+  ✦ &nbsp;Mode Owner Aktif &nbsp;— edit langsung di halaman
   <span class="exit-pill" onclick="exitOwner()">Selesai ✕</span>
 </div>
 
@@ -1087,6 +1091,7 @@ body.light::after{opacity:0.15}
         <button class="gf-btn" onclick="setPriceFilter(this,'low')">&lt; 100rb</button>
         <button class="gf-btn" onclick="setPriceFilter(this,'mid')">100–200rb</button>
         <button class="gf-btn" onclick="setPriceFilter(this,'high')">&gt; 200rb</button>
+        <button class="gf-btn" onclick="setPriceFilter(this,'promo')" style="border-color:var(--rose);color:var(--rose)">🏷️ Promo</button>
       </div>
       <div class="gf-group">
         <span class="gf-label">Urutkan:</span>
@@ -1275,7 +1280,7 @@ body.light::after{opacity:0.15}
   <div class="testi-inner">
     <div class="testi-top fi">
       <div><div class="sec-tag">Kata Mereka</div><h2 class="sec-title">Testimoni <em>pelanggan</em></h2></div>
-      <button class="o-btn" onclick="openTestiModal()" style="display:none">+ Tambah Testimoni</button>
+
     </div>
     <div class="testi-grid fi d1" id="testi-grid"></div>
   </div>
@@ -1317,23 +1322,9 @@ body.light::after{opacity:0.15}
 </div>
 
 <!-- ═══ OWNER LOGIN MODAL ═══ -->
-<div class="modal-bg" id="login-modal">
-  <div class="modal">
-    <button class="m-close" onclick="closeModal()">✕</button>
-    <div class="m-logo">ciaflorist</div>
-    <div class="m-sub">Owner Access</div>
-    <label class="m-label">Password</label>
-    <input class="m-input" type="password" id="m-pw" placeholder="Password..." onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button class="m-btn" onclick="doLogin()">Masuk</button>
-    <p class="m-err" id="m-err">Password salah.</p>
-    
-  </div>
-</div>
 
 <!-- ═══ SECRET ADMIN TRIGGER ═══ -->
-<button id="adm-trigger" onclick="openAdmin()" title="Admin">
-  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-</button>
+
 
 <!-- ═══ ADMIN PANEL ═══ -->
 <div id="admin-panel">
@@ -1365,6 +1356,7 @@ body.light::after{opacity:0.15}
         <div class="adm-item" onclick="goAdmPage('photos',this)">◻ Foto Galeri</div>
         <div class="adm-item" onclick="goAdmPage('hero-photos',this)">◈ Foto Hero</div>
         <div class="adm-item" onclick="goAdmPage('about-photos',this)">◎ Foto Tentang</div>
+        <div class="adm-item" onclick="goAdmPage('testi',this)">★ Testimoni</div>
         <div class="adm-group">Produk</div>
         <div class="adm-item" onclick="goAdmPage('prices',this)">◇ Harga Buket</div>
         <div class="adm-item" onclick="goAdmPage('colors',this)">○ Warna Bunga</div>
@@ -1560,6 +1552,28 @@ body.light::after{opacity:0.15}
         </div>
       </div>
 
+      <!-- TESTIMONI -->
+      <div class="adm-page" id="adm-page-testi">
+        <div class="adm-ph">Testimoni</div>
+        <div class="adm-psub">Kelola review pelanggan</div>
+        <div class="acard">
+          <div class="acard-title">Tambah Testimoni Baru</div>
+          <div class="af-grid">
+            <div class="af-group"><label class="af-label">Nama Pelanggan</label><input class="af-inp" type="text" id="at-name" placeholder="Cth: Sarah A."/></div>
+            <div class="af-group"><label class="af-label">Acara / Keterangan</label><input class="af-inp" type="text" id="at-role" placeholder="Cth: Wisuda UNS"/></div>
+          </div>
+          <div class="af-group"><label class="af-label">Rating</label>
+            <select class="af-sel" id="at-stars"><option value="5">★★★★★ (5)</option><option value="4">★★★★ (4)</option><option value="3">★★★ (3)</option></select>
+          </div>
+          <div class="af-group"><label class="af-label">Testimoni</label><textarea class="af-ta" id="at-text" placeholder="Tulis review pelanggan..."></textarea></div>
+          <button class="adm-btn" onclick="admAddTesti()">+ Tambah Testimoni</button>
+        </div>
+        <div class="acard">
+          <div class="acard-title">Daftar Testimoni</div>
+          <div id="adm-testi-list"></div>
+        </div>
+      </div>
+
       <!-- KEAMANAN -->
       <div class="adm-page" id="adm-page-security">
         <div class="adm-ph">Keamanan</div>
@@ -1685,7 +1699,7 @@ async function addPhotoCloud(photo){
   // If still too big, compress more aggressively
   if(compressed.length > 720000){ compressed = await compressImage(photo.src, 700, 0.5); }
   if(compressed.length > 720000){ compressed = await compressImage(photo.src, 560, 0.45); }
-  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', price:photo.price||'', badge:photo.badge||'', order:Date.now() };
+  const data = { src:compressed, cat:photo.cat||'', label:photo.label||'', price:photo.price||'', promo:photo.promo||'', badge:photo.badge||'', order:Date.now() };
   if(compressed.length > 1000000){
     toast('Foto terlalu besar walau dikompres. Coba foto lain.','err');
     console.error('Foto > 1MB setelah kompres:', compressed.length, 'bytes');
@@ -1792,9 +1806,10 @@ let ownerOn=false;
 function ownerToggle(){
   if(ownerOn){exitOwner();return}
   document.getElementById('login-modal').classList.add('show');
+  document.body.classList.add('no-scroll');
   setTimeout(()=>document.getElementById('m-pw').focus(),80);
 }
-function closeModal(){document.getElementById('login-modal').classList.remove('show');document.getElementById('m-pw').value='';document.getElementById('m-err').style.display='none'}
+function closeModal(){document.getElementById('login-modal').classList.remove('show');document.body.classList.remove('no-scroll');document.getElementById('m-pw').value='';document.getElementById('m-err').style.display='none'}
 function doLogin(){
   if(document.getElementById('m-pw').value===getPW()){closeModal();enterOwner()}
   else{document.getElementById('m-err').style.display='block';document.getElementById('m-pw').value='';document.getElementById('m-pw').focus()}
@@ -1803,29 +1818,24 @@ function enterOwner(){
   ownerOn=true;document.body.classList.add('om');
   document.getElementById('owner-banner').classList.add('show');
   const ob=document.getElementById('owner-btn');ob.classList.add('on');ob.textContent='✓ Owner';
-  ['about-text','stat1','stat2','stat3'].forEach(id=>document.getElementById(id).setAttribute('contenteditable','true'));
+  ['about-text','stat1','stat2','stat3'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('contenteditable','true')});
   document.querySelectorAll('.aph').forEach(el=>{el.style.cursor='pointer';el.onclick=()=>el.querySelector('input[type=file]').click()});
-  const s=getS();if(s.wa)document.getElementById('wa-input').value=s.wa;
-  document.querySelectorAll('#testimoni .o-btn').forEach(b=>b.style.display='inline-flex');
-  toast('Mode owner aktif ✦','ok');
+  const s=getS();if(s.wa){const w=document.getElementById('wa-input');if(w)w.value=s.wa;}
+  toast('Mode Owner aktif ✦','ok');
 }
 function exitOwner(){
   ownerOn=false;document.body.classList.remove('om');
   document.getElementById('owner-banner').classList.remove('show');
   const ob=document.getElementById('owner-btn');ob.classList.remove('on');ob.textContent='Owner';
-  ['about-text','stat1','stat2','stat3'].forEach(id=>document.getElementById(id).setAttribute('contenteditable','false'));
+  ['about-text','stat1','stat2','stat3'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('contenteditable','false')});
   document.querySelectorAll('.aph').forEach(el=>{el.style.cursor='default';el.onclick=null});
-  document.querySelectorAll('#testimoni .o-btn').forEach(b=>b.style.display='none');
   ownerSaveAll();toast('Tersimpan ✦','ok');
 }
 function ownerSaveAll(){
   const s=getS();
-  const waEl=document.getElementById('wa-input');
-  if(waEl)s.wa=waEl.value.trim();
-  s.aboutText=document.getElementById('about-text').innerText.trim();
-  s.stat1=document.getElementById('stat1').innerText;
-  s.stat2=document.getElementById('stat2').innerText;
-  s.stat3=document.getElementById('stat3').innerText;
+  const waEl=document.getElementById('wa-input');if(waEl)s.wa=waEl.value.trim();
+  const ab=document.getElementById('about-text');if(ab)s.aboutText=ab.innerText.trim();
+  ['stat1','stat2','stat3'].forEach(id=>{const el=document.getElementById(id);if(el)s[id]=el.innerText});
   [0,1,2].forEach(i=>{const el=document.getElementById('aph'+i);if(el){const img=el.querySelector('img');if(img)s['aph'+i]=img.src}});
   setS(s);
 }
@@ -1907,8 +1917,9 @@ function getFilteredPhotos(){
   if(galSearch){
     list = list.filter(p=>((p.label||'')+' '+(p.cat||'')).toLowerCase().includes(galSearch));
   }
-  // price filter
-  if(priceFilter!=='all'){
+  // promo filter
+  if(priceFilter==='promo'){ list=list.filter(p=>p.promo&&p.promo.trim()); }
+  else if(priceFilter!=='all'){
     list = list.filter(p=>{
       const n = parsePrice(p.price);
       if(n===null) return false;
@@ -1958,8 +1969,10 @@ function renderGallery(){
     return`<div class="g-item" ${l.style?`style="${l.style}"`:''}>
       <img src="${p.src}" alt="${p.label||''}" loading="lazy" onclick="openLightbox(${orig})" style="cursor:zoom-in"/>
       ${catBadge}
-      <div class="g-overlay"><span class="g-label">${p.label||''}</span>${p.price?`<span style="display:block;color:var(--gold);font-size:12px;font-weight:600;margin-top:2px">${p.price}</span>`:''}</div>
-      ${p.price?`<span style="position:absolute;top:8px;right:8px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:700;letter-spacing:0.04em;padding:3px 9px;z-index:2">${p.price}</span>`:''}
+      <div class="g-overlay"><span class="g-label">${p.label||''}</span>
+        ${p.promo?`<span class="g-promo-badge">${p.promo}</span>${p.price?`<span class="g-price-strike">${p.price}</span>`:''}`:(p.price?`<span style="display:block;color:var(--gold);font-size:12px;font-weight:600;margin-top:2px">${p.price}</span>`:'')}
+      </div>
+      ${p.promo?`<span style="position:absolute;top:8px;right:8px;background:var(--rose);color:#fff;font-size:9px;font-weight:700;letter-spacing:0.04em;padding:3px 9px;z-index:2">🏷️ ${p.promo}</span>`:p.price?`<span style="position:absolute;top:8px;right:8px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:700;letter-spacing:0.04em;padding:3px 9px;z-index:2">${p.price}</span>`:''}
       <button class="g-pick-btn" onclick="event.stopPropagation();pickFromGallery(${orig})">🌸 Pilih Buket Ini</button>
       <div class="g-oc">
         <button class="oc-btn oc-edit" onclick="event.stopPropagation();editPhotoModal(${orig})">Edit</button>
@@ -2010,7 +2023,7 @@ function renderBuketPicker(){}
 function pickFromGallery(origIdx){
   const p = getPhotos()[origIdx];
   if(!p) return;
-  selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||'', price:p.price||''};
+  selBuket = {src:p.src, label:p.label||'Buket', cat:p.cat||'', price:p.price||'', promo:p.promo||''};
   const jenisEl=document.getElementById('fp-jenis');
   if(jenisEl){ jenisEl.value=p.label||p.cat||''; }
   openFsWizard();
@@ -2162,7 +2175,10 @@ function updateReview(){
   setR('rev-tanggal',tgl?new Date(tgl).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—');
   setR('rev-method',pickupMethod==='ambil'?'Diambil 🏪':'COD 💵');
   setR('rev-buket',selBuket?(selBuket.custom?'Custom Request':(selBuket.label||'Buket')):'—');
-  setR('rev-harga',selBuket&&selBuket.price?selBuket.price:'Dikonfirmasi via WA');
+  if(selBuket&&selBuket.promo){
+    const hEl=document.getElementById('rev-harga');
+    if(hEl)hEl.innerHTML=`<span style="color:var(--rose);font-weight:700">${selBuket.promo}</span>${selBuket.price?` <span style="text-decoration:line-through;opacity:0.5;font-size:12px">${selBuket.price}</span>`:''}`;
+  } else { setR('rev-harga',selBuket&&selBuket.price?selBuket.price:'Dikonfirmasi via WA'); }
   const img=document.getElementById('fsw-chosen-img');
   if(selBuket && !selBuket.custom && selBuket.src){ img.src=selBuket.src; img.style.display='block'; }
   else { img.style.display='none'; }
@@ -2194,7 +2210,12 @@ function orderWA(){
   msg+=`No. WhatsApp : ${hp}\n`;
   msg+=`${line}\n🌸 Detail Pesanan\n`;
   if(buketName)msg+=`Buket Pilihan : ${buketName}\n`;
-  if(selBuket&&selBuket.price)msg+=`Harga : ${selBuket.price}\n`;
+  if(selBuket&&selBuket.promo){
+    msg+=`Harga Promo : ${selBuket.promo}\n`;
+    if(selBuket.price)msg+=`Harga Normal : ~~${selBuket.price}~~ (diskon)\n`;
+  } else if(selBuket&&selBuket.price){
+    msg+=`Harga : ${selBuket.price}\n`;
+  }
   msg+=`Jenis Buket : ${jenis}\n`;
   const kartu=document.getElementById('fp-kartu')?document.getElementById('fp-kartu').value.trim():'';
   if(kartu)msg+=`Kartu Ucapan : "${kartu}"\n`;
@@ -2263,7 +2284,7 @@ function admLogout(){
   closeAdmin();
 }
 
-const ADM_TITLES={overview:'Dashboard',photos:'Foto Galeri','hero-photos':'Foto Hero','about-photos':'Foto Tentang',prices:'Harga Buket',colors:'Warna Bunga',types:'Jenis Buket',customize:'Kostum Toko',teks:'Teks & Konten','wa-settings':'WhatsApp',security:'Keamanan'};
+const ADM_TITLES={overview:'Dashboard',photos:'Foto Galeri','hero-photos':'Foto Hero','about-photos':'Foto Tentang',prices:'Harga Buket',colors:'Warna Bunga',types:'Jenis Buket',customize:'Kostum Toko',teks:'Teks & Konten','wa-settings':'WhatsApp',security:'Keamanan',testi:'Testimoni'};
 function goAdmPage(id,navEl){
   document.querySelectorAll('.adm-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.adm-item').forEach(n=>n.classList.remove('active'));
@@ -2272,6 +2293,45 @@ function goAdmPage(id,navEl){
   document.getElementById('adm-topbar-title').textContent=ADM_TITLES[id]||'Admin';
 }
 
+
+function admAddTesti(){
+  const name=document.getElementById('at-name').value.trim();
+  const text=document.getElementById('at-text').value.trim();
+  if(!name||!text){toast('Isi nama & testimoni','err');return}
+  const list=getTesti();
+  list.unshift({name,role:document.getElementById('at-role').value.trim(),text,stars:parseInt(document.getElementById('at-stars').value)||5});
+  setTesti(list);
+  renderTesti();
+  admRenderTestiList();
+  document.getElementById('at-name').value='';
+  document.getElementById('at-role').value='';
+  document.getElementById('at-text').value='';
+  toast('Testimoni ditambahkan ✦','ok');
+}
+function admRenderTestiList(){
+  const wrap=document.getElementById('adm-testi-list');
+  if(!wrap)return;
+  const list=getTesti();
+  if(!list.length){wrap.innerHTML='<p style="color:var(--td);font-size:12px">Belum ada testimoni.</p>';return}
+  wrap.innerHTML=list.map((t,i)=>`
+    <div style="padding:12px 0;border-bottom:0.5px solid var(--border2);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--cream)">${t.name} <span style="color:var(--gold);font-size:11px">${'★'.repeat(t.stars||5)}</span></div>
+        <div style="font-size:11px;color:var(--td);margin-bottom:4px">${t.role||''}</div>
+        <div style="font-size:12px;color:var(--tm);font-style:italic">"${t.text}"</div>
+      </div>
+      <button onclick="admDelTesti(${i})" style="flex-shrink:0;padding:5px 12px;background:var(--rose-l);color:var(--rose);border:0.5px solid rgba(184,66,74,0.3);font-size:10px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:700">Hapus</button>
+    </div>`).join('');
+}
+function admDelTesti(i){
+  if(!confirm('Hapus testimoni ini?'))return;
+  const list=getTesti();
+  list.splice(i,1);
+  setTesti(list);
+  renderTesti();
+  admRenderTestiList();
+  toast('Dihapus');
+}
 async function admInit(){
   admLoadPrices();
   admRenderColors();
@@ -2284,6 +2344,7 @@ async function admInit(){
   // Refresh photos from cloud
   await loadPhotosFromCloud();
   admRenderPhotos();
+  admRenderTestiList();
   admRefreshStats();
   renderCatTabs();
   renderGallery();
@@ -2439,6 +2500,7 @@ function openUploadModal(){
   document.getElementById('upm-thumbs').innerHTML = '';
   document.getElementById('upm-label').value = '';
   document.getElementById('upm-price').value = '';
+  document.getElementById('upm-promo').value = '';
   upmBadge='';
   document.querySelectorAll('#upload-modal .upm-cat-grid')[1] && document.querySelectorAll('#upload-modal .upm-cat-grid')[1].querySelectorAll('.upm-cat-btn').forEach((b,idx)=>b.classList.toggle('active',idx===0));
   document.getElementById('upm-cat-input').value = '';
@@ -2504,12 +2566,13 @@ async function upmSave(){
   upmCat = catInput;
   const label = document.getElementById('upm-label').value.trim();
   const price = document.getElementById('upm-price').value.trim();
+  const promo = document.getElementById('upm-promo').value.trim();
   const btn = document.getElementById('upm-save-btn');
   btn.textContent = 'Mengupload...'; btn.style.opacity = '0.6';
   toast('Mengupload foto ke server...', 'ok');
   let ok = 0;
   for(let i=0;i<upmFiles.length;i++){
-    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)), price: price, badge: upmBadge });
+    const done = await addPhotoCloud({ src: upmFiles[i].src, cat: upmCat, label: label || ('Buket '+(getPhotos().length+1)), price: price, promo: promo, badge: upmBadge });
     if(done) ok++;
   }
   btn.textContent = 'Simpan Foto'; btn.style.opacity = '1';
@@ -2526,6 +2589,7 @@ function editPhotoModal(idx){
   upmCat = p.cat || '';
   document.getElementById('upm-label').value = p.label || '';
   document.getElementById('upm-price').value = p.price || '';
+  document.getElementById('upm-promo').value = p.promo || '';
   upmBadge = p.badge || '';
   document.querySelectorAll('#upload-modal .upm-cat-grid')[1] && document.querySelectorAll('#upload-modal .upm-cat-grid')[1].querySelectorAll('.upm-cat-btn').forEach(b=>{const bv=b.getAttribute('onclick').match(/'([^']*)'/)[1];b.classList.toggle('active',bv===upmBadge)});
   document.getElementById('upm-cat-input').value = (p.cat && p.cat !== 'all') ? p.cat : '';
@@ -2538,7 +2602,8 @@ function editPhotoModal(idx){
     if(!catInput){ toast('Isi jenis/kategori buket dulu', 'err'); return; }
     const label = document.getElementById('upm-label').value.trim();
     const price = document.getElementById('upm-price').value.trim();
-    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label, price: price, badge: upmBadge });
+    const promo2 = document.getElementById('upm-promo').value.trim();
+    await updatePhotoCloud(p.id, { cat: catInput, label: label || p.label, price: price, promo: promo2, badge: upmBadge });
     renderCatTabs();
     renderGallery();
     renderBuketPicker();
@@ -2588,7 +2653,9 @@ function showLightbox(){
   document.getElementById('lb-img').src = p.src;
   document.getElementById('lb-caption').textContent = p.label || '';
   document.getElementById('lb-cat').textContent = (p.cat && p.cat!=='all') ? (CAT_LABELS[p.cat]||p.cat) : '';
-  document.getElementById('lb-price').textContent = p.price || '';
+  const lbPriceEl=document.getElementById('lb-price');
+  if(p.promo){lbPriceEl.innerHTML=`<span style="color:var(--rose);font-weight:700">${p.promo}</span>${p.price?` <span style="text-decoration:line-through;opacity:0.45;font-size:14px">${p.price}</span>`:''}`;}
+  else{lbPriceEl.textContent=p.price||'';}
   // Hide nav arrows if only 1 photo
   const showNav = lbList.length > 1;
   document.querySelector('.lb-prev').style.display = showNav?'flex':'none';
@@ -2781,6 +2848,19 @@ document.getElementById('clr-preview').style.background=document.getElementById(
   </div>
 </div>
 
+<!-- ═══ OWNER LOGIN MODAL ═══ -->
+<div class="modal-bg" id="login-modal">
+  <div class="modal">
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-logo">ciaflorist</div>
+    <div class="m-sub">Mode Owner</div>
+    <label class="m-label">Password</label>
+    <input class="m-input" type="password" id="m-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div id="m-err" style="display:none;color:var(--rose);font-size:11px;margin-top:-8px;margin-bottom:8px;text-align:center;font-weight:600">Password salah</div>
+    <button class="m-btn" onclick="doLogin()">Masuk</button>
+  </div>
+</div>
+
 <!-- ═══ TESTIMONI MODAL ═══ -->
 <div id="testi-modal" class="modal-bg">
   <div class="modal" style="max-width:420px">
@@ -2832,8 +2912,12 @@ document.getElementById('clr-preview').style.background=document.getElementById(
     <input class="upm-inp" type="text" id="upm-label" placeholder="Cth: Buket Wisuda Pink Premium"/>
 
     <!-- Harga -->
-    <label class="upm-lbl">Harga (opsional)</label>
+    <label class="upm-lbl">Harga Normal (opsional)</label>
     <input class="upm-inp" type="text" id="upm-price" placeholder="Cth: Rp 85.000 / mulai 100rb / 150-200rb"/>
+
+    <!-- Promo -->
+    <label class="upm-lbl">Harga Promo <span style="color:var(--rose);font-size:10px">(opsional — isi jika sedang diskon)</span></label>
+    <input class="upm-inp" type="text" id="upm-promo" placeholder="Cth: Rp 65.000 / Hemat 25%"/>
 
     <!-- Badge -->
     <label class="upm-lbl">Label Khusus (opsional)</label>
