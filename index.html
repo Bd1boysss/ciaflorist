@@ -1036,7 +1036,7 @@ body.om .fsc-upload-btn{display:inline-flex!important}
   <button class="nav-burger" id="nav-burger" onclick="toggleMobileNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="nav-links">
     <li><a href="#cara-pesan">Cara Pesan</a></li>
-    <li><a href="#" onclick="event.preventDefault();enterCollection()">Koleksi</a></li>
+    <li><a href="#" onclick="event.preventDefault();openFsCol()">Koleksi</a></li>
     <li><a href="#testimoni">Testimoni</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#tentang">Tentang</a></li>
@@ -1143,7 +1143,7 @@ body.om .fsc-upload-btn{display:inline-flex!important}
 </section>
 
 <!-- anchor for nav links -->
-<div id="galeri" style="position:absolute;visibility:hidden"></div>
+<div id="galeri"></div>
 
 
 <!-- ═══ FULLSCREEN COLLECTION ═══ -->
@@ -2339,22 +2339,24 @@ function orderWA(){
 // ═══════════════════════════════════════════════
 let colSearch='', colPriceFilter='all', colSortMode='default', colLimit=12;
 
-function openFsCol(){
+async function openFsCol(){
   colSearch=''; colPriceFilter='all'; colSortMode='default'; colLimit=12;
   const el=document.getElementById('col-search');
   if(el) el.value='';
   // reset filter buttons
-  document.querySelectorAll('#col-filters .gf-btn').forEach((b,i,arr)=>{
-    if(b.closest('.gf-group').querySelector('.gf-btn')===b) b.classList.add('active');
-    else b.classList.remove('active');
-  });
   document.querySelectorAll('#col-filters .gf-group').forEach(g=>{
     g.querySelectorAll('.gf-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
   });
+  // Show overlay first with loading state
+  const fsCol=document.getElementById('fs-col');
+  fsCol.classList.add('show');
+  document.body.classList.add('no-scroll');
+  const g=document.getElementById('col-gallery-grid');
+  if(g) g.innerHTML='<div style="grid-column:1/-1;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><div class="skel-grid" style="width:100%"><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div></div></div>';
+  // Reload photos from cloud if needed
+  if(PHOTO_CACHE.length===0) await loadPhotosFromCloud();
   renderColCatTabs();
   renderFsCol();
-  document.getElementById('fs-col').classList.add('show');
-  document.body.classList.add('no-scroll');
 }
 function closeFsCol(){
   document.getElementById('fs-col').classList.remove('show');
@@ -2626,12 +2628,14 @@ async function admInit(){
   admRenderPhotos();
   admRenderTestiList();
   admRefreshStats();
+  renderColCatTabs();
+  renderFsCol();
   renderCatTabs();
   renderGallery();
   renderHero();
   renderBuketPicker();
   renderColCatTabs();
-  if(document.getElementById('fs-col').classList.contains('show'))renderFsCol();
+  renderFsCol();
 }
 
 // Admin stats
@@ -3141,7 +3145,7 @@ document.getElementById('clr-preview').style.background=document.getElementById(
   renderHero();
   renderBuketPicker();
   renderColCatTabs();
-  if(document.getElementById('fs-col').classList.contains('show'))renderFsCol();
+  renderFsCol();
   // Refresh admin stats if needed later
 })();
 </script>
