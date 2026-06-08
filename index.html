@@ -1576,11 +1576,23 @@ body.om .fsc-upload-btn{display:inline-flex!important}
       <div class="adm-page active" id="adm-page-overview">
         <div class="adm-ph">Dashboard</div>
         <div class="adm-psub">Kelola semua konten ciaflorist</div>
-        <div class="adm-stats">
+        <div class="adm-stats" style="grid-template-columns:repeat(3,1fr)">
           <div class="adm-stat"><div class="adm-stat-lbl">Foto Galeri</div><div class="adm-stat-val" id="ov-photos">0</div><div class="adm-stat-sub">foto aktif</div></div>
-          <div class="adm-stat"><div class="adm-stat-lbl">Warna</div><div class="adm-stat-val" id="ov-colors">10</div><div class="adm-stat-sub">pilihan warna</div></div>
-          <div class="adm-stat"><div class="adm-stat-lbl">Harga Mulai</div><div class="adm-stat-val" id="ov-price" style="font-size:18px;padding-top:4px">85rb</div><div class="adm-stat-sub">bunga segar</div></div>
           <div class="adm-stat"><div class="adm-stat-lbl">Nomor WA</div><div class="adm-stat-val" id="ov-wa" style="font-size:13px;padding-top:6px">—</div><div class="adm-stat-sub">aktif</div></div>
+          <div class="adm-stat"><div class="adm-stat-lbl">Testimoni</div><div class="adm-stat-val" id="ov-testi">0</div><div class="adm-stat-sub">ulasan</div></div>
+        </div>
+        <!-- VISITOR STATS -->
+        <div class="adm-stats" style="grid-template-columns:1fr 1fr;margin-bottom:1.5rem">
+          <div class="adm-stat" style="border-color:rgba(201,169,110,0.35)">
+            <div class="adm-stat-lbl">👥 Pengunjung Hari Ini</div>
+            <div class="adm-stat-val" id="ov-today">—</div>
+            <div class="adm-stat-sub" id="ov-today-date">memuat...</div>
+          </div>
+          <div class="adm-stat" style="border-color:rgba(201,169,110,0.35)">
+            <div class="adm-stat-lbl">📊 Total Pengunjung</div>
+            <div class="adm-stat-val" id="ov-total">—</div>
+            <div class="adm-stat-sub">sejak website aktif</div>
+          </div>
         </div>
         <div class="acard">
           <div class="acard-title">Aksi Cepat</div>
@@ -2582,6 +2594,64 @@ function colPickPhoto(origIdx){
 
 
 
+
+// ═══════════════════════════════════════════════
+// VISITOR COUNTER (Firebase)
+// ═══════════════════════════════════════════════
+async function trackVisit(){
+  if(!fbReady) return;
+  try{
+    const today = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+    const ref = fbDB.collection('visits').doc('stats');
+    // Atomic increment using Firestore transactions
+    await fbDB.runTransaction(async t=>{
+      const snap = await t.get(ref);
+      if(!snap.exists){
+        t.set(ref,{total:1,[`day_${today}`]:1});
+      } else {
+        const data=snap.data();
+        t.update(ref,{
+          total:(data.total||0)+1,
+          [`day_${today}`]:(data[`day_${today}`]||0)+1
+        });
+      }
+    });
+  } catch(e){ console.warn('Visit tracking error:',e); }
+}
+
+async function loadVisitorStats(){
+  const todayEl=document.getElementById('ov-today');
+  const totalEl=document.getElementById('ov-total');
+  const dateEl=document.getElementById('ov-today-date');
+  if(!fbReady){
+    if(todayEl)todayEl.textContent='—';
+    if(totalEl)totalEl.textContent='—';
+    if(dateEl)dateEl.textContent='Firebase tidak aktif';
+    return;
+  }
+  try{
+    const today=new Date().toISOString().slice(0,10);
+    const snap=await fbDB.collection('visits').doc('stats').get();
+    if(snap.exists){
+      const data=snap.data();
+      const todayCount=data[`day_${today}`]||0;
+      const totalCount=data.total||0;
+      if(todayEl)todayEl.textContent=todayCount.toLocaleString('id-ID');
+      if(totalEl)totalEl.textContent=totalCount.toLocaleString('id-ID');
+      if(dateEl)dateEl.textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
+    } else {
+      if(todayEl)todayEl.textContent='0';
+      if(totalEl)totalEl.textContent='0';
+      if(dateEl)dateEl.textContent='Belum ada data';
+    }
+  } catch(e){
+    console.warn('Load visitor stats error:',e);
+    if(todayEl)todayEl.textContent='—';
+    if(totalEl)totalEl.textContent='—';
+    if(dateEl)dateEl.textContent='Gagal memuat';
+  }
+}
+
 // ═══════════════════════════════════════════════
 // CINEMATIC TUTORIAL
 // ═══════════════════════════════════════════════
@@ -2802,6 +2872,7 @@ async function admInit(){
   admRenderPhotos();
   admRenderTestiList();
   admRefreshStats();
+  loadVisitorStats();
   renderColCatTabs();
   renderFsCol();
   renderCatTabs();
@@ -2816,6 +2887,7 @@ async function admInit(){
 function admRefreshStats(){
   const photos=getPhotos();const s=getS();const clrs=get(K.CLR)||DEF_COLORS;const pr=s.prices||{};
   document.getElementById('ov-photos').textContent=photos.length;
+  const testiEl=document.getElementById('ov-testi');if(testiEl)testiEl.textContent=getTesti().length;
   document.getElementById('ov-colors').textContent=clrs.length;
   document.getElementById('ov-price').textContent=fmt(pr.segarBase||85000).replace('Rp ','').replace('.000','rb');
   document.getElementById('ov-wa').textContent=s.wa||'Belum diisi';
@@ -3314,6 +3386,7 @@ document.getElementById('clr-preview').style.background=document.getElementById(
   const g=document.getElementById('gallery-grid');
   if(g) g.innerHTML='<div class="skel-grid" style="grid-column:1/-1"><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div><div class="skel-item"></div></div>';
   await loadPhotosFromCloud();
+  trackVisit();
   renderCatTabs();
   renderGallery();
   renderHero();
