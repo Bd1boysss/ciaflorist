@@ -2405,29 +2405,9 @@ function updateReview(){
 // ═══════════════════════════════════════════════
 // ORDER WA
 // ═══════════════════════════════════════════════
-async function uploadFotoBuket(base64src){
-  try{
-    // Convert base64 to blob
-    const arr=base64src.split(',');
-    const mime=arr[0].match(/:(.*?);/)[1];
-    const bstr=atob(arr[1]);
-    let n=bstr.length;
-    const u8=new Uint8Array(n);
-    while(n--) u8[n]=bstr.charCodeAt(n);
-    const blob=new Blob([u8],{type:mime});
-    // Upload ke Telegraph (Telegram) - gratis, no account, SSL aman
-    const form=new FormData();
-    form.append('file',blob,'buket.jpg');
-    const res=await fetch('https://telegra.ph/upload',{method:'POST',body:form});
-    const data=await res.json();
-    if(Array.isArray(data)&&data[0]&&data[0].src){
-      return 'https://telegra.ph'+data[0].src;
-    }
-  } catch(e){ console.warn('Upload foto gagal:',e); }
-  return null;
-}
+// foto link via website ID (no external upload needed)
 
-async function orderWA(){
+function orderWA(){
   if(!validateStep1()){ fsGoto(0); return; }
   if(!validateStep2()){ fsGoto(1); return; }
   const s=getS();const waNum=s.wa||'6289505264053';
@@ -2441,12 +2421,10 @@ async function orderWA(){
   const buketName=selBuket?(selBuket.custom?'Custom Request':(selBuket.label||'Buket')):'';
   const line='─'.repeat(28);
 
-  // Upload foto ke imgbb dulu
+  // Buat link foto pakai Firestore photo ID langsung di website
   let fotoLink='';
-  if(selBuket&&!selBuket.custom&&selBuket.src){
-    toast('Menyiapkan pesanan...','ok');
-    const link=await uploadFotoBuket(selBuket.src);
-    if(link) fotoLink=link;
+  if(selBuket&&!selBuket.custom&&selBuket.id){
+    fotoLink='https://ciaflorist.vercel.app/?foto='+encodeURIComponent(selBuket.id);
   }
 
   let msg=`FORM PEMESANAN BUKET 💐\n${line}\n`;
@@ -2616,7 +2594,7 @@ function openLightboxFromCol(origIdx){
 function colPickPhoto(origIdx){
   const p=getPhotos()[origIdx];
   if(!p) return;
-  selBuket={src:p.src,label:p.label||'Buket',cat:p.cat||'',price:p.price||'',promo:p.promo||''};
+  selBuket={id:p.id||'',src:p.src,label:p.label||'Buket',cat:p.cat||'',price:p.price||'',promo:p.promo||''};
   const jenisEl=document.getElementById('fp-jenis');
   if(jenisEl) jenisEl.value=p.label||p.cat||'';
   closeFsCol();
@@ -3410,6 +3388,26 @@ loadSiteSettings();
 renderTesti();
 renderFAQ();
 initWelcome();
+
+// ─── DEEP LINK: ?foto=PHOTO_ID ───
+(async function checkFotoParam(){
+  const params=new URLSearchParams(window.location.search);
+  const fotoId=params.get('foto');
+  if(!fotoId) return;
+  // Wait for photos to load
+  await loadPhotosFromCloud();
+  const photo=PHOTO_CACHE.find(p=>p.id===fotoId);
+  if(!photo){ toast('Foto tidak ditemukan','err'); return; }
+  // Open lightbox showing this photo
+  lbList=PHOTO_CACHE;
+  lbIdx=PHOTO_CACHE.indexOf(photo);
+  showLightbox();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.classList.add('no-scroll');
+  // Clean URL
+  window.history.replaceState({},'',window.location.pathname);
+})();
+
 document.getElementById('clr-preview').style.background=document.getElementById('new-clr-hex').value;
 
 // Load photos from cloud, then render everything
