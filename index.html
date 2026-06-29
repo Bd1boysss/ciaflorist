@@ -2405,7 +2405,21 @@ function updateReview(){
 // ═══════════════════════════════════════════════
 // ORDER WA
 // ═══════════════════════════════════════════════
-function orderWA(){
+async function uploadToImgbb(base64src){
+  try{
+    // Strip data:image/...;base64, prefix
+    const base64=base64src.split(',')[1];
+    const form=new FormData();
+    form.append('key','764bcfaa949aaceda1680fe8e91b603c');
+    form.append('image',base64);
+    const res=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:form});
+    const data=await res.json();
+    if(data.success) return data.data.url;
+  } catch(e){ console.warn('imgbb upload failed:',e); }
+  return null;
+}
+
+async function orderWA(){
   if(!validateStep1()){ fsGoto(0); return; }
   if(!validateStep2()){ fsGoto(1); return; }
   const s=getS();const waNum=s.wa||'6289505264053';
@@ -2418,6 +2432,15 @@ function orderWA(){
   const tglFmt=tgl?new Date(tgl).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'-';
   const buketName=selBuket?(selBuket.custom?'Custom Request':(selBuket.label||'Buket')):'';
   const line='─'.repeat(28);
+
+  // Upload foto ke imgbb dulu
+  let fotoLink='';
+  if(selBuket&&!selBuket.custom&&selBuket.src){
+    toast('Menyiapkan pesanan...','ok');
+    const link=await uploadToImgbb(selBuket.src);
+    if(link) fotoLink=link;
+  }
+
   let msg=`FORM PEMESANAN BUKET 💐\n${line}\n`;
   msg+=`🌸 Data Pemesan\n`;
   msg+=`Atas Nama : ${nama}\n`;
@@ -2425,6 +2448,7 @@ function orderWA(){
   msg+=`No. WhatsApp : ${hp}\n`;
   msg+=`${line}\n🌸 Detail Pesanan\n`;
   if(buketName)msg+=`Buket Pilihan : ${buketName}\n`;
+  if(fotoLink)msg+=`Foto Buket : ${fotoLink}\n`;
   if(selBuket&&selBuket.promo){
     msg+=`Harga Promo : ${selBuket.promo}\n`;
     if(selBuket.price)msg+=`Harga Normal : ~~${selBuket.price}~~ (diskon)\n`;
