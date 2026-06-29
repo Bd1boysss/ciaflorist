@@ -2414,7 +2414,7 @@ async function uploadToImgbb(base64src){
     form.append('image',base64);
     const res=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:form});
     const data=await res.json();
-    if(data.success) return data.data.url;
+    if(data.success) return data.data.url_viewer||data.data.url;
   } catch(e){ console.warn('imgbb upload failed:',e); }
   return null;
 }
